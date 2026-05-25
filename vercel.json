@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "*.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/agendar", "dest": "/agendar.html" },
+    { "src": "/facturar", "dest": "/facturar.html" },
+    { "src": "/instructivos/agendar", "dest": "/instructivo-agendar.html" },
+    { "src": "/instructivos/facturar", "dest": "/instructivo-facturar.html" }
+  ]
+}

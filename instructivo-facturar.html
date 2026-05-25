@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instructivo FacturAR — Cómo emitir facturas electrónicas con ARCA</title>
+  <meta name="description" content="Guía completa de FacturAR: cómo registrarte, configurar ARCA, emitir facturas con CAE, gestionar clientes y usar el panel contador." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #ffffff; --gray-50: #f9fafb; --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-400: #9ca3af;
+      --gray-500: #6b7280; --gray-700: #374151; --gray-900: #111827; --ink: #0d0d0d;
+      --factur: #059669; --factur-l: #ecfdf5; --brand: #1a1a2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--gray-900); background: var(--white); -webkit-font-smoothing: antialiased; }
+    h1,h2,h3 { font-family: 'DM Serif Display', serif; font-weight: 400; letter-spacing: -0.02em; }
+    a { color: var(--factur); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-100); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+    .nav-logo-mark { width: 30px; height: 30px; background: var(--brand); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; }
+    .nav-back { font-size: 0.875rem; color: var(--gray-500); text-decoration: none; }
+    .nav-back:hover { color: var(--ink); text-decoration: none; }
+    .nav-cta { background: var(--factur); color: white; padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 500; text-decoration: none; }
+    .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+
+    .layout { display: grid; grid-template-columns: 260px 1fr; gap: 0; max-width: 1100px; margin: 0 auto; padding: 0 24px; min-height: calc(100vh - 64px); }
+
+    .sidebar { padding: 40px 0; position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; border-right: 1px solid var(--gray-100); }
+    .sidebar-title { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 16px; padding-right: 24px; }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li { margin-bottom: 2px; }
+    .sidebar-nav a { display: block; padding: 7px 24px 7px 0; font-size: 0.875rem; color: var(--gray-500); text-decoration: none; border-right: 2px solid transparent; transition: all .15s; }
+    .sidebar-nav a:hover { color: var(--ink); text-decoration: none; }
+    .sidebar-nav a.active { color: var(--factur); border-right-color: var(--factur); font-weight: 500; }
+    .sidebar-nav .section-header { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-300); padding: 16px 0 6px; }
+
+    .content { padding: 48px 0 80px 48px; max-width: 720px; }
+
+    .instructivo-hero { margin-bottom: 48px; }
+    .instructivo-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--factur-l); border: 1px solid #a7f3d0; padding: 5px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--factur); margin-bottom: 16px; }
+    .instructivo-hero h1 { font-size: 2.6rem; color: var(--ink); margin-bottom: 12px; }
+    .instructivo-hero p { font-size: 1.05rem; color: var(--gray-500); font-weight: 300; line-height: 1.7; }
+
+    .doc-section { margin-bottom: 56px; scroll-margin-top: 88px; }
+    .doc-section h2 { font-size: 1.8rem; color: var(--ink); margin-bottom: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--gray-100); }
+    .doc-section h3 { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); margin: 24px 0 10px; }
+    .doc-section p { font-size: 0.95rem; color: var(--gray-700); line-height: 1.75; margin-bottom: 12px; }
+    .doc-section ul, .doc-section ol { padding-left: 20px; margin-bottom: 12px; }
+    .doc-section li { font-size: 0.95rem; color: var(--gray-700); line-height: 1.7; margin-bottom: 4px; }
+
+    .steps { list-style: none; padding: 0; counter-reset: step; }
+    .steps li { counter-increment: step; display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--factur); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+    .step-num::before { content: counter(step); }
+    .step-content h4 { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .step-content p { font-size: 0.875rem; color: var(--gray-500); margin: 0; }
+
+    .callout { border-left: 3px solid var(--factur); background: var(--factur-l); padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 20px 0; }
+    .callout p { font-size: 0.875rem; color: var(--gray-700); margin: 0; }
+    .callout strong { color: var(--factur); }
+    .callout-warning { border-left-color: #f59e0b; background: #fffbeb; }
+    .callout-warning p { color: #92400e; }
+    .callout-warning strong { color: #b45309; }
+    .callout-danger { border-left-color: #dc2626; background: #fef2f2; }
+    .callout-danger p { color: #991b1b; }
+
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.875rem; }
+    th { background: var(--gray-50); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.8rem; color: var(--gray-500); border-bottom: 1.5px solid var(--gray-200); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+    .badge-green { background: var(--factur-l); color: var(--factur); }
+    .badge-gray { background: var(--gray-100); color: var(--gray-500); }
+    .badge-blue { background: #eff6ff; color: #2563eb; }
+    .badge-orange { background: #fff7ed; color: #c2410c; }
+
+    footer { border-top: 1px solid var(--gray-100); padding: 28px 0; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--gray-700); text-decoration: none; }
+    .footer-logo-mark { width: 26px; height: 26px; background: var(--brand); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; }
+    .footer-copy { font-size: 0.8rem; color: var(--gray-400); }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .content { padding: 32px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">I</div>
+        IntegraAR
+      </a>
+      <a href="/facturar" class="nav-back">← FacturAR</a>
+      <a href="https://factu-ar.vercel.app" target="_blank" rel="noopener" class="nav-cta">Probar gratis →</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-title">Instructivo</div>
+      <ul class="sidebar-nav">
+        <li><a href="#inicio">Primeros pasos</a></li>
+        <li><a href="#registro">Registro</a></li>
+        <li><a href="#perfil">Datos fiscales</a></li>
+        <li class="section-header">ARCA</li>
+        <li><a href="#arca-intro">Qué es ARCA</a></li>
+        <li><a href="#certificado">Obtener certificado</a></li>
+        <li><a href="#configurar-arca">Configurar en FacturAR</a></li>
+        <li><a href="#probar-conexion">Probar la conexión</a></li>
+        <li class="section-header">Facturación</li>
+        <li><a href="#emitir">Emitir una factura</a></li>
+        <li><a href="#tipos">Tipos de comprobante</a></li>
+        <li><a href="#pdf">PDF y descarga</a></li>
+        <li><a href="#comprobantes">Lista de comprobantes</a></li>
+        <li class="section-header">Herramientas</li>
+        <li><a href="#clientes">Clientes</a></li>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#presupuestos">Presupuestos</a></li>
+        <li><a href="#monotributo">Control monotributo</a></li>
+        <li><a href="#contador">Panel Contador</a></li>
+        <li class="section-header">Cuenta</li>
+        <li><a href="#planes">Planes</a></li>
+        <li><a href="#offline">Modo offline</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+
+      <div class="instructivo-hero">
+        <div class="instructivo-badge">🧾 Instructivo FacturAR</div>
+        <h1>Guía completa de FacturAR</h1>
+        <p>Todo lo que necesitás para configurar ARCA y empezar a emitir facturas electrónicas con CAE oficial desde cualquier dispositivo.</p>
+      </div>
+
+      <!-- Primeros pasos -->
+      <section class="doc-section" id="inicio">
+        <h2>Primeros pasos</h2>
+        <p>FacturAR es una aplicación web. Funciona desde cualquier navegador y también se puede instalar como app en el celular.</p>
+
+        <h3>Acceder a FacturAR</h3>
+        <p>Ingresá a <a href="https://factu-ar.vercel.app" target="_blank">factu-ar.vercel.app</a>. Funciona en Chrome, Firefox, Safari y Edge tanto en PC como en celular.</p>
+
+        <h3>Instalar en el celular</h3>
+        <ol>
+          <li>Abrí la app desde Chrome (Android) o Safari (iPhone)</li>
+          <li>Menú del navegador → "Instalar app" o "Agregar a pantalla de inicio"</li>
+          <li>Listo — aparece como una app nativa en tu celular</li>
+        </ol>
+      </section>
+
+      <!-- Registro -->
+      <section class="doc-section" id="registro">
+        <h2>Registro</h2>
+
+        <h3>Crear cuenta independiente</h3>
+        <ol class="steps">
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Registrarte con email</h4>
+              <p>Ingresá tu email y contraseña. Te llega un mail de verificación.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Verificar el email</h4>
+              <p>Hacé clic en el link del mail para confirmar tu cuenta y poder ingresar.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Completar los datos fiscales</h4>
+              <p>Ingresá tu CUIT, tipo de contribuyente y datos básicos para configurar tu perfil.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3>Registro como contribuyente de un contador</h3>
+        <p>Si tu contador te envió un link de invitación, abrilo desde el navegador. Se muestra la información del contador y podés registrarte o hacer login. Al confirmar, quedás vinculado automáticamente.</p>
+      </section>
+
+      <!-- Datos fiscales -->
+      <section class="doc-section" id="perfil">
+        <h2>Datos fiscales</h2>
+        <p>Antes de emitir tu primera factura, completá los datos fiscales desde <strong>Perfil → Datos fiscales</strong>.</p>
+
+        <h3>Datos requeridos</h3>
+        <ul>
+          <li><strong>CUIT</strong> — sin guiones (ej: 20123456789)</li>
+          <li><strong>Tipo de contribuyente</strong> — Monotributista, Responsable Inscripto o Exento</li>
+          <li><strong>Razón social o nombre</strong></li>
+          <li><strong>Domicilio fiscal</strong></li>
+          <li><strong>Punto de venta</strong> — el número que tenés habilitado en ARCA</li>
+        </ul>
+
+        <h3>Autocompletar desde ARCA</h3>
+        <p>Hacé clic en <strong>"Autocompletar desde ARCA"</strong> después de ingresar el CUIT. FacturAR consulta el padrón de ARCA y completa automáticamente tu razón social, domicilio, localidad y provincia.</p>
+
+        <h3>Logo de la empresa</h3>
+        <p>Podés subir tu logo (PNG, JPG, SVG, hasta 2MB) mediante drag & drop. El logo aparece en el PDF de tus facturas.</p>
+      </section>
+
+      <!-- ARCA intro -->
+      <section class="doc-section" id="arca-intro">
+        <h2>¿Qué es ARCA y por qué necesitás configurarlo?</h2>
+        <p>ARCA (antes AFIP) es la Agencia de Recaudación y Control Aduanero de Argentina. Para emitir facturas electrónicas con CAE válido, necesitás que FacturAR se autentique con ARCA usando tu certificado digital.</p>
+
+        <p>Sin el certificado configurado, podés emitir <strong>Facturas X</strong> (sin CAE, solo para registro interno), pero no facturas fiscales válidas.</p>
+
+        <div class="callout">
+          <p><strong>Sin certificado:</strong> podés emitir Facturas X. <strong>Con certificado:</strong> emitís Facturas A, B y C con CAE oficial de ARCA.</p>
+        </div>
+      </section>
+
+      <!-- Certificado -->
+      <section class="doc-section" id="certificado">
+        <h2>Obtener el certificado de ARCA</h2>
+        <p>El proceso completo está guiado en FacturAR desde <strong>Perfil → Integración ARCA → Guía paso a paso</strong>. Acá te explicamos el proceso general:</p>
+
+        <ol class="steps">
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Ingresar a ARCA con CUIT y clave fiscal</h4>
+              <p>Accedé a <a href="https://auth.afip.gob.ar" target="_blank">auth.afip.gob.ar</a> con tu CUIT y clave fiscal.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Ir a "Administración de Certificados Digitales"</h4>
+              <p>Buscá ese servicio en el buscador de ARCA y entrá.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Agregar un alias</h4>
+              <p>Hacé clic en "Agregar Alias". El alias es el nombre de tu certificado (ej: facturar2026).</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Generar y subir el CSR</h4>
+              <p>Desde FacturAR generás el archivo CSR. Lo subís en ARCA. ARCA te devuelve el certificado .crt.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Vincular al servicio "wsfe"</h4>
+              <p>En ARCA, desde "Administrador de Relaciones de Clave Fiscal", vinculás tu certificado al servicio de Facturación Electrónica.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Cargar el .crt en FacturAR</h4>
+              <p>Arrastrá el archivo .crt que te descargó ARCA al campo correspondiente en FacturAR.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="callout-warning callout">
+          <p><strong>Importante:</strong> El certificado tiene una validez de 2 años. FacturAR te avisa cuando está por vencer (menos de 90 días).</p>
+        </div>
+      </section>
+
+      <!-- Configurar ARCA -->
+      <section class="doc-section" id="configurar-arca">
+        <h2>Configurar ARCA en FacturAR</h2>
+        <p>Una vez que tenés el certificado de ARCA, configurálo en FacturAR siguiendo la guía de la aplicación:</p>
+
+        <ol>
+          <li>Andá a <strong>Perfil → Integración ARCA</strong></li>
+          <li>Activá el toggle para habilitar ARCA</li>
+          <li>Elegí el ambiente: <strong>Homologación</strong> (pruebas) o <strong>Producción</strong></li>
+          <li>Ingresá tu CUIT y el alias del certificado que creaste en ARCA</li>
+          <li>Pegá el certificado X.509 (.crt) en el campo correspondiente</li>
+          <li>Pegá tu clave privada (.key) en el campo de clave privada</li>
+          <li>Hacé clic en <strong>"Probar conexión"</strong></li>
+          <li>Si la conexión es exitosa, guardá los datos</li>
+        </ol>
+
+        <div class="callout">
+          <p><strong>Tip:</strong> Empezá siempre en Homologación para hacer pruebas. Las facturas emitidas en Homologación no son válidas fiscalmente, pero te permiten probar que todo funciona correctamente antes de pasar a Producción.</p>
+        </div>
+      </section>
+
+      <!-- Probar conexión -->
+      <section class="doc-section" id="probar-conexion">
+        <h2>Probar la conexión con ARCA</h2>
+        <p>Desde <strong>Perfil → Integración ARCA</strong>, hacé clic en el botón <strong>"Probar conexión"</strong>. FacturAR va a:</p>
+        <ul>
+          <li>Obtener un token WSAA (autenticación con ARCA)</li>
+          <li>Leer tus puntos de venta habilitados en ARCA</li>
+          <li>Detectar los tipos de comprobante que podés emitir</li>
+          <li>Mostrar un resumen con los datos obtenidos</li>
+        </ul>
+        <p>Si la prueba es exitosa, el estado ARCA en el dashboard aparece en verde.</p>
+      </section>
+
+      <!-- Emitir factura -->
+      <section class="doc-section" id="emitir">
+        <h2>Emitir una factura</h2>
+
+        <ol class="steps">
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Hacé clic en "Nueva Factura"</h4>
+              <p>Desde el dashboard o desde el menú principal.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Seleccioná el tipo de comprobante</h4>
+              <p>FacturAR te sugiere automáticamente el tipo correcto según tu condición IVA y la del receptor.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Elegí el receptor</h4>
+              <p>Buscalo en tu lista de clientes o ingresá un CUIT para autocompletar desde ARCA.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Cargá los ítems</h4>
+              <p>Describí el servicio o producto, precio y cantidad. Podés usar el catálogo para autocompletar.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Revisá los totales y emitir</h4>
+              <p>Verificá subtotal, IVA y total. Hacé clic en "Emitir" — FacturAR solicita el CAE a ARCA automáticamente.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Descargar el PDF</h4>
+              <p>Se genera el PDF en formato oficial ARCA con 3 copias. Podés descargarlo o enviarlo por email.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Tipos de comprobante -->
+      <section class="doc-section" id="tipos">
+        <h2>Tipos de comprobante</h2>
+
+        <table>
+          <thead>
+            <tr><th>Tipo</th><th>Para quién</th><th>Requiere ARCA</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">Factura A</span></td>
+              <td>Responsable Inscripto que le vende a otro Responsable Inscripto</td>
+              <td>Sí</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-orange">Factura B</span></td>
+              <td>Responsable Inscripto que le vende a Consumidor Final, Exento o Monotributista</td>
+              <td>Sí</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">Factura C</span></td>
+              <td>Monotributista a cualquier receptor</td>
+              <td>Sí</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gray">Factura X</span></td>
+              <td>Cualquier emisor a cualquier receptor (sin CAE, solo registro interno)</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p><strong>Validación automática:</strong> FacturAR detecta si la combinación emisor/receptor es incorrecta y te sugiere el tipo correcto antes de emitir.</p>
+        </div>
+
+        <h3>IVA según tipo</h3>
+        <ul>
+          <li><strong>Factura C</strong> (Monotributista): IVA siempre 0%, no se informa a ARCA</li>
+          <li><strong>Factura A/B</strong> (Resp. Inscripto): IVA libre (0%, 10.5%, 21%, 27%)</li>
+          <li><strong>Factura X</strong>: sin IVA</li>
+        </ul>
+      </section>
+
+      <!-- PDF -->
+      <section class="doc-section" id="pdf">
+        <h2>PDF formato oficial</h2>
+        <p>Al emitir una factura fiscal (con CAE), FacturAR genera automáticamente el PDF en el formato oficial que exige ARCA.</p>
+
+        <h3>Características del PDF</h3>
+        <ul>
+          <li><strong>3 copias</strong>: Original, Duplicado y Triplicado</li>
+          <li>Número de CAE y fecha de vencimiento</li>
+          <li>Código QR de la factura</li>
+          <li>Logo de tu empresa (si lo configuraste)</li>
+          <li>Datos completos del emisor y receptor</li>
+          <li>Detalle de ítems con cantidades, precios e IVA</li>
+        </ul>
+
+        <h3>Nombre del archivo</h3>
+        <p>El PDF se nombra automáticamente con el formato: <code>FC-0001-00000001_20260101_1030.pdf</code> (Tipo-PV-Número_Fecha_Hora).</p>
+      </section>
+
+      <!-- Comprobantes -->
+      <section class="doc-section" id="comprobantes">
+        <h2>Lista de comprobantes</h2>
+        <p>Desde la sección <strong>Comprobantes</strong> podés ver todas tus facturas emitidas con filtros por fecha, tipo, estado y cliente.</p>
+
+        <h3>Estados</h3>
+        <table>
+          <thead><tr><th>Estado</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-green">EMITIDA</span></td><td>Factura emitida correctamente</td></tr>
+            <tr><td><span class="badge badge-blue">COBRADA</span></td><td>El pago fue recibido</td></tr>
+            <tr><td><span class="badge badge-orange">PENDIENTE</span></td><td>Esperando cobro</td></tr>
+            <tr><td><span class="badge badge-gray">ANULADA</span></td><td>Anulada (no se elimina del sistema)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Exportar a Excel</h3>
+        <p>Hacé clic en "Exportar Excel" para descargar un archivo XLSX con todos los comprobantes filtrados. Útil para declaraciones y reportes.</p>
+      </section>
+
+      <!-- Clientes -->
+      <section class="doc-section" id="clientes">
+        <h2>Gestión de clientes</h2>
+        <p>Guardá los datos de tus clientes para no tener que ingresarlos cada vez que facturás.</p>
+
+        <h3>Agregar un cliente</h3>
+        <ol>
+          <li>Andá a la sección <strong>Clientes</strong></li>
+          <li>Hacé clic en "Nuevo cliente"</li>
+          <li>Ingresá el CUIT y hacé clic en <strong>"Consultar ARCA"</strong> para autocompletar razón social, domicilio y condición IVA</li>
+          <li>Guardá — el cliente aparece disponible en el selector al crear facturas</li>
+        </ol>
+      </section>
+
+      <!-- Catálogo -->
+      <section class="doc-section" id="catalogo">
+        <h2>Catálogo de productos y servicios</h2>
+        <p>El catálogo te permite guardar los productos o servicios que facturás frecuentemente para autocompletar rápidamente al crear una factura.</p>
+
+        <h3>Agregar al catálogo</h3>
+        <p>Podés agregar ítems desde la sección <strong>Catálogo</strong>, o directamente desde la pantalla de nueva factura marcando "Guardar al catálogo" al agregar un ítem.</p>
+
+        <h3>Usar el catálogo al facturar</h3>
+        <p>Al escribir en el campo descripción del ítem, aparece un dropdown con los productos del catálogo que coinciden. Seleccionás el que querés y se autocompletan precio e IVA.</p>
+      </section>
+
+      <!-- Presupuestos -->
+      <section class="doc-section" id="presupuestos">
+        <h2>Presupuestos</h2>
+        <p>Los presupuestos son documentos informativos sin CAE. Útiles para enviarle al cliente una cotización antes de facturar.</p>
+
+        <ul>
+          <li>Misma interfaz que la factura, con diseño diferente en el PDF</li>
+          <li>Se pueden convertir en factura con un clic</li>
+          <li>No se envían a ARCA ni generan número fiscal</li>
+        </ul>
+      </section>
+
+      <!-- Control monotributo -->
+      <section class="doc-section" id="monotributo">
+        <h2>Control de monotributo</h2>
+        <p>Si sos monotributista, FacturAR te muestra una barra de progreso con tu facturación anual acumulada vs el tope de tu categoría.</p>
+
+        <ul>
+          <li>La barra aparece en el dashboard</li>
+          <li>Alerta naranja cuando llegás al 75% del tope</li>
+          <li>Alerta roja al 90% — momento de considerar un cambio de categoría</li>
+          <li>Muestra por separado el monto fiscal (con CAE) y el monto X (sin CAE)</li>
+        </ul>
+
+        <div class="callout-warning callout">
+          <p><strong>Importante:</strong> Para el control correcto, actualizá tu categoría de monotributo en los datos fiscales cuando recategorizás.</p>
+        </div>
+      </section>
+
+      <!-- Contador -->
+      <section class="doc-section" id="contador">
+        <h2>Panel Contador</h2>
+        <p>Si sos contador, tenés acceso a un panel especial para gestionar múltiples clientes.</p>
+
+        <h3>Invitar contribuyentes</h3>
+        <ol>
+          <li>Desde el Panel Contador, hacé clic en "Invitar cliente"</li>
+          <li>Se genera un link único</li>
+          <li>Enviáselo al cliente por WhatsApp o email</li>
+          <li>El cliente se registra o hace login con ese link y queda vinculado a vos</li>
+        </ol>
+
+        <h3>Qué podés hacer como contador</h3>
+        <ul>
+          <li>Ver todas las facturas de cada cliente</li>
+          <li>Descargar PDFs de comprobantes</li>
+          <li>Consultar el CUIT de cualquier contribuyente en ARCA</li>
+          <li>Ver la constancia de inscripción completa</li>
+          <li>Verificar el historial de comprobantes autorizados en ARCA</li>
+          <li>Desvincular clientes (vuelven a plan Free independiente)</li>
+        </ul>
+
+        <h3>Herramientas ARCA (para contadores)</h3>
+        <table>
+          <thead><tr><th>Herramienta</th><th>Para qué sirve</th></tr></thead>
+          <tbody>
+            <tr><td>🔍 Consulta CUIT</td><td>Razón social, estado clave y tipo de persona</td></tr>
+            <tr><td>📜 Constancia completa</td><td>Datos completos con actividades, impuestos y domicilio</td></tr>
+            <tr><td>📊 Régimen IVA</td><td>Condición frente al IVA de cualquier CUIT</td></tr>
+            <tr><td>📋 Historial ARCA</td><td>Últimos comprobantes autorizados por ARCA</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Planes -->
+      <section class="doc-section" id="planes">
+        <h2>Planes y pagos</h2>
+
+        <table>
+          <thead><tr><th>Plan</th><th>Facturas/mes</th><th>Precio</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-gray">Free</span></td><td>10 facturas/mes</td><td>Gratis</td></tr>
+            <tr><td><span class="badge badge-green">Pro</span></td><td>Ilimitadas</td><td>Mensual (con MP)</td></tr>
+          </tbody>
+        </table>
+
+        <p>Para pasar a Pro, andá a <strong>Dashboard → Planes</strong> y seguí el proceso de pago con Mercado Pago. La activación es automática al confirmar el pago.</p>
+      </section>
+
+      <!-- Offline -->
+      <section class="doc-section" id="offline">
+        <h2>Modo offline</h2>
+        <p>Si perdés conexión a internet mientras usás FacturAR, la app puede funcionar hasta <strong>8 horas</strong> con la sesión cacheada localmente.</p>
+
+        <ul>
+          <li>Aparece un banner naranja: <em>"📴 Modo offline — sesión local válida por X min más"</em></li>
+          <li>Podés seguir navegando la app pero no podés emitir facturas (requiere conexión con ARCA)</li>
+          <li>Cuando vuelve la conexión, el modo offline se desactiva automáticamente</li>
+        </ul>
+
+        <div class="callout">
+          <p><strong>¿Tenés más preguntas?</strong> Escribinos a <a href="mailto:integraar.soluciones@gmail.com">integraar.soluciones@gmail.com</a>.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <a href="/" class="footer-logo">
+        <div class="footer-logo-mark">I</div>
+        IntegraAR
+      </a>
+      <p class="footer-copy">© 2026 IntegraAR · <a href="mailto:integraar.soluciones@gmail.com">integraar.soluciones@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('.doc-section')
+    const links    = document.querySelectorAll('.sidebar-nav a[href^="#"]')
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'))
+          const activeLink = document.querySelector(`.sidebar-nav a[href="#${e.target.id}"]`)
+          if (activeLink) activeLink.classList.add('active')
+        }
+      })
+    }, { rootMargin: '-20% 0px -70% 0px' })
+    sections.forEach(s => obs.observe(s))
+  </script>
+
+</body>
+</html>

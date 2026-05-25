@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instructivo AgendAR — Cómo usar el sistema de turnos</title>
+  <meta name="description" content="Guía completa de AgendAR: cómo registrarte, configurar tu perfil, gestionar turnos, pacientes, clínicas y facturación." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #ffffff; --gray-50: #f9fafb; --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-400: #9ca3af;
+      --gray-500: #6b7280; --gray-700: #374151; --gray-900: #111827; --ink: #0d0d0d;
+      --agend: #2563eb; --agend-l: #eff6ff; --brand: #1a1a2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--gray-900); background: var(--white); -webkit-font-smoothing: antialiased; }
+    h1,h2,h3 { font-family: 'DM Serif Display', serif; font-weight: 400; letter-spacing: -0.02em; }
+    a { color: var(--agend); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Nav */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-100); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+    .nav-logo-mark { width: 30px; height: 30px; background: var(--brand); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; }
+    .nav-back { font-size: 0.875rem; color: var(--gray-500); text-decoration: none; }
+    .nav-back:hover { color: var(--ink); text-decoration: none; }
+    .nav-cta { background: var(--agend); color: white; padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 500; text-decoration: none; }
+    .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+
+    /* Layout */
+    .layout { display: grid; grid-template-columns: 260px 1fr; gap: 0; max-width: 1100px; margin: 0 auto; padding: 0 24px; min-height: calc(100vh - 64px); }
+
+    /* Sidebar índice */
+    .sidebar { padding: 40px 0 40px; position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; border-right: 1px solid var(--gray-100); }
+    .sidebar-title { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 16px; padding-right: 24px; }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li { margin-bottom: 2px; }
+    .sidebar-nav a { display: block; padding: 7px 24px 7px 0; font-size: 0.875rem; color: var(--gray-500); text-decoration: none; border-right: 2px solid transparent; transition: all .15s; }
+    .sidebar-nav a:hover { color: var(--ink); text-decoration: none; }
+    .sidebar-nav a.active { color: var(--agend); border-right-color: var(--agend); font-weight: 500; }
+    .sidebar-nav .section-header { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-300); padding: 16px 0 6px; }
+
+    /* Content */
+    .content { padding: 48px 0 80px 48px; max-width: 720px; }
+
+    /* Hero instructivo */
+    .instructivo-hero { margin-bottom: 48px; }
+    .instructivo-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--agend-l); border: 1px solid #bfdbfe; padding: 5px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--agend); margin-bottom: 16px; }
+    .instructivo-hero h1 { font-size: 2.6rem; color: var(--ink); margin-bottom: 12px; }
+    .instructivo-hero p { font-size: 1.05rem; color: var(--gray-500); font-weight: 300; line-height: 1.7; }
+
+    /* Sections */
+    .doc-section { margin-bottom: 56px; scroll-margin-top: 88px; }
+    .doc-section h2 { font-size: 1.8rem; color: var(--ink); margin-bottom: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--gray-100); }
+    .doc-section h3 { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); margin: 24px 0 10px; }
+    .doc-section p { font-size: 0.95rem; color: var(--gray-700); line-height: 1.75; margin-bottom: 12px; }
+    .doc-section ul, .doc-section ol { padding-left: 20px; margin-bottom: 12px; }
+    .doc-section li { font-size: 0.95rem; color: var(--gray-700); line-height: 1.7; margin-bottom: 4px; }
+
+    /* Steps */
+    .steps { list-style: none; padding: 0; counter-reset: step; }
+    .steps li { counter-increment: step; display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--agend); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+    .step-num::before { content: counter(step); }
+    .step-content h4 { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .step-content p { font-size: 0.875rem; color: var(--gray-500); margin: 0; }
+
+    /* Callout */
+    .callout { border-left: 3px solid var(--agend); background: var(--agend-l); padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 20px 0; }
+    .callout p { font-size: 0.875rem; color: var(--gray-700); margin: 0; }
+    .callout strong { color: var(--agend); }
+
+    .callout-warning { border-left-color: #f59e0b; background: #fffbeb; }
+    .callout-warning p { color: #92400e; }
+    .callout-warning strong { color: #b45309; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.875rem; }
+    th { background: var(--gray-50); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.8rem; color: var(--gray-500); border-bottom: 1.5px solid var(--gray-200); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+
+    /* Badge inline */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+    .badge-blue { background: var(--agend-l); color: var(--agend); }
+    .badge-green { background: #ecfdf5; color: #059669; }
+    .badge-gray { background: var(--gray-100); color: var(--gray-500); }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--gray-100); padding: 28px 0; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--gray-700); text-decoration: none; }
+    .footer-logo-mark { width: 26px; height: 26px; background: var(--brand); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; }
+    .footer-copy { font-size: 0.8rem; color: var(--gray-400); }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .content { padding: 32px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">I</div>
+        IntegraAR
+      </a>
+      <a href="/agendar" class="nav-back">← AgendAR</a>
+      <a href="https://agend-ar-pi.vercel.app/registro" target="_blank" rel="noopener" class="nav-cta">Probar gratis →</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+
+    <!-- Sidebar índice -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Instructivo</div>
+      <ul class="sidebar-nav">
+        <li><a href="#inicio">Primeros pasos</a></li>
+        <li><a href="#registro">Registro y onboarding</a></li>
+        <li><a href="#panel-profesional">Panel Profesional</a></li>
+        <li class="section-header">Módulos</li>
+        <li><a href="#calendario">Calendario</a></li>
+        <li><a href="#pacientes">Pacientes</a></li>
+        <li><a href="#horarios">Horarios</a></li>
+        <li><a href="#obras-sociales">Obras sociales</a></li>
+        <li><a href="#recordatorios">Recordatorios</a></li>
+        <li><a href="#facturacion">Facturación</a></li>
+        <li class="section-header">Clínicas</li>
+        <li><a href="#panel-clinica">Panel Clínica</a></li>
+        <li><a href="#profesionales-clinica">Profesionales</a></li>
+        <li><a href="#salas">Salas</a></li>
+        <li><a href="#reportes">Reportes</a></li>
+        <li class="section-header">Configuración</li>
+        <li><a href="#google-calendar">Google Calendar</a></li>
+        <li><a href="#planes">Planes y pagos</a></li>
+      </ul>
+    </aside>
+
+    <!-- Contenido -->
+    <main class="content">
+
+      <div class="instructivo-hero">
+        <div class="instructivo-badge">📅 Instructivo AgendAR</div>
+        <h1>Guía completa de AgendAR</h1>
+        <p>Todo lo que necesitás saber para sacarle el máximo provecho al sistema de turnos. Desde el primer registro hasta la configuración avanzada.</p>
+      </div>
+
+      <!-- Primeros pasos -->
+      <section class="doc-section" id="inicio">
+        <h2>Primeros pasos</h2>
+        <p>AgendAR es una aplicación web que funciona desde cualquier navegador, sin necesidad de instalar nada. También podés instalarla como app en tu celular.</p>
+
+        <h3>Acceder a AgendAR</h3>
+        <p>Ingresá a <a href="https://agend-ar-pi.vercel.app" target="_blank">agend-ar-pi.vercel.app</a> desde cualquier dispositivo. Funciona en Chrome, Firefox, Safari y Edge.</p>
+
+        <h3>Instalar en el celular (PWA)</h3>
+        <ol>
+          <li>Abrí la app desde Chrome en Android o Safari en iPhone</li>
+          <li>Tocá el menú del navegador (los tres puntos o el ícono de compartir)</li>
+          <li>Seleccioná "Instalar app" o "Agregar a pantalla de inicio"</li>
+          <li>La app aparece en tu pantalla de inicio como una app nativa</li>
+        </ol>
+
+        <div class="callout">
+          <p><strong>Tip:</strong> Instalándola como PWA, funciona más rápido y tiene la experiencia de una app nativa, sin necesidad de Play Store ni App Store.</p>
+        </div>
+      </section>
+
+      <!-- Registro -->
+      <section class="doc-section" id="registro">
+        <h2>Registro y onboarding</h2>
+
+        <h3>Crear una cuenta como Profesional</h3>
+        <ol class="steps">
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Ir a /registro</h4>
+              <p>Completá tu nombre, email y contraseña. Seleccioná "Profesional" como tipo de panel.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Verificar el email</h4>
+              <p>Te llega un mail con un link de verificación. Hacé clic en el link para confirmar tu cuenta.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Completar el onboarding</h4>
+              <p>Elegí tu especialidad, ciudad, provincia y duración de sesión por defecto. Podés modificar todo después desde Configuración.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>¡Listo!</h4>
+              <p>Entrás al panel profesional. Tu link de reservas ya está activo en <code>agend-ar-pi.vercel.app/tu-nombre-xxxx</code>.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3>Registro por invitación de clínica</h3>
+        <p>Si recibiste un link de invitación de una clínica, al abrirlo verás el banner de la clínica que te invita. El proceso es igual al registro normal, y al completar el onboarding tu cuenta queda automáticamente asociada a esa clínica.</p>
+      </section>
+
+      <!-- Panel Profesional -->
+      <section class="doc-section" id="panel-profesional">
+        <h2>Panel Profesional</h2>
+        <p>El panel profesional está organizado en secciones accesibles desde el menú lateral:</p>
+        <table>
+          <thead><tr><th>Sección</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td>🏠 Inicio</td><td>Métricas del día y turnos próximos</td></tr>
+            <tr><td>📅 Calendario</td><td>Vista mensual de todos tus turnos</td></tr>
+            <tr><td>👥 Pacientes</td><td>Fichas, historial y notas de sesión</td></tr>
+            <tr><td>⏰ Horarios</td><td>Días y horarios disponibles para reservas</td></tr>
+            <tr><td>🏥 Obras sociales</td><td>Gestión de prepagas y obras sociales</td></tr>
+            <tr><td>💬 Mensajes WA</td><td>Plantillas de WhatsApp para pacientes</td></tr>
+            <tr><td>📄 Facturación</td><td>Facturas, recibos y configuración ARCA</td></tr>
+            <tr><td>📊 Métricas</td><td>Estadísticas del mes (plan Pro)</td></tr>
+            <tr><td>⚙️ Configuración</td><td>Perfil, plan y Google Calendar</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Calendario -->
+      <section class="doc-section" id="calendario">
+        <h2>Calendario de turnos</h2>
+        <p>El calendario muestra todos tus turnos del mes. Podés navegar entre meses, filtrar por estado y crear nuevos turnos.</p>
+
+        <h3>Crear un turno</h3>
+        <ol>
+          <li>Hacé clic en un día del calendario</li>
+          <li>En el panel lateral, tocá "+ Turno" o hacé clic en el botón del header</li>
+          <li>Completá los datos del paciente, horario, tipo (particular u obra social) y precio</li>
+          <li>Guardá — el turno aparece en el calendario con su color de estado</li>
+        </ol>
+
+        <h3>Estados de los turnos</h3>
+        <table>
+          <thead><tr><th>Estado</th><th>Cuándo usarlo</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-gray">Pendiente</span></td><td>Turno creado, sin confirmar</td></tr>
+            <tr><td><span class="badge badge-blue">Confirmado</span></td><td>El paciente confirmó la asistencia</td></tr>
+            <tr><td><span class="badge badge-green">Completado</span></td><td>La sesión se realizó</td></tr>
+            <tr><td><span class="badge" style="background:#fee2e2;color:#dc2626">Cancelado</span></td><td>Se canceló el turno</td></tr>
+            <tr><td><span class="badge" style="background:#ffedd5;color:#ea580c">Ausente</span></td><td>El paciente no se presentó</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Reservas online por parte del paciente</h3>
+        <p>Tu link de reservas es único y está disponible desde el primer día. El paciente entra al link, ve tus horarios disponibles y elige un turno. Vos recibís la notificación y aparece en tu calendario como "Pendiente".</p>
+      </section>
+
+      <!-- Pacientes -->
+      <section class="doc-section" id="pacientes">
+        <h2>Pacientes</h2>
+        <p>La sección de pacientes te permite llevar un historial completo de cada persona.</p>
+
+        <h3>Crear un paciente</h3>
+        <p>Desde la sección Pacientes, hacé clic en "Nuevo paciente". Completá nombre, teléfono, email, DNI, fecha de nacimiento y obra social si corresponde.</p>
+
+        <h3>Ficha del paciente</h3>
+        <p>Al entrar a la ficha de un paciente podés ver:</p>
+        <ul>
+          <li><strong>Datos personales</strong> — nombre, DNI, teléfono, email, obra social</li>
+          <li><strong>Historial de turnos</strong> — todos los turnos con estado y precio</li>
+          <li><strong>Notas de sesión</strong> — notas privadas que agregás después de cada sesión</li>
+          <li><strong>Métricas rápidas</strong> — sesiones completadas, total pagado</li>
+        </ul>
+
+        <h3>Notas de sesión</h3>
+        <p>Las notas de sesión son privadas y solo vos podés verlas (excepto si estás en una clínica que las tenga habilitadas). Podés escribir notas clínicas, evolución del paciente, etc.</p>
+      </section>
+
+      <!-- Horarios -->
+      <section class="doc-section" id="horarios">
+        <h2>Horarios disponibles</h2>
+        <p>Configurá los días y horarios en los que querés recibir turnos. Esto afecta tanto a los turnos que creás vos como a los que reservan tus pacientes online.</p>
+
+        <ol>
+          <li>Andá a <strong>Horarios</strong> en el menú lateral</li>
+          <li>Activá los días que atendés</li>
+          <li>Configurá el horario de inicio y fin para cada día</li>
+          <li>Guardá los cambios</li>
+        </ol>
+
+        <h3>Ausencias y vacaciones</h3>
+        <p>Para bloquear días específicos (feriados, vacaciones, etc.), usá la sección de Ausencias. Los pacientes no podrán reservar en esas fechas.</p>
+      </section>
+
+      <!-- Obras sociales -->
+      <section class="doc-section" id="obras-sociales">
+        <h2>Obras sociales</h2>
+        <p>Configurá las obras sociales y prepagas que aceptás, con su precio de consulta.</p>
+
+        <ol>
+          <li>Andá a <strong>Obras sociales</strong> en el menú</li>
+          <li>Hacé clic en "Nueva obra social"</li>
+          <li>Ingresá el nombre, plan (opcional) y precio de la sesión</li>
+          <li>Al crear un turno, podés seleccionar la obra social del paciente</li>
+        </ol>
+      </section>
+
+      <!-- Recordatorios -->
+      <section class="doc-section" id="recordatorios">
+        <h2>Recordatorios automáticos</h2>
+        <p>AgendAR puede enviar recordatorios automáticos a tus pacientes antes de cada turno.</p>
+
+        <p>Los recordatorios se configuran desde <strong>Configuración → Notificaciones</strong>. Podés elegir:</p>
+        <ul>
+          <li>Canal: WhatsApp o email</li>
+          <li>Anticipación: 1, 2, 6, 12, 24 o 48 horas antes del turno</li>
+        </ul>
+
+        <div class="callout-warning callout">
+          <p><strong>Importante:</strong> Para que los recordatorios por WhatsApp funcionen, tu número tiene que estar activo en WhatsApp y el paciente debe tener teléfono registrado en su ficha.</p>
+        </div>
+      </section>
+
+      <!-- Facturación -->
+      <section class="doc-section" id="facturacion">
+        <h2>Facturación (plan Pro)</h2>
+        <p>La facturación está disponible en el plan Pro. Podés emitir facturas electrónicas con CAE y recibos de pago.</p>
+
+        <h3>Configurar ARCA</h3>
+        <p>Antes de emitir facturas, tenés que configurar tu certificado ARCA siguiendo la guía de 9 pasos en <strong>Facturación → Configuración → Certificado</strong>. La guía te lleva paso a paso por todo el proceso.</p>
+
+        <h3>Emitir una factura desde la grilla</h3>
+        <ol>
+          <li>Andá a <strong>Facturación</strong> en el menú</li>
+          <li>Encontrás la grilla con todos tus turnos</li>
+          <li>Hacé clic en <strong>"Facturar →"</strong> en el turno que querés facturar</li>
+          <li>Se abre el modal con los datos del turno pre-cargados</li>
+          <li>Revisá el tipo de comprobante, datos del receptor e importe</li>
+          <li>Hacé clic en <strong>"Emitir"</strong> — si ARCA está activo, obtiene el CAE automáticamente</li>
+          <li>El botón de la fila cambia a <strong>✅ Facturado</strong></li>
+        </ol>
+
+        <h3>Recibos de pago</h3>
+        <p>Los recibos son documentos de pago sin CAE, para cuando el paciente paga en efectivo, transferencia, tarjeta o Mercado Pago. Podés imprimirlos o enviarlos por WhatsApp.</p>
+      </section>
+
+      <!-- Panel Clínica -->
+      <section class="doc-section" id="panel-clinica">
+        <h2>Panel Clínica</h2>
+        <p>Si registraste tu cuenta como Clínica, tenés acceso a un panel específico para gestionar múltiples profesionales.</p>
+
+        <h3>Crear una clínica</h3>
+        <ol class="steps">
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Registrate seleccionando "Clínica"</h4>
+              <p>En el registro, elegí el tipo de panel "Clínica".</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Completar el onboarding de la clínica</h4>
+              <p>Nombre, tipo de institución, ciudad y provincia.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num"></div>
+            <div class="step-content">
+              <h4>Configurar en Settings</h4>
+              <p>Completá los datos de contacto, CUIT y notificaciones desde Configuración.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Profesionales clínica -->
+      <section class="doc-section" id="profesionales-clinica">
+        <h2>Invitar profesionales a la clínica</h2>
+        <ol>
+          <li>Andá a <strong>Profesionales</strong> en el panel clínica</li>
+          <li>Hacé clic en <strong>"Invitar profesional"</strong></li>
+          <li>Ingresá el nombre y email del profesional</li>
+          <li>Se genera un link único válido por 7 días</li>
+          <li>Copiá el link y compartíselo al profesional (WhatsApp, email, etc.)</li>
+          <li>El profesional se registra o hace login con ese link y queda automáticamente asociado a tu clínica</li>
+        </ol>
+
+        <div class="callout">
+          <p><strong>Sincronización automática:</strong> Cuando el profesional agenda turnos, crea pacientes o agrega notas, todo queda visible en el panel de la clínica en tiempo real.</p>
+        </div>
+      </section>
+
+      <!-- Salas -->
+      <section class="doc-section" id="salas">
+        <h2>Salas y consultorios</h2>
+        <p>Creá las salas físicas de tu clínica y asignalas a los turnos para controlar la disponibilidad.</p>
+
+        <h3>Crear una sala</h3>
+        <ol>
+          <li>Andá a <strong>Salas</strong> en el panel clínica</li>
+          <li>Hacé clic en <strong>"Nueva sala"</strong></li>
+          <li>Asignale un nombre, descripción, capacidad y color para el calendario</li>
+          <li>La sala queda disponible para asignar a turnos</li>
+        </ol>
+
+        <h3>Asignar sala a un turno</h3>
+        <p>Desde la pestaña <strong>Disponibilidad</strong>, en el panel lateral aparecen todos los turnos. Hacé clic en "Asignar" junto a cualquier turno para seleccionar la sala.</p>
+      </section>
+
+      <!-- Reportes -->
+      <section class="doc-section" id="reportes">
+        <h2>Reportes de la clínica</h2>
+        <p>Los reportes muestran estadísticas agregadas de toda la clínica, filtradas por período y profesional.</p>
+
+        <table>
+          <thead><tr><th>Tab</th><th>¿Qué muestra?</th></tr></thead>
+          <tbody>
+            <tr><td>📊 Resumen</td><td>KPIs, estado de turnos, ingresos por tipo, top profesionales</td></tr>
+            <tr><td>👨‍⚕️ Profesionales</td><td>Tabla con turnos, completados, cancelados, asistencia e ingresos por profesional</td></tr>
+            <tr><td>🚪 Salas</td><td>Ocupación de cada sala, ranking de uso</td></tr>
+            <tr><td>💰 Ingresos</td><td>Gráfico últimos 6 meses, ingresos por profesional, desglose particular/obra social</td></tr>
+          </tbody>
+        </table>
+
+        <p>Podés filtrar por mes, trimestre o año, y exportar los datos a CSV con el botón "⬇️ Exportar CSV".</p>
+      </section>
+
+      <!-- Google Calendar -->
+      <section class="doc-section" id="google-calendar">
+        <h2>Google Calendar</h2>
+        <p>Podés sincronizar tus turnos de AgendAR con tu cuenta de Google Calendar.</p>
+
+        <ol>
+          <li>Andá a <strong>Configuración</strong> y buscá la sección Google Calendar</li>
+          <li>Hacé clic en <strong>"Conectar Google Calendar"</strong></li>
+          <li>Autorizá el acceso con tu cuenta de Google</li>
+          <li>Desde ese momento, los turnos que crees en AgendAR aparecen automáticamente en tu Google Calendar</li>
+        </ol>
+      </section>
+
+      <!-- Planes -->
+      <section class="doc-section" id="planes">
+        <h2>Planes y pagos</h2>
+        <p>AgendAR tiene planes para profesionales individuales y para clínicas. Los pagos se procesan con Mercado Pago.</p>
+
+        <h3>Plan Profesional</h3>
+        <table>
+          <thead><tr><th>Plan</th><th>Pacientes</th><th>Precio</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-gray">Free</span></td><td>Hasta 5</td><td>Gratis</td></tr>
+            <tr><td><span class="badge badge-blue">Básico</span></td><td>Hasta 20</td><td>$4.900/mes</td></tr>
+            <tr><td><span class="badge badge-green">Pro</span></td><td>Ilimitados + Facturación</td><td>$8.900/mes</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Plan Clínica</h3>
+        <table>
+          <thead><tr><th>Plan</th><th>Profesionales</th><th>Precio</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-gray">Free</span></td><td>1</td><td>Gratis</td></tr>
+            <tr><td><span class="badge badge-blue">Básico</span></td><td>Hasta 8</td><td>$12.900/mes</td></tr>
+            <tr><td><span class="badge badge-green">Full</span></td><td>Ilimitados + Facturación</td><td>$24.900/mes</td></tr>
+          </tbody>
+        </table>
+
+        <p>Para contratar, andá a <strong>Configuración → Plan</strong> y elegí el plan que necesitás. Los planes anuales tienen un descuento del 20%.</p>
+
+        <div class="callout">
+          <p><strong>¿Necesitás ayuda?</strong> Escribinos a <a href="mailto:integraar.soluciones@gmail.com">integraar.soluciones@gmail.com</a> y te respondemos a la brevedad.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <a href="/" class="footer-logo">
+        <div class="footer-logo-mark">I</div>
+        IntegraAR
+      </a>
+      <p class="footer-copy">© 2026 IntegraAR · <a href="mailto:integraar.soluciones@gmail.com">integraar.soluciones@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Marcar el ítem activo del sidebar al hacer scroll
+    const sections = document.querySelectorAll('.doc-section')
+    const links    = document.querySelectorAll('.sidebar-nav a[href^="#"]')
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'))
+          const activeLink = document.querySelector(`.sidebar-nav a[href="#${e.target.id}"]`)
+          if (activeLink) activeLink.classList.add('active')
+        }
+      })
+    }, { rootMargin: '-20% 0px -70% 0px' })
+
+    sections.forEach(s => obs.observe(s))
+  </script>
+
+</body>
+</html>
