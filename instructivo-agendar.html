@@ -26,7 +26,8 @@
     nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-100); }
     .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
-    .nav-logo-mark { width: 30px; height: 30px; background: var(--brand); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; }
+    .nav-logo-mark { height: 34px; width: auto; display: block; }
+    .footer-logo-mark { height: 28px; width: auto; display: block; }
     .nav-back { font-size: 0.875rem; color: var(--gray-500); text-decoration: none; }
     .nav-back:hover { color: var(--ink); text-decoration: none; }
     .nav-cta { background: var(--agend); color: white; padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 500; text-decoration: none; }
@@ -95,7 +96,6 @@
     footer { border-top: 1px solid var(--gray-100); padding: 28px 0; }
     .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--gray-700); text-decoration: none; }
-    .footer-logo-mark { width: 26px; height: 26px; background: var(--brand); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; }
     .footer-copy { font-size: 0.8rem; color: var(--gray-400); }
 
     @media (max-width: 768px) {
@@ -110,8 +110,8 @@
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo">
-        <div class="nav-logo-mark">I</div>
-        IntegraAR
+        <img src="Logo/logo-completo-2.png" alt="IntegraAR" class="nav-logo-mark" />
+        <span>IntegraAR</span>
       </a>
       <a href="/agendar" class="nav-back">← AgendAR</a>
       <a href="https://agend-ar-pi.vercel.app/registro" target="_blank" rel="noopener" class="nav-cta">Probar gratis →</a>
@@ -487,8 +487,8 @@
   <footer>
     <div class="footer-inner">
       <a href="/" class="footer-logo">
-        <div class="footer-logo-mark">I</div>
-        IntegraAR
+        <img src="Logo/logo-completo-2.png" alt="IntegraAR" class="footer-logo-mark" />
+        <span>IntegraAR</span>
       </a>
       <p class="footer-copy">© 2026 IntegraAR · <a href="mailto:integraar.soluciones@gmail.com">integraar.soluciones@gmail.com</a></p>
     </div>
