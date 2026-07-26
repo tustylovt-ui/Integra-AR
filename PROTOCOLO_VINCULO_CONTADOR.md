@@ -242,6 +242,28 @@ nuevos en `/api` si ya se está cerca del límite.
 - **Rate limit:** sí, agresivo (es público) — mismo criterio que
   `arca-consulta-cuit.js` en FacturAR (20 req/min/IP).
 
+### 5.4 `notificar_activacion_externa` (protegido, server-to-server, dirección inversa)
+
+Agregado el 26/07/2026 tras la primera prueba real end-to-end del usuario: sin esto, la
+app **emisora** no se enteraba de que el cliente había activado su cuenta en una app
+**receptora** — el vínculo quedaba mostrando "PENDIENTE" para siempre en el panel del
+contador, aunque el cliente ya estuviera vinculado en la otra app.
+
+- **Quién la llama:** la app receptora (AgendAR/FinanciAR), inmediatamente después de que
+  `vinculo_externo_activar` (el paso del cliente, no cubierto por §5.1-5.3 porque no es
+  server-to-server) confirma la activación local.
+- **Quién la implementa:** la app **emisora** (hoy solo FacturAR) — es la única dirección
+  del protocolo donde el receptor llama de vuelta al emisor.
+- **Auth:** mismo header `X-IntegraAR-Secret` que el resto de las llamadas server-to-server.
+- **Body:** `{ "codigo": "AB12CD34", "app": "agendar" }`
+- **Efecto:** actualiza el estado por app (ej. `vinculos_contador_apps.estado='ACTIVO'`
+  en FacturAR) — **no** cambia el estado del vínculo maestro de la app emisora (eso sigue
+  exigiendo una cuenta real en esa app). El panel del contador debe mostrar este estado
+  por separado (un chip por app), visible incluso si el vínculo maestro sigue pendiente.
+- **Best-effort:** la app receptora no debe bloquear la activación local si esta llamada
+  falla (app emisora caída, secreto no configurado) — solo hace un mejor esfuerzo, con
+  `try/catch` silencioso.
+
 ---
 
 ## 6. Secreto compartido
@@ -307,7 +329,12 @@ todavía):
       abierto (`Access-Control-Allow-Origin: *` + handler `OPTIONS`) — lo llaman
       navegadores de otros orígenes, no solo server-to-server.
 - [ ] Página `/acceso/:codigo` con el flujo cuenta-nueva-vs-cuenta-existente (copiar el
-      recetario de `AccesoContribuyente.jsx` de FacturAR).
+      recetario de `AccesoContribuyente.jsx` de FacturAR) — **con opción de login, no
+      solo registro**: si `cuentaExistente` (§5.3) da `true`, ofrecer login de entrada.
+- [ ] Al activar el vínculo (el paso del cliente, con su propia sesión), llamar de vuelta
+      a `notificar_activacion_externa` (§5.4) en la app emisora — best-effort, sin
+      bloquear la activación local si falla. Sin esto, el panel de la app emisora nunca
+      se entera de que el cliente ya se vinculó acá.
 - [ ] **Solapa "Vínculo Contador" en la configuración/perfil de la app** (no una
       pantalla nueva aparte) — visible para el cliente vinculado, mostrando: nombre del
       contador, en qué apps del ecosistema está vinculado y su estado (✅ activo / ⏳
@@ -350,12 +377,15 @@ todavía):
    `/acceso/[codigo]`, card en Configuración) sigue el mismo contrato que AgendAR, sin
    tocar el auth por cookies SSR de FinanciAR.
 4. **Apps futuras:** checklist del §9 desde el primer commit.
-5. **Antes de activar en producción (único paso que falta):**
-   - Configurar `INTEGRAAR_INTERAPP_SECRET` — mismo valor exacto en Vercel de FacturAR,
-     AgendAR y FinanciAR.
-   - Configurar `INTEGRAAR_APPS_ECOSISTEMA` en Vercel de FacturAR (JSON con las entradas
-     de AgendAR y FinanciAR) — hasta entonces el fan-out queda en no-op seguro, sin
-     romper nada.
+5. ✅ **Secretos configurados en producción — 25/07/2026.** `INTEGRAAR_INTERAPP_SECRET`
+   (mismo valor en Vercel de FacturAR, AgendAR y FinanciAR) e `INTEGRAAR_APPS_ECOSISTEMA`
+   en FacturAR (JSON con las entradas de AgendAR y FinanciAR).
+6. ✅ **Primera prueba real end-to-end del usuario — 26/07/2026.** Reveló y cerró 3
+   huecos (ver §5.4 y la nota en §3): FacturAR ahora es opcional al invitar
+   (`incluye_facturar`), el selector respeta esa elección, y `notificar_activacion_externa`
+   cierra el circuito para que el panel de la app emisora refleje activaciones en apps
+   compañeras. **El protocolo está validado de punta a punta en producción real**, no
+   solo en teoría.
 
 ---
 
