@@ -9,6 +9,7 @@
     { "src": "/", "dest": "/index.html" },
     { "src": "/agendar", "dest": "/agendar.html" },
     { "src": "/facturar", "dest": "/facturar.html" },
+    { "src": "/financiar", "dest": "/financiar.html" },
     { "src": "/instructivos/agendar", "dest": "/instructivo-agendar.html" },
     { "src": "/instructivos/facturar", "dest": "/instructivo-facturar.html" }
   ]

@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IntegraAR — Software para pymes y profesionales argentinos</title>
-  <meta name="description" content="IntegraAR desarrolla soluciones digitales para pymes y profesionales argentinos. AgendAR para turnos y clínicas. FacturAR para facturación electrónica con ARCA." />
+  <meta name="description" content="IntegraAR desarrolla soluciones digitales para pymes y profesionales argentinos. AgendAR para turnos y clínicas. FacturAR para facturación electrónica con ARCA. FinanciAR para gestión de créditos y cobranzas." />
   <meta property="og:title" content="IntegraAR — Software argentino para profesionales" />
-  <meta property="og:description" content="Soluciones digitales para pymes y profesionales. Turnos, facturación electrónica y más." />
+  <meta property="og:description" content="Soluciones digitales para pymes y profesionales. Turnos, facturación electrónica, créditos y cobranzas." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +31,8 @@
       --agend-l: #eff6ff;
       --factur:  #059669;
       --factur-l:#ecfdf5;
+      --financ:  #b45309;
+      --financ-l:#fffbeb;
       --brand:   #1a1a2e;   /* IntegraAR navy oscuro */
 
       --radius:  12px;
@@ -292,6 +294,11 @@
       border-bottom: 1px solid #a7f3d0;
     }
 
+    .app-card-header.financ {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-bottom: 1px solid #fde68a;
+    }
+
     .app-badge {
       display: inline-flex;
       align-items: center;
@@ -311,6 +318,7 @@
 
     .app-icon.agend { background: var(--agend); }
     .app-icon.factur { background: var(--factur); }
+    .app-icon.financ { background: var(--financ); }
 
     .app-name {
       font-family: 'DM Serif Display', serif;
@@ -379,6 +387,7 @@
 
     .features-list.agend li::before { color: var(--agend); }
     .features-list.factur li::before { color: var(--factur); }
+    .features-list.financ li::before { color: var(--financ); }
 
     .app-card-actions {
       display: flex;
@@ -404,6 +413,12 @@
       color: white;
     }
     .btn-app.factur:hover { opacity: 0.88; }
+
+    .btn-app.financ {
+      background: var(--financ);
+      color: white;
+    }
+    .btn-app.financ:hover { opacity: 0.88; }
 
     .btn-app.ghost {
       background: var(--gray-100);
@@ -638,6 +653,7 @@
         <li><a href="#apps">Aplicaciones</a></li>
         <li><a href="/agendar">AgendAR</a></li>
         <li><a href="/facturar">FacturAR</a></li>
+        <li><a href="/financiar">FinanciAR</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li><a href="mailto:integraar.soluciones@gmail.com" class="nav-cta">Escribinos</a></li>
       </ul>
@@ -751,6 +767,42 @@
           </div>
         </div>
 
+        <!-- FinanciAR -->
+        <div class="app-card">
+          <div class="app-card-header financ">
+            <div class="app-badge">
+              <div class="app-icon financ">💰</div>
+              <div class="app-name">Financi<span>AR</span></div>
+            </div>
+            <p class="app-tagline">
+              Gestión de carteras de crédito y cobranzas para financieras informales y comercios
+              que otorgan crédito directo. Cobradores en la calle, caja y reportes.
+            </p>
+            <div class="app-url">🔗 financi-ar.vercel.app</div>
+          </div>
+          <div class="app-card-body">
+            <div class="features-title">¿Qué incluye?</div>
+            <ul class="features-list financ">
+              <li>Gestión de créditos y clientes</li>
+              <li>Cobradores en la calle</li>
+              <li>Caja y rendición</li>
+              <li>Cobros con Mercado Pago</li>
+              <li>Consulta de CUIT en ARCA</li>
+              <li>Recibos y contratos en PDF</li>
+              <li>Reportes y exportar Excel</li>
+              <li>Addon de Facturación con CAE</li>
+              <li>Addon Tienda Virtual</li>
+              <li>Panel superadmin</li>
+            </ul>
+            <div class="app-card-actions">
+              <a href="https://financi-ar.vercel.app" target="_blank" rel="noopener" class="btn btn-app financ">
+                Probar FinanciAR →
+              </a>
+              <a href="/financiar" class="btn btn-app ghost">Ver más</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -841,6 +893,7 @@
         <ul class="footer-links">
           <li><a href="/agendar">AgendAR</a></li>
           <li><a href="/facturar">FacturAR</a></li>
+          <li><a href="/financiar">FinanciAR</a></li>
           <li><a href="/instructivos/agendar">Instructivo AgendAR</a></li>
           <li><a href="/instructivos/facturar">Instructivo FacturAR</a></li>
           <li><a href="#contacto">Contacto</a></li>
