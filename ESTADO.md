@@ -1,5 +1,5 @@
 # IntegraAR — Estado del Proyecto
-**Última actualización:** Mayo 2026
+**Última actualización:** 23 Septiembre 2026 — agregada FinanciAR (ya estaba en index.html) y **Logística y Reparto** (nueva: `lr.html` + ruta `/lr` + card en index + footers cruzados de todas las páginas)
 **Tipo:** Sitio web institucional estático (HTML + CSS vanilla)
 **Propósito:** Presentación de la marca IntegraAR y sus aplicaciones
 
@@ -30,6 +30,8 @@ Integra-AR/
 ├── index.html                → Landing principal de IntegraAR
 ├── agendar.html              → Página de detalle de AgendAR (planes, paneles, CTA)
 ├── facturar.html             → Página de detalle de FacturAR (features, planes, roles)
+├── financiar.html            → Página de detalle de FinanciAR (roles, features, addons)
+├── lr.html                   → Página de detalle de Logística y Reparto (roles, features)
 ├── instructivo-agendar.html  → Guía completa de uso de AgendAR
 ├── instructivo-facturar.html → Guía completa de uso de FacturAR
 ├── vercel.json               → Rutas y serving de archivos estáticos + PNG
@@ -47,6 +49,8 @@ Integra-AR/
 | `/` | `index.html` | Landing principal |
 | `/agendar` | `agendar.html` | Detalle de AgendAR |
 | `/facturar` | `facturar.html` | Detalle de FacturAR |
+| `/financiar` | `financiar.html` | Detalle de FinanciAR |
+| `/lr` | `lr.html` | Detalle de Logística y Reparto |
 | `/instructivos/agendar` | `instructivo-agendar.html` | Instructivo AgendAR |
 | `/instructivos/facturar` | `instructivo-facturar.html` | Instructivo FacturAR |
 
@@ -66,6 +70,8 @@ Integra-AR/
 | **IntegraAR** | `#1a1a2e` (navy) | Nav, logo, marca |
 | **AgendAR** | `#2563eb` (azul) | Hero, botones, cards |
 | **FacturAR** | `#059669` (esmeralda) | Hero, botones, cards |
+| **FinanciAR** | `#b45309` (ámbar) | Hero, botones, cards |
+| **Logística y Reparto** | `#0d9488` (teal) | Hero, botones, cards |
 
 ### Componentes visuales comunes
 - Nav sticky con blur backdrop, logo + texto "IntegraAR" al lado
@@ -80,7 +86,7 @@ Integra-AR/
 ### `index.html` — Landing principal
 - **Eyebrow:** "🇦🇷 Software argentino para profesionales y pymes"
 - **Hero:** Título principal + subtítulo + 2 CTAs (Ver apps / Contacto)
-- **Sección Apps:** 2 cards — AgendAR y FacturAR con features, URL y botones
+- **Sección Apps:** 4 cards — AgendAR, FacturAR, FinanciAR y Logística y Reparto, con features, URL y botones
 - **Sección Por qué IntegraAR:** 6 razones (ARCA, MP, PWA, seguridad, uptime, soporte local)
 - **Sección Contacto:** Card con email, ubicación y horario de soporte
 - **Footer:** Links a todas las páginas
@@ -97,6 +103,20 @@ Integra-AR/
 - **Roles:** 3 cards — Independiente, Con contador, Contador
 - **Features:** 8 cards — ARCA real, PDF oficial, validaciones, consulta CUIT, control monotributo, PWA, modo oscuro, offline 8hs
 - CTA final "Empezar a facturar hoy" + link a instructivo
+
+### `financiar.html` — Detalle FinanciAR
+- Hero con badge "💰 Créditos y cobranzas", título y CTA "Empezar gratis"
+- **Roles:** 3 cards — Dueño de cartera, Cobrador de calle, Superadmin
+- **Features:** 6 cards — créditos, clientes con consulta ARCA, cobradores, reportes, recibos/contratos PDF, cobros con MP
+- **Addons:** 2 cards — Facturación (CAE real) y Tienda Virtual
+- CTA final "Crear cuenta gratis" (sin instructivo propio todavía)
+
+### `lr.html` — Detalle Logística y Reparto
+- Hero con badge "🚚 Última milla", título y CTA "Empezar gratis"
+- **Roles:** 3 cards — Dueño de transporte, Repartidor, Cliente final
+- **Features:** 8 cards — flota en vivo, navegación guiada, comprobante con foto/DNI, cobro contra entrega, tarifarios/etiquetas QR, seguimiento público, presupuestos/remitos, cierre de depósito
+- **Ecosistema:** 2 cards — Facturación con contador (vínculo con FacturAR), equipo y accesos
+- CTA final "Crear cuenta gratis" (sin instructivo propio todavía)
 
 ### `instructivo-agendar.html` — Guía completa AgendAR
 Sidebar fijo con índice + contenido con scroll activo. Secciones:
@@ -154,6 +174,20 @@ Sidebar fijo con índice + contenido con scroll activo. Secciones:
 - **Descripción:** Facturación electrónica con CAE oficial desde cualquier dispositivo
 - **Stack:** Vite + React + Supabase
 - **Planes:** Free (10 facturas/mes) / Pro (ilimitadas)
+- **Estado:** ✅ Producción
+
+### FinanciAR
+- **URL:** https://financi-ar.vercel.app
+- **Repo:** privado
+- **Descripción:** Gestión de carteras de crédito y cobranzas, con cobradores en la calle y addons de Facturación y Tienda Virtual
+- **Stack:** Next.js + TypeScript + Supabase
+- **Estado:** ✅ Producción
+
+### Logística y Reparto (LR)
+- **URL:** https://dashboard-web-five-rho.vercel.app
+- **Repo:** https://github.com/tustylovt-ui/Logistica-y-Reparto
+- **Descripción:** Sistema de reparto de última milla — app del repartidor (Expo/React Native) con mapa en vivo y navegación guiada, panel web para el dueño de transporte con flota en tiempo real, rutas, tarifarios y cierre de depósito
+- **Stack:** Expo/React Native (app) + Next.js (panel) + Supabase
 - **Estado:** ✅ Producción
 
 ---

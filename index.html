@@ -33,6 +33,8 @@
       --factur-l:#ecfdf5;
       --financ:  #b45309;
       --financ-l:#fffbeb;
+      --lr:      #0d9488;
+      --lr-l:    #f0fdfa;
       --brand:   #1a1a2e;   /* IntegraAR navy oscuro */
 
       --radius:  12px;
@@ -299,6 +301,11 @@
       border-bottom: 1px solid #fde68a;
     }
 
+    .app-card-header.lr {
+      background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+      border-bottom: 1px solid #99f6e4;
+    }
+
     .app-badge {
       display: inline-flex;
       align-items: center;
@@ -319,6 +326,7 @@
     .app-icon.agend { background: var(--agend); }
     .app-icon.factur { background: var(--factur); }
     .app-icon.financ { background: var(--financ); }
+    .app-icon.lr { background: var(--lr); }
 
     .app-name {
       font-family: 'DM Serif Display', serif;
@@ -388,6 +396,7 @@
     .features-list.agend li::before { color: var(--agend); }
     .features-list.factur li::before { color: var(--factur); }
     .features-list.financ li::before { color: var(--financ); }
+    .features-list.lr li::before { color: var(--lr); }
 
     .app-card-actions {
       display: flex;
@@ -419,6 +428,12 @@
       color: white;
     }
     .btn-app.financ:hover { opacity: 0.88; }
+
+    .btn-app.lr {
+      background: var(--lr);
+      color: white;
+    }
+    .btn-app.lr:hover { opacity: 0.88; }
 
     .btn-app.ghost {
       background: var(--gray-100);
@@ -654,6 +669,7 @@
         <li><a href="/agendar">AgendAR</a></li>
         <li><a href="/facturar">FacturAR</a></li>
         <li><a href="/financiar">FinanciAR</a></li>
+        <li><a href="/lr">Logística y Reparto</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li><a href="mailto:integraar.soluciones@gmail.com" class="nav-cta">Escribinos</a></li>
       </ul>
@@ -803,6 +819,42 @@
           </div>
         </div>
 
+        <!-- Logística y Reparto -->
+        <div class="app-card">
+          <div class="app-card-header lr">
+            <div class="app-badge">
+              <div class="app-icon lr">🚚</div>
+              <div class="app-name">Logística y Reparto</div>
+            </div>
+            <p class="app-tagline">
+              Gestión de reparto de última milla: app del repartidor con mapa en vivo
+              y navegación guiada, y panel web para el dueño de transporte.
+            </p>
+            <div class="app-url">🔗 dashboard-web-five-rho.vercel.app</div>
+          </div>
+          <div class="app-card-body">
+            <div class="features-title">¿Qué incluye?</div>
+            <ul class="features-list lr">
+              <li>Flota en vivo en el mapa</li>
+              <li>Navegación guiada del repartidor</li>
+              <li>Comprobante con foto y DNI</li>
+              <li>Cobro contra entrega</li>
+              <li>Tarifarios y etiquetas con QR</li>
+              <li>Seguimiento público por link</li>
+              <li>Presupuestos y remitos</li>
+              <li>Cierre de depósito diario</li>
+              <li>Aviso al cliente por WhatsApp</li>
+              <li>Facturación con contador</li>
+            </ul>
+            <div class="app-card-actions">
+              <a href="https://dashboard-web-five-rho.vercel.app" target="_blank" rel="noopener" class="btn btn-app lr">
+                Probar Logística y Reparto →
+              </a>
+              <a href="/lr" class="btn btn-app ghost">Ver más</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -894,6 +946,7 @@
           <li><a href="/agendar">AgendAR</a></li>
           <li><a href="/facturar">FacturAR</a></li>
           <li><a href="/financiar">FinanciAR</a></li>
+          <li><a href="/lr">Logística y Reparto</a></li>
           <li><a href="/instructivos/agendar">Instructivo AgendAR</a></li>
           <li><a href="/instructivos/facturar">Instructivo FacturAR</a></li>
           <li><a href="#contacto">Contacto</a></li>

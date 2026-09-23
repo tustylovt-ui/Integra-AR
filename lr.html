@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinanciAR — Gestión de carteras de crédito y cobranzas</title>
-  <meta name="description" content="FinanciAR: gestión de carteras de crédito, cobradores y cobranzas para financieras informales y comercios que otorgan crédito directo. Facturación con ARCA y cobros con Mercado Pago." />
+  <title>Logística y Reparto — Gestión de última milla</title>
+  <meta name="description" content="Logística y Reparto: app para el repartidor con mapa en vivo y navegación guiada, y panel web para el dueño de transporte con flota en tiempo real, rutas, tarifarios y facturación." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
@@ -14,7 +14,7 @@
       --white: #ffffff; --gray-50: #f9fafb; --gray-100: #f3f4f6;
       --gray-200: #e5e7eb; --gray-400: #9ca3af; --gray-500: #6b7280;
       --gray-700: #374151; --gray-900: #111827; --ink: #0d0d0d;
-      --financ: #b45309; --financ-l: #fffbeb; --financ-d: #92400e;
+      --lr: #0d9488; --lr-l: #f0fdfa; --lr-d: #0f766e;
       --brand: #1a1a2e;
     }
     html { scroll-behavior: smooth; }
@@ -31,27 +31,27 @@
     .product-hero-logo { height: 90px; width: auto; display: block; margin: 0 auto 28px; }
     .nav-back { font-size: 0.875rem; color: var(--gray-500); display: flex; align-items: center; gap: 6px; }
     .nav-back:hover { color: var(--ink); }
-    .nav-cta { background: var(--financ); color: white; padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 500; transition: opacity .2s; }
+    .nav-cta { background: var(--lr); color: white; padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 500; transition: opacity .2s; }
     .nav-cta:hover { opacity: 0.85; }
 
-    .product-hero { padding: 80px 0 72px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 60%, #fee2e2 100%); position: relative; overflow: hidden; }
-    .product-hero::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(180,83,9,.08); right: -200px; top: -200px; pointer-events: none; }
+    .product-hero { padding: 80px 0 72px; background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 60%, #dbeafe 100%); position: relative; overflow: hidden; }
+    .product-hero::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(13,148,136,.08); right: -200px; top: -200px; pointer-events: none; }
     .product-hero-inner { display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
     .product-hero-text { flex: 1; min-width: 280px; }
-    .product-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(180,83,9,.12); border: 1px solid rgba(180,83,9,.2); padding: 5px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--financ); margin-bottom: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .product-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(13,148,136,.12); border: 1px solid rgba(13,148,136,.2); padding: 5px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--lr); margin-bottom: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
     .product-hero h1 { font-size: clamp(2.4rem, 5vw, 4rem); color: var(--ink); margin-bottom: 20px; }
-    .product-hero h1 em { font-style: italic; color: var(--financ); }
+    .product-hero h1 em { font-style: italic; color: var(--lr); }
     .product-hero-sub { font-size: 1.1rem; color: var(--gray-700); max-width: 480px; font-weight: 300; margin-bottom: 32px; line-height: 1.7; }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 10px; font-weight: 500; font-size: 0.9rem; transition: all .2s; cursor: pointer; border: none; }
-    .btn-amber { background: var(--financ); color: white; }
-    .btn-amber:hover { background: var(--financ-d); transform: translateY(-1px); }
-    .btn-ghost { background: rgba(255,255,255,.7); border: 1.5px solid rgba(180,83,9,.25); color: var(--financ); }
+    .btn-teal { background: var(--lr); color: white; }
+    .btn-teal:hover { background: var(--lr-d); transform: translateY(-1px); }
+    .btn-ghost { background: rgba(255,255,255,.7); border: 1.5px solid rgba(13,148,136,.25); color: var(--lr); }
     .btn-ghost:hover { background: white; }
 
     .product-hero-visual { flex: 0 0 auto; }
-    .hero-badge { width: 160px; height: 160px; background: white; border-radius: 36px; box-shadow: 0 20px 60px rgba(180,83,9,.2), 0 4px 16px rgba(0,0,0,.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 4rem; }
-    .hero-badge-name { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--ink); }
+    .hero-badge { width: 160px; height: 160px; background: white; border-radius: 36px; box-shadow: 0 20px 60px rgba(13,148,136,.2), 0 4px 16px rgba(0,0,0,.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 4rem; }
+    .hero-badge-name { font-family: 'DM Serif Display', serif; font-size: 0.85rem; color: var(--ink); text-align: center; padding: 0 10px; }
 
     .planes-section { padding: 88px 0; }
     .section-label { text-align: center; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 12px; }
@@ -69,14 +69,14 @@
     .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 48px; }
     .feature-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border: 1.5px solid var(--gray-100); border-radius: 14px; }
     .feature-item:hover { border-color: var(--gray-200); background: var(--gray-50); }
-    .feature-icon { width: 44px; height: 44px; background: var(--financ-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .feature-icon { width: 44px; height: 44px; background: var(--lr-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
     .feature-item h4 { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
     .feature-item p { font-size: 0.825rem; color: var(--gray-500); line-height: 1.5; }
 
     .addons-section { padding: 88px 0; background: var(--gray-50); }
     .addons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 48px; }
     .addon-card { background: white; border: 1.5px solid var(--gray-200); border-radius: 16px; padding: 28px 24px; position: relative; }
-    .addon-badge { position: absolute; top: 20px; right: 20px; font-size: 0.7rem; font-weight: 600; color: var(--financ); background: var(--financ-l); padding: 3px 10px; border-radius: 100px; }
+    .addon-badge { position: absolute; top: 20px; right: 20px; font-size: 0.7rem; font-weight: 600; color: var(--lr); background: var(--lr-l); padding: 3px 10px; border-radius: 100px; }
     .addon-icon { font-size: 2rem; margin-bottom: 12px; }
     .addon-card h3 { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
     .addon-card p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
@@ -111,7 +111,7 @@
         <span>IntegraAR</span>
       </a>
       <a href="/" class="nav-back">← Volver al inicio</a>
-      <a href="https://financi-ar.vercel.app" target="_blank" rel="noopener" class="nav-cta">Probar gratis →</a>
+      <a href="https://dashboard-web-five-rho.vercel.app" target="_blank" rel="noopener" class="nav-cta">Probar gratis →</a>
     </div>
   </nav>
 
@@ -120,23 +120,23 @@
       <div class="product-hero-inner">
         <div class="product-hero-text">
           <img src="/logo-completo-2.png" alt="IntegraAR" class="product-hero-logo" />
-          <div class="product-eyebrow">💰 Créditos y cobranzas</div>
-          <h1>Financi<em>AR</em></h1>
+          <div class="product-eyebrow">🚚 Última milla</div>
+          <h1>Logística y <em>Reparto</em></h1>
           <p class="product-hero-sub">
-            Gestioná tu cartera de crédito, tus cobradores en la calle y tu caja
-            desde un solo lugar. Pensado para financieras informales y comercios
-            que otorgan crédito directo a sus clientes.
+            Gestioná tu flota de reparto de punta a punta: app para el repartidor con
+            navegación guiada y mapa en vivo, y panel web para vos con toda la operación
+            del día — rutas, tarifas, cierre de caja y facturación.
           </p>
           <div class="hero-actions">
-            <a href="https://financi-ar.vercel.app" target="_blank" rel="noopener" class="btn btn-amber">
+            <a href="https://dashboard-web-five-rho.vercel.app" target="_blank" rel="noopener" class="btn btn-teal">
               Empezar gratis →
             </a>
           </div>
         </div>
         <div class="product-hero-visual">
           <div class="hero-badge">
-            💰
-            <div class="hero-badge-name">FinanciAR</div>
+            🚚
+            <div class="hero-badge-name">Logística<br/>y Reparto</div>
           </div>
         </div>
       </div>
@@ -147,22 +147,22 @@
   <section class="roles-section">
     <div class="container">
       <div class="section-label">Para quién es</div>
-      <h2 class="section-title">Una app, tres perfiles</h2>
+      <h2 class="section-title">Dos apps, un mismo equipo</h2>
       <div class="roles-grid">
         <div class="role-card">
-          <div class="role-icon">🗂️</div>
-          <h3>Dueño de cartera</h3>
-          <p>Alta de créditos y clientes, gestión de cobradores, reportes y exportación. Ves toda tu cartera desde un dashboard central.</p>
+          <div class="role-icon">🖥️</div>
+          <h3>Dueño de transporte</h3>
+          <p>Panel web con la flota en vivo, creación de rutas, tarifarios, cierre de depósito y facturación. Todo desde la computadora o el celular.</p>
         </div>
         <div class="role-card">
-          <div class="role-icon">🚶</div>
-          <h3>Cobrador de calle</h3>
-          <p>Registrás cobros de cuota en el momento, con caja y rendición propia. Accedés por invitación con código.</p>
+          <div class="role-icon">📱</div>
+          <h3>Repartidor</h3>
+          <p>App con mapa oscuro y navegación guiada, orden de entrega, confirmación con foto y DNI del receptor, y modo sin conexión.</p>
         </div>
         <div class="role-card">
-          <div class="role-icon">🛡️</div>
-          <h3>Superadmin</h3>
-          <p>Gestión de cuentas y planes de la plataforma, con control centralizado sobre toda la operación.</p>
+          <div class="role-icon">📦</div>
+          <h3>Cliente final</h3>
+          <p>Link público de seguimiento en tiempo real de su pedido, sin necesidad de crear cuenta ni instalar nada.</p>
         </div>
       </div>
     </div>
@@ -172,48 +172,62 @@
   <section class="features-section">
     <div class="container">
       <div class="section-label">Funcionalidades</div>
-      <h2 class="section-title">Todo lo que necesitás para tu cartera</h2>
+      <h2 class="section-title">Todo lo que necesitás para repartir</h2>
       <div class="features-grid">
         <div class="feature-item">
-          <div class="feature-icon">💳</div>
+          <div class="feature-icon">🗺️</div>
           <div>
-            <h4>Gestión de créditos</h4>
-            <p>Alta, detalle y documentos de cada crédito otorgado, con seguimiento de cuotas y vencimientos.</p>
+            <h4>Flota en vivo</h4>
+            <p>Mapa con la posición de todos tus repartidores en tiempo real, con el progreso de entregas de cada ruta del día.</p>
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">👥</div>
+          <div class="feature-icon">🧭</div>
           <div>
-            <h4>Clientes con consulta ARCA</h4>
-            <p>Alta y edición de clientes, con consulta automática de CUIT en el padrón de ARCA/AFIP.</p>
+            <h4>Navegación guiada</h4>
+            <p>El repartidor ve el orden de entrega y el trazo de ruta sugerido, como en las apps de navegación conocidas.</p>
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">🧑‍💼</div>
+          <div class="feature-icon">📸</div>
           <div>
-            <h4>Cobradores en la calle</h4>
-            <p>Invitación, configuración de pago y desvinculación de cobradores, cada uno con su propia caja y rendición.</p>
+            <h4>Comprobante de entrega</h4>
+            <p>Confirmación con foto y DNI del receptor, o registro del motivo cuando no se pudo entregar.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💵</div>
+          <div>
+            <h4>Cobro contra entrega</h4>
+            <p>Registrá el cobro en el momento de la entrega, con conciliación en el cierre de caja del día.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🏷️</div>
+          <div>
+            <h4>Tarifarios y etiquetas</h4>
+            <p>Tarifas fijas, por kilómetro o por tramos para pagarle a cada repartidor, más etiquetas con QR de seguimiento para imprimir.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📍</div>
+          <div>
+            <h4>Seguimiento para el cliente</h4>
+            <p>Link público de rastreo del pedido en tiempo real y aviso por WhatsApp, sin necesidad de que el cliente se registre.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🧮</div>
+          <div>
+            <h4>Presupuestos y remitos</h4>
+            <p>Cotizá un viaje trazando la ruta en el mapa y estimando combustible, e imprimí el remito con membrete de tu empresa.</p>
           </div>
         </div>
         <div class="feature-item">
           <div class="feature-icon">📊</div>
           <div>
-            <h4>Reportes y exportación</h4>
-            <p>Reportes de cartera y cobranza con gráficos, más exportación a Excel para tus análisis.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">📄</div>
-          <div>
-            <h4>Recibos y contratos en PDF</h4>
-            <p>Generación de recibos, contratos y tarjetas de pago en PDF y Word para cada operación.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">💳</div>
-          <div>
-            <h4>Cobros con Mercado Pago</h4>
-            <p>Cobro de cuotas con preferencia de pago, procesamiento y webhook de Mercado Pago integrados.</p>
+            <h4>Cierre de depósito</h4>
+            <p>Resumen del día por chofer — rutas, km, paquetes entregados y devueltos, combustible estimado y pago total.</p>
           </div>
         </div>
       </div>
@@ -223,20 +237,18 @@
   <!-- Addons -->
   <section class="addons-section">
     <div class="container">
-      <div class="section-label">Addons</div>
-      <h2 class="section-title">Sumá funciones cuando las necesités</h2>
+      <div class="section-label">Ecosistema</div>
+      <h2 class="section-title">Conectado con el resto de IntegraAR</h2>
       <div class="addons-grid">
         <div class="addon-card">
-          <div class="addon-badge">Addon pago</div>
           <div class="addon-icon">🧾</div>
-          <h3>Facturación</h3>
-          <p>Emití comprobantes por cobros de cuota o ventas: Factura X siempre disponible, y Factura Fiscal con CAE real (A/B/C) una vez cargado tu certificado ARCA. Detecta automáticamente los cobros de Mercado Pago.</p>
+          <h3>Facturación con contador</h3>
+          <p>Vinculá a tu contador de FacturAR para que emita y gestione tus comprobantes con CAE directamente desde su Panel Contador.</p>
         </div>
         <div class="addon-card">
-          <div class="addon-badge">Addon pago</div>
-          <div class="addon-icon">🛒</div>
-          <h3>Tienda Virtual</h3>
-          <p>Exponé un catálogo de venta directa a través de la app hermana TiendaAR, integrado con tu cartera de créditos.</p>
+          <div class="addon-icon">👥</div>
+          <h3>Equipo y accesos</h3>
+          <p>Invitá repartidores con usuario y contraseña propios, sin depender de email — cada uno accede solo a lo suyo.</p>
         </div>
       </div>
     </div>
@@ -244,10 +256,10 @@
 
   <section class="final-cta">
     <div class="container">
-      <h2>Empezá a gestionar tu cartera hoy</h2>
-      <p>Créditos, cobradores y cobranzas en un solo lugar.</p>
+      <h2>Empezá a gestionar tu reparto hoy</h2>
+      <p>Flota, rutas y entregas en un solo lugar.</p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a href="https://financi-ar.vercel.app" target="_blank" rel="noopener" class="btn btn-amber" style="padding:14px 32px;font-size:1rem;">
+        <a href="https://dashboard-web-five-rho.vercel.app" target="_blank" rel="noopener" class="btn btn-teal" style="padding:14px 32px;font-size:1rem;">
           Crear cuenta gratis →
         </a>
       </div>
@@ -265,7 +277,7 @@
           <li><a href="/">Inicio</a></li>
           <li><a href="/agendar">AgendAR</a></li>
           <li><a href="/facturar">FacturAR</a></li>
-          <li><a href="/lr">Logística y Reparto</a></li>
+          <li><a href="/financiar">FinanciAR</a></li>
         </ul>
         <p class="footer-copy">© 2026 IntegraAR</p>
       </div>
