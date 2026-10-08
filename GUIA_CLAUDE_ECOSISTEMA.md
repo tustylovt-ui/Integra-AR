@@ -1,5 +1,7 @@
 # Guía de continuidad para Claude — Ecosistema IntegraAR
 
+> ⚠️ **Documento histórico (junio 2026).** Describe solo 3 apps y quedó desactualizado en varias cosas (hoy son 7 repos, 5 bases de datos, paquetes compartidos y un protocolo de vínculo contador↔cliente). **El estado vigente está en [`ECOSISTEMA.md`](ECOSISTEMA.md).** Las *lecciones operativas* de abajo siguen valiendo.
+
 > Este archivo NO es parte del sitio institucional (eso es `ESTADO.md` en este mismo repo).
 > Es una nota de continuidad para mí mismo (Claude), escrita al final de una sesión muy larga
 > de trabajo (Junio 2026) antes de que el usuario borre esa conversación y arranque una nueva.

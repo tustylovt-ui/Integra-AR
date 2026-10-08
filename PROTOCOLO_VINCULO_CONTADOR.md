@@ -349,6 +349,12 @@ todavía):
       de terceros), implementar el paso de fan-out del §3 (llamar
       `vinculo_externo_crear` de las apps destino tildadas) y el selector de apps del
       §3 paso 8.
+- [ ] Si el middleware/proxy de la app usa lista negra de rutas públicas
+      (`publicPaths`) en vez de lista blanca de rutas protegidas, agregar ahí tanto
+      `/api/ecosistema` (o el prefijo que uses) como `/acceso` — un gate de sesión que
+      solo excluye la API y no la página deja al visitante sin sesión rebotando al
+      login genérico en vez de ver el formulario de invitación (bug real encontrado en
+      FinanciAR, ver §10 punto 7).
 
 ---
 
@@ -386,6 +392,38 @@ todavía):
    cierra el circuito para que el panel de la app emisora refleje activaciones en apps
    compañeras. **El protocolo está validado de punta a punta en producción real**, no
    solo en teoría.
+7. ✅ **Segunda prueba real end-to-end (FinanciAR, cuenta sin registrar) — 26-27/07/2026.**
+   Reveló 2 bugs reales en el middleware de FinanciAR (`src/middleware.ts`), no en el
+   protocolo en sí — usaba una lista negra (`publicPaths`) en vez de excluir
+   explícitamente las rutas del ecosistema:
+   - `POST /api/ecosistema/vinculo-externo` (server-to-server, sin sesión) quedaba
+     redirigido a `/login`, y ese redirect a una página sin handler `POST` volvía como
+     HTTP 405 — el fan-out a FinanciAR fallaba silenciosamente y el contador terminaba
+     con una cuenta de FacturAR no pedida (ver bug ya cerrado en §5.2/checklist §9, fix
+     en `AccesoContribuyente.jsx`). Fix: excluir `/api/ecosistema` del gate de sesión
+     antes de evaluar `publicPaths`.
+   - `/acceso/:codigo` en sí (la página, no solo la API) también caía en el mismo gate
+     para un visitante sin sesión — terminaba en el `/login` genérico de FinanciAR en
+     vez de mostrar el formulario de registro propio del flujo de invitación. Fix:
+     agregar `/acceso` a `publicPaths`.
+   Tras ambos fixes, **verificado en producción de punta a punta con una cuenta real
+   sin registro previo**: `/acceso/:codigo` → registro con email precargado → email de
+   confirmación → login → botón "Vincular esta cuenta" → `vinculos_contador_externo`
+   en FinanciAR pasó a `ACTIVO` con `usuario_id`/`vinculado_at` seteados →
+   `notificar_activacion_externa` llegó a FacturAR → chip "Financiar: vinculado" visible
+   en `PanelContador.jsx` (vínculo maestro sigue `PENDIENTE`, correcto, porque no se
+   vinculó FacturAR). **AgendAR también reverificado** (sin cambios de código
+   necesarios): datos reales en `vinculos_contador_externo` muestran activaciones
+   completas (`usuario_id`/`vinculado_at` seteados) y revocaciones limpias
+   (`estado='REVOCADO'` propagado correctamente a `vinculos_contador_apps` en
+   FacturAR), confirmando que tanto la activación como la desvinculación cross-app
+   funcionan en producción real para las 3 apps.
+
+**Lección para apps futuras (agregar al checklist del §9):** si la app usa un
+middleware/proxy con gate de sesión basado en lista negra (`publicPaths`/rutas
+públicas explícitas), agregar ahí tanto `/api/ecosistema` como `/acceso` — no alcanza
+con excluir solo la API. Si el gate usa lista blanca de rutas protegidas (como el
+`proxy.ts` de AgendAR), este problema no existe por diseño.
 
 ---
 
@@ -395,3 +433,15 @@ todavía):
 AgendAR y auth por cookies de FinanciAR confirmados por exploración de código. Si algo
 de esto queda desactualizado, corregir acá antes de implementar — este documento es el
 contrato que las 3 apps deben cumplir, no una nota de una sesión.*
+
+---
+
+## 11. Actualización 08/10/2026 — aceptación sin email y desvinculación total
+
+Cambios de comportamiento acordados con el dueño y probados en producción con FinanciAR (ver también `ECOSISTEMA.md` §4):
+
+1. **`notificar_activacion_externa` lleva `datos.email`.** Cada app hija informa el email de la cuenta con que el cliente aceptó (FinanciAR, AgendAR, Logística y Reparto y FacturAR común). Si la invitación se generó **sin email** (campo opcional), el receptor (Profesional) lo usa para crear/reutilizar la cuenta interna y deja el vínculo maestro ACTIVO; lo guarda en `email_invitado`. Antes, sin email, el vínculo quedaba PENDIENTE (`sin_email_invitado`) aunque el cliente ya hubiera aceptado. Se valida el formato; un email inválido se ignora.
+2. **La baja es total en los dos sentidos.** Un `notificar_desvinculacion_externa` de una app hija, el "Desvincularme" del cliente en Profesional y el "Desvincular" del contador cortan **todas las apps vivas del vínculo y el vínculo nativo**; la tarjeta del contador desaparece. Antes cada negocio se daba de baja por separado (decisión del 18/09/2026, ya reemplazada). Implementación: `api/_lib/desvinculacionTotal.js` de Profesional (`desvincularTodo`, idempotente: lo ya revocado no se toca, la app que avisó no se vuelve a notificar → no hay ciclos).
+3. **Guarda de cuenta compartida:** la baja nativa solo degrada al contribuyente a INDEPENDIENTE y cancela sus suscripciones si no tiene **otro vínculo ACTIVO**.
+4. **Pendiente para apps nuevas:** enviar `datos.email` en la activación y tratar `notificar_desvinculacion_externa` como baja total.
+5. **Tarjeta del contador:** una etiqueta por app junto al nombre; las apps sin operaciones (hoy FinanciAR: sin comprobantes ni emisión) no tienen caja propia, su baja la hace el "Desvincular" de la tarjeta principal.
