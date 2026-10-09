@@ -28,7 +28,7 @@ flowchart TB
     AGE["AgendAR<br/>turnos + facturación"]
     FIN["FinanciAR<br/>créditos y cobranzas"]
     LR["Logística y Reparto<br/>panel web + app del chofer"]
-    TIE["Tienda-AR<br/>tienda online (sin base propia)"]
+    TIE["Tienda-AR<br/>tienda online (base puente propia solo p/ Facturador Local)"]
   end
 
   subgraph PAQ["Paquetes compartidos (GitHub Packages, privados)"]
@@ -42,7 +42,7 @@ flowchart TB
     ARCA["ARCA / AFIP"]
     BCRAAPI["BCRA (deudores, bancos)"]
     MP["Mercado Pago"]
-    SB["Supabase ×5 proyectos"]
+    SB["Supabase ×6 proyectos"]
     VER["Vercel Hobby"]
     GH["GitHub (repos, Actions, Packages)"]
   end
@@ -75,13 +75,13 @@ flowchart TB
 | **AgendAR** | `AgendAR` | `AGENDAR\AgendAR` | `main` | Next 16 + React 19 | `agend-ar` · agend-ar-pi.vercel.app | `fkbspjyoawjwuthfhgvs` · IntegraAR |
 | **FinanciAR** | `FinanciAR` | `FINANCIAR\FinanciAR` | `main` | Next 15 + React 19 | `financi-ar` · financi-ar.vercel.app | `izprfefxvwsjtnmpempi` · IntegraAR |
 | **Logística y Reparto** (LR) | `Logistica-y-Reparto` | `LOGISTICAYREPARTO\Logistica-y-Reparto` (`dashboard-web/` + `app-repartidor/`) | **`master`** | Next 16 + React 19; app del chofer en Expo 57 | `logistica-reparto` · dashboard-web-five-rho.vercel.app | `mnuilbwxanbhnlrblitu` · "Inversiones" |
-| **Tienda-AR** | `Tienda-AR` | `TIENDAAR\Tienda-AR` | `main` | Next 15 | `tienda-ar` | sin base propia (lee las de FacturAR/FinanciAR) |
+| **Tienda-AR** | `Tienda-AR` | `TIENDAAR\Tienda-AR` | `main` | Next 15 | `tienda-ar` | `afbuaxrccittcfhbcwoi` · misma cuenta que FinanciAR. **Base puente propia solo para Facturador Local** (origen `d`: `tienda_config`, `tienda_productos`, `tienda_pedidos`, `v_tienda_publica`). Para FacturAR (`f`) y FinanciAR (`c`) lee y escribe directo en las bases de esas apps. |
 | **Integra-AR** (sitio + docs) | `Integra-AR` | `INTEGRAAR\Integra-AR` | `main` | HTML estático | `integra-ar` | — |
 
 Notas que cambian cómo se trabaja:
 - **LR tiene dos copias locales con roles distintos:** `…\LOGISTICAYREPARTO\Logistica-y-Reparto` es el trabajo diario (código, migraciones, backups); `C:\dev\lr` es **solo para compilar la app del chofer** (ruta corta por el límite de 260 caracteres de Windows; tiene `android/` y los `.env.local`). No editar código en las dos a la vez.
 - **FacturAR Profesional tiene dos remotos** (`origin` = Profesional, `upstream` = núcleo). `gh` quedó fijado a Profesional con `gh repo set-default`. En los demás repos pasar siempre `--repo` si hay dudas.
-- **Las cuentas de Supabase son tres** (IntegraAR, "Mis redes", "Inversiones"): para mirar una base hay que tener abierta la cuenta correcta en el navegador; el MCP de Supabase solo ve algunas.
+- **Las cuentas de Supabase son tres** (IntegraAR, "Mis redes", "Inversiones"): para mirar una base hay que tener abierta la cuenta correcta en el navegador; el MCP de Supabase solo ve algunas. **Desde el 08/10/2026 hay 4 conectores MCP locales con token propio** (los tokens viven en la configuración de la app de escritorio, nunca en estos documentos): `supabase-agendar-facturar` (FacturAR común `tehgzhnpcicuucwdefjm` + AgendAR `fkbspjyoawjwuthfhgvs`), `supabase-misredes` (Profesional `pvukzwxwbzkmspdgjoqw`), `supabase-financiar-tienda` (FinanciAR `izprfefxvwsjtnmpempi` + base puente de Tienda-AR `afbuaxrccittcfhbcwoi`) y `supabase-lr-finanzas` (LR `mnuilbwxanbhnlrblitu` + "Finanzas Personales" `xgsdbkxerbttybyuclwp`, esta última pausada y ajena al ecosistema). Un conector de claude.ai ve también LR. Si un token vence o se revoca, el conector responde `Unauthorized`.
 - **Cuenta de prueba de FinanciAR = misma identidad fiscal que la del dueño en FacturAR común** (CUIT 20258523173, mismo certificado): cualquier emisión de prueba es real (CAE real) y comparte numeración. Pedir OK antes de emitir.
 
 ---
@@ -167,7 +167,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | AgendAR | ✅ | 0 errores / 83 avisos (bloqueante) | 87 | ✅ | ✅ | al día |
 | FinanciAR | ✅ | 0 errores / 239 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba |
 | LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 38 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
-| Tienda-AR | no revisada en esta etapa | — | — | — | sin base propia | `ESTADO_TIENDAAR.md` |
+| Tienda-AR | sin verificar (pendiente Tarea 5) | — | — | n/d (SQL manual, `migraciones/`) | ❌ la base puente **no tiene backup** | `ESTADO_TIENDAAR.md` + `README.md` (base puente corregida el 08/10/2026) |
 
 ---
 
@@ -189,7 +189,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 9. FinanciAR: limitación de `resolverReceptor` con Monotributista que tiene CUIT; tipar los 198 `any`; sin NC/ND y sin subir `arca-core` por decisión (reabrir solo si el dueño lo pide).
 10. AgendAR: 33 `set-state-in-effect` y 45 `exhaustive-deps` (revisar caso por caso, hay candidatos a bugs reales).
 11. `bcra-core`: CUIT de 10 entidades `soloCheques`, "Galicia S.A. vs S.A.U.", refrescar el directorio BCRA cada mes, ajuste cosmético de `marca` (0.3.1).
-12. Backups: scripts de restauración para núcleo, Profesional y AgendAR; Storage en los backups de núcleo, Profesional y AgendAR si usan buckets (verificar); respaldar la configuración de Auth.
+12. Backups: **la base puente de Tienda-AR (`afbuaxrccittcfhbcwoi`) no tiene tarea de backup** (si Facturador Local la usa, sus tiendas y pedidos solo viven ahí; verificar primero si tiene datos reales); scripts de restauración para núcleo, Profesional y AgendAR; Storage en los backups de núcleo, Profesional y AgendAR si usan buckets (verificar); respaldar la configuración de Auth.
 13. Ruido de logs: aviso `DEP0169` (`url.parse()`) en las funciones de Profesional (viene de una dependencia; investigar de dónde).
 14. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
 
