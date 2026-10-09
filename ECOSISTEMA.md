@@ -125,7 +125,7 @@ Documento técnico completo: [`PROTOCOLO_VINCULO_CONTADOR.md`](PROTOCOLO_VINCULO
 - **Guarda de cuenta compartida:** si el mismo contribuyente tiene **otro vínculo activo**, la baja no lo degrada a INDEPENDIENTE ni cancela sus suscripciones (caso real: la cuenta del dueño está en dos vínculos).
 - Una app que no responde al corte queda en `ERROR` y se informa en el log; el resto igual se corta.
 
-**Probado en producción el 08/10/2026 con FinanciAR:** alta sin email en la invitación → tarjeta ACTIVA en 2,5 s; baja desde el cliente → todo REVOCADO en 1,2 s; baja desde el panel → todo REVOCADO en 1,6 s; la cuenta compartida quedó intacta. **No probadas todavía** las bajas iniciadas por el cliente desde AgendAR, Logística y Reparto y FacturAR común (el código es el mismo). **09/10/2026 con AgendAR:** baja desde el panel del contador → vínculo, app e invitación REVOCADOS en las dos bases, vínculo de FacturAR común y rol del contribuyente intactos (guarda de cuenta compartida); alta nueva → tarjeta ACTIVA. La baja iniciada **por el cliente desde AgendAR** sigue sin probarse.
+**Probado en producción el 08/10/2026 con FinanciAR:** alta sin email en la invitación → tarjeta ACTIVA en 2,5 s; baja desde el cliente → todo REVOCADO en 1,2 s; baja desde el panel → todo REVOCADO en 1,6 s; la cuenta compartida quedó intacta. **No probadas todavía** las bajas iniciadas por el cliente desde Logística y Reparto y FacturAR común (el código es el mismo). **09/10/2026 con AgendAR:** baja desde el panel del contador → vínculo, app e invitación REVOCADOS en las dos bases, vínculo de FacturAR común y rol del contribuyente intactos (guarda de cuenta compartida); alta nueva → tarjeta ACTIVA. **Baja iniciada por el cliente desde AgendAR, probada el 09/10/2026 (05:19 UTC):** vínculo `0b272d08…` y su app REVOCADOS en Profesional en ~1 s, invitación REVOCADA en AgendAR, vínculo de FacturAR común y rol del contribuyente intactos; logs de Profesional sin errores (solo el aviso `DEP0169`).
 
 **Tarjeta del panel (09/10/2026):** una sola tarjeta por vínculo. La app de datos del cliente (FacturAR común, o la primera activa con comprobantes/emisión: AgendAR, Logística y Reparto) se absorbe como etiqueta en "Vinculación total" y la tarjeta opera sobre ella; ya no hay una segunda caja con otro Desvincular.
 
@@ -180,7 +180,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 2. Renovar `PACKAGES_READ_TOKEN` / `GH_PACKAGES_TOKEN` **antes del 02/01/2027** (vencen) y recargarlos en los repos y en Vercel.
 
 **Pruebas que faltan (necesitan OK explícito cuando son emisiones reales)**
-3. Bajas iniciadas por el cliente desde AgendAR, Logística y Reparto y FacturAR común (hoy probado solo con FinanciAR).
+3. Bajas iniciadas por el cliente desde Logística y Reparto y FacturAR común (probado con FinanciAR el 08/10 y con AgendAR el 09/10/2026).
 4. Emisión real de NC y ND en Logística y Reparto y en AgendAR (Profesional/núcleo ya validado con monotributista y RI).
 5. Probar en pantalla el lápiz de edición del Libro IVA en el núcleo.
 6. `restaurar-backup.mjs --ejecutar` sobre una base **descartable** (LR y FinanciAR).
