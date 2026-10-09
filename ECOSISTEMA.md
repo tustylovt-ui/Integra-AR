@@ -125,7 +125,9 @@ Documento técnico completo: [`PROTOCOLO_VINCULO_CONTADOR.md`](PROTOCOLO_VINCULO
 - **Guarda de cuenta compartida:** si el mismo contribuyente tiene **otro vínculo activo**, la baja no lo degrada a INDEPENDIENTE ni cancela sus suscripciones (caso real: la cuenta del dueño está en dos vínculos).
 - Una app que no responde al corte queda en `ERROR` y se informa en el log; el resto igual se corta.
 
-**Probado en producción el 08/10/2026 con FinanciAR:** alta sin email en la invitación → tarjeta ACTIVA en 2,5 s; baja desde el cliente → todo REVOCADO en 1,2 s; baja desde el panel → todo REVOCADO en 1,6 s; la cuenta compartida quedó intacta. **No probadas todavía** las bajas iniciadas por el cliente desde AgendAR, Logística y Reparto y FacturAR común (el código es el mismo).
+**Probado en producción el 08/10/2026 con FinanciAR:** alta sin email en la invitación → tarjeta ACTIVA en 2,5 s; baja desde el cliente → todo REVOCADO en 1,2 s; baja desde el panel → todo REVOCADO en 1,6 s; la cuenta compartida quedó intacta. **No probadas todavía** las bajas iniciadas por el cliente desde AgendAR, Logística y Reparto y FacturAR común (el código es el mismo). **09/10/2026 con AgendAR:** baja desde el panel del contador → vínculo, app e invitación REVOCADOS en las dos bases, vínculo de FacturAR común y rol del contribuyente intactos (guarda de cuenta compartida); alta nueva → tarjeta ACTIVA. La baja iniciada **por el cliente desde AgendAR** sigue sin probarse.
+
+**Tarjeta del panel (09/10/2026):** una sola tarjeta por vínculo. La app de datos del cliente (FacturAR común, o la primera activa con comprobantes/emisión: AgendAR, Logística y Reparto) se absorbe como etiqueta en "Vinculación total" y la tarjeta opera sobre ella; ya no hay una segunda caja con otro Desvincular.
 
 ---
 
