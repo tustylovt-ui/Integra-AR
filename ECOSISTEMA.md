@@ -180,7 +180,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 2. Renovar `PACKAGES_READ_TOKEN` / `GH_PACKAGES_TOKEN` **antes del 02/01/2027** (vencen) y recargarlos en los repos y en Vercel.
 
 **Pruebas que faltan (necesitan OK explícito cuando son emisiones reales)**
-3. Baja iniciada por el cliente desde FacturAR común (probada con FinanciAR el 08/10 y con AgendAR y LR el 09/10/2026; usar un contribuyente de prueba aparte, no la cuenta compartida del dueño).
+3. Baja iniciada por el cliente desde FacturAR común (probada con FinanciAR el 08/10 y con AgendAR y LR el 09/10/2026; usar una cuenta de prueba aparte, no la del dueño). **Cuidado con esta prueba:** en el núcleo (`api/_lib/ecosistemaReceptor.js`) aceptar una invitación nueva revoca de su lado **todos** los vínculos activos previos de esa cuenta sin avisar a Profesional (queda ACTIVO allá: inconsistencia entre bases), y `desvincularme` da de baja **todos** los vínculos activos de la cuenta y avisa uno por uno. Con la cuenta del dueño (`fagottijorger@gmail.com`, vínculo operativo `d7512b6a`, único de ese contribuyente) la baja cortaría ese vínculo y el rol pasaría a `INDEPENDIENTE`. Recomendado: una cuenta de FacturAR común de prueba nueva (el vínculo de MARCELA `6b7cf020` es de un cliente real: no tocar). Si se toca el núcleo, evaluar que `activar` avise a Profesional al revocar los vínculos previos.)
 4. Emisión real de NC y ND en Logística y Reparto y en AgendAR (Profesional/núcleo ya validado con monotributista y RI).
 5. Probar en pantalla el lápiz de edición del Libro IVA en el núcleo.
 6. `restaurar-backup.mjs --ejecutar` sobre una base **descartable** (LR y FinanciAR).
