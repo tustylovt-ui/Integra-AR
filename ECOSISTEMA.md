@@ -167,7 +167,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | AgendAR | ✅ | 0 errores / 83 avisos (bloqueante) | 87 | ✅ | ✅ | al día |
 | FinanciAR | ✅ | 0 errores / 239 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba |
 | LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 38 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
-| Tienda-AR | sin verificar (pendiente Tarea 5) | — | — | n/d (SQL manual, `migraciones/`) | ❌ la base puente **no tiene backup** | `ESTADO_TIENDAAR.md` + `README.md` (base puente corregida el 08/10/2026) |
+| Tienda-AR | ✅ (desde el 09/10/2026: tipos + lint + build) | 0 errores / 1 aviso | ❌ no tiene | n/d (SQL manual, `migraciones/`) | ❌ la base puente **no tiene backup** | `ESTADO_TIENDAAR.md` + `README.md` (base puente corregida el 08/10/2026) |
 
 ---
 
@@ -191,7 +191,8 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 11. `bcra-core`: CUIT de 10 entidades `soloCheques`, "Galicia S.A. vs S.A.U.", refrescar el directorio BCRA cada mes, ajuste cosmético de `marca` (0.3.1).
 12. Backups: **la base puente de Tienda-AR (`afbuaxrccittcfhbcwoi`) no tiene tarea de backup** (si Facturador Local la usa, sus tiendas y pedidos solo viven ahí; verificar primero si tiene datos reales); scripts de restauración para núcleo, Profesional y AgendAR; Storage en los backups de núcleo, Profesional y AgendAR si usan buckets (verificar); respaldar la configuración de Auth.
 13. Ruido de logs: aviso `DEP0169` (`url.parse()`) en las funciones de Profesional (viene de una dependencia; investigar de dónde).
-14. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
+14. Tienda-AR (relevado el 08/10/2026, parcialmente resuelto el 09/10/2026): se agregó CI y `next` 15.5.27 con `npm audit fix` (vulnerabilidades de producción 7 → 4, sin críticas). Pendiente: `mercadopago` 3.x (cambio mayor, afecta el cobro) y Next 16 para lo que queda, tests del checkout y `zod` declarado sin uso. Detalle en `Tienda-AR\ESTADO_TIENDAAR.md`.
+15. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
 
 ---
 
