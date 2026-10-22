@@ -211,11 +211,12 @@ Sidebar fijo con índice + contenido con scroll activo. Secciones:
   - `.com` en **Donweb** o **Namecheap**
 - [ ] Conectar dominio propio en Vercel (Settings → Domains)
 - [ ] Optimizar logos (reducir tamaño sin perder calidad)
-- [ ] Agregar Open Graph tags para compartir en redes sociales
-- [ ] Meta descriptions únicas por página
+- [ ] Open Graph tags: ✅ en `index.html`; faltan en las páginas internas (verificado 22/10/2026)
+- [x] ~~Meta descriptions únicas por página~~ ✅ todas las páginas la tienen (verificado 22/10/2026)
 
 ### Mediano plazo (cuando estén listas las apps)
 - [ ] Agregar **GestionAR** — cuando esté en producción
+- [ ] Páginas de **FacturAR Profesional**, **Facturador Local** y **Sueldos y Jornales** (el sitio todavía no las menciona; verificado 22/10/2026)
 - [ ] Agregar otras apps de IntegraAR según se desarrollen
 - [ ] Blog o sección de novedades
 - [ ] Formulario de contacto con backend (Resend o Formspree)

@@ -184,6 +184,16 @@ Documento técnico completo: [`PROTOCOLO_VINCULO_CONTADOR.md`](PROTOCOLO_VINCULO
 
 **Keep-alive de Supabase** — workflow `Integra-AR/.github/workflows/supabase-keepalive.yml` (lunes y jueves, 6 bases, solo lectura; ver §7 punto 0).
 
+**Backups — 22/10/2026:** la reinstalación de Windows del 18/10 borró las 5 tareas (no hubo copias entre el 07-12/10 y el 22/10). Se recrearon el 22/10 con el mismo horario (lunes; corren ocultas y al encender si la PC estaba apagada; log en `backups/ultima-corrida.log` de cada app) y se corrió una copia de cada app ese día: AgendAR 23 tablas + 6 archivos, LR 17 + 4, núcleo 45 + 16, Profesional 53 + 1, FinanciAR 30 + 6. Si se vuelve a reinstalar Windows, recrearlas así (una por app, cambiando nombre, carpeta y hora):
+
+```powershell
+$d = 'C:\Desarrollo Integrar\AGENDAR\AgendAR'   # carpeta con scripts\backup-supabase.mjs (LR: ...\dashboard-web)
+$cmd = "Set-Location -LiteralPath '$d'; New-Item -ItemType Directory -Force backups | Out-Null; & node scripts\backup-supabase.mjs *> backups\ultima-corrida.log; exit `$LASTEXITCODE"
+$accion = New-ScheduledTaskAction -Execute powershell.exe -Argument "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -Command `"$cmd`"" -WorkingDirectory $d
+$config = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1)
+Register-ScheduledTask -TaskName 'AgendAR Backup Supabase' -Action $accion -Trigger (New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 21:00) -Settings $config -Force
+```
+
 **Backups** — cinco tareas de Windows semanales (se ejecutan al encender la PC si estaba apagada), JSON local con retención de 8, carpeta `backups/` ignorada por git:
 
 | App | Tarea | Hora (lunes) | Cobertura |
@@ -215,7 +225,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | FacturAR común | ✅ | 0 errores (no bloqueante en CI) | ✅ | n/d | ✅ 45 tablas | `PENDIENTES`, `README`, `BACKUPS`, `ARCA_SCRAPING`… al día |
 | AgendAR | ✅ | 0 errores / 83 avisos (bloqueante) | 87 | ✅ | ✅ | al día |
 | FinanciAR | ✅ | 0 errores / 239 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba |
-| LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 38 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
+| LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 39 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
 | Tienda-AR | ✅ (desde el 09/10/2026: tipos + lint + build) | 0 errores / 1 aviso | ❌ no tiene | n/d (SQL manual, `migraciones/`) | ❌ la base puente **no tiene backup** (vacía, verificado 09/10/2026) | `ESTADO_TIENDAAR.md` + `README.md` (base puente corregida el 08/10/2026) |
 
 ---
@@ -225,6 +235,8 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 **🚨 Nuevo (22/10/2026)**
 
 0. **Cuatro bases de Supabase están PAUSADAS** (estado `INACTIVE` en los conectores): FacturAR Profesional (`pvukzwxwbzkmspdgjoqw`), FinanciAR (`izprfefxvwsjtnmpempi`), la base puente de Tienda-AR (`afbuaxrccittcfhbcwoi`) y Logística y Reparto (`mnuilbwxanbhnlrblitu`). Con la base pausada esas apps no funcionan en producción (login, datos, vínculos con el contador). Se reactivan con "Restore project" en el panel de Supabase de cada cuenta o con el conector. En el plan gratuito vuelven a pausarse tras ~7 días sin actividad: **Reactivadas el 22/10/2026** (LR, FinanciAR, Tienda-AR y Profesional). **Prevención:** workflow `supabase-keepalive.yml` en este repo (PR #13, mergeado el 22/10/2026): lunes y jueves 08:23 consulta 1 fila de cada una de las 6 bases con la clave pública; falla y avisa por mail si alguna no responde. Secrets cargados: `SUPABASE_ANON_KEY_FACTURAR`, `_PROFESIONAL`, `_AGENDAR`, `_FINANCIAR`, `_LR` y `_TIENDA` (clave `anon`/`publishable`, nunca la `service_role`). **Primera corrida manual (22/10/2026): las 6 bases respondieron HTTP 200.** Riesgo: en un repo público GitHub desactiva los workflows programados tras 60 días sin actividad en el repo (la norma §0 hace que este repo se actualice seguido).
+
+0b. **Backups sin correr entre el 07-12/10 y el 22/10/2026** por la reinstalación de Windows del 18/10: tareas recreadas y copias corridas el 22/10 (§5).
 
 **Seguridad y mantenimiento (tuyos / urgentes)**
 1. Rotar el token personal de GitHub (`ghp_…`) que se pegó una vez en un chat.
@@ -246,6 +258,9 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 13. Ruido de logs: aviso `DEP0169` (`url.parse()`) en las funciones de Profesional (viene de una dependencia; investigar de dónde).
 14. Tienda-AR (relevado el 08/10/2026, parcialmente resuelto el 09/10/2026): se agregó CI y `next` 15.5.27 con `npm audit fix` (vulnerabilidades de producción 7 → 4, sin críticas). Pendiente: `mercadopago` 3.x (cambio mayor, afecta el cobro) y Next 16 para lo que queda, tests del checkout y `zod` declarado sin uso. Detalle en `Tienda-AR\ESTADO_TIENDAAR.md`.
 15. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
+16. ~~🔒 Núcleo: política `Ver invitacion pendiente` abierta y `calcular_facturacion_anual`/`puede_emitir_factura` ejecutables por cualquiera~~ ✅ **Corregido el 22/10/2026** (FacturAR PR #22 + migración `20261022215003_seguridad_invitacion_y_funciones`, verificada con el rol `anon`).
+16b. ~~🔒 LR: `spatial_ref_sys` (PostGIS) escribible por `anon`/`authenticated` (aviso crítico del asesor)~~ ✅ **Corregido el 22/10/2026**: la tabla es de `supabase_admin` y no admite RLS ni revocar permisos, así que se bloqueó con triggers que rechazan toda escritura salvo de los roles administradores (migración `20261022220000` = archivo `0026`, LR PR #16). Verificado con `anon`: escribir da `42501`, leer y `geography` siguen funcionando.
+17. **Pendientes por app verificados el 22/10/2026:** cada MD principal tiene arriba un bloque "Pendientes reales al 22/10/2026" con lo que sigue abierto y lo que ya se resolvió.
 
 ---
 
@@ -290,7 +305,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | FacturAR Profesional | `PENDIENTES.md` 09/10 · `README.md` 29/09 · `VARIANTE_PROFESIONAL.md` 26/09 | 09/10 22:34 (PR #32) | 09/10 (PR #32) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ `PENDIENTES.md` al día. ⚠️ `README.md` y `VARIANTE_PROFESIONAL.md` son de septiembre: revisar que reflejen el módulo contable. |
 | AgendAR | `ESTADO AGENDAR.md` 07/10 · `PENDIENTES.md` 09/10 · `BACKUPS.md` 09/10 | 09/10 12:38 (PR #25) | 09/10 (PR #25) ✅ | 02/09 `billing_comprobantes_emitido_por_externo` | ✅ activa | ✅ Casi. ⚠️ La cabecera de `ESTADO AGENDAR.md` todavía dice que el CI falla por falta de `GH_PACKAGES_TOKEN` (07/10), pero §6 lo da en verde desde el 08/10: corregir esa frase. |
 | FinanciAR | `ESTADO_FINANCIAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 | 09/10 22:42 (PR #27) | 09/10 (PR #27) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ⚠️ No: el PR #27 (09/10, datos fiscales al activar el vínculo) no figura en `ESTADO_FINANCIAR.md` ni en `PENDIENTES.md` (solo acá, §4). `README.md` es del 15/09. |
-| Logística y Reparto | `README.md` 09/10 | 09/10 11:06 (PR #13) | 09/10 (PR #13) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ Sí. |
+| Logística y Reparto | `README.md` 22/10 | 22/10 (PR #15 pendientes; PR #16 `spatial_ref_sys` abierto) | 09/10 (PR #13) ✅ | 22/10 `bloquear_escritura_spatial_ref_sys` | ✅ activa (reactivada el 22/10) | ✅ Sí. |
 | TiendaAR (módulo) | `ESTADO_TIENDAAR.md` 09/10 · `README.md` 09/10 | 09/10 22:51 (PR #6) | 09/10 (PR #6) ✅ | n/d (SQL manual en `migraciones/`) | ⛔ base puente **pausada** (vacía) | ✅ Sí. |
 | Integra-AR (sitio + este MD) | `ECOSISTEMA.md` 22/10 · `ESTADO.md` 23/09 | `main` 22/10 (PR #12 protocolo y PR #13 keep-alive, mergeados) | 09/10 (PR #11) ✅ | — | — | ⚠️ `ESTADO.md` (23/09) no incluye FacturAR Profesional, Facturador Local ni Sueldos y Jornales en el sitio. Este MD y la norma §0 van en el PR `docs/norma-md-general`. |
 | Facturador Local | `DESARROLLO_TECNICO.md` 29/09 · `README.md` 01/08 | 29/09 17:54 (git local, sin remoto) | — (app local, instalador `.exe`) | — | — | ⚠️ El encabezado dice "Última actualización: 14/08/2026" y §2 todavía dice "persistencia en JSON" (el código ya usa SQLite). El README se titula "Facturador Rápido". |
