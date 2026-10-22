@@ -1,8 +1,21 @@
-# Ecosistema IntegraAR — mapa global (estado al 08/10/2026)
+# Ecosistema IntegraAR — MD general del ecosistema (estado al 22/10/2026)
 
-> **Este es el documento de entrada.** Si abrís una sesión nueva para trabajar sobre más de una app, leé este archivo primero y después el `ESTADO`/`PENDIENTES` de la app que vayas a tocar.
+> **Este es el MD general del ecosistema (documento de entrada).** En **toda** sesión nueva —se trabaje sobre una app o sobre varias— se lee este archivo primero y después el MD de la app que se va a tratar (norma en §0).
 > Se mantiene en el repo `Integra-AR` (el sitio institucional) porque es el único que no pertenece a ninguna app. Cuando cambie algo que cruza apps (vínculos, paquetes, backups, CI, secretos), se actualiza **acá y en el repo afectado**.
 > Nunca se guardan valores de secretos en estos archivos: solo sus nombres y dónde viven. Los archivos `SECRETOS_*.md` de cada repo están fuera de git a propósito.
+
+---
+
+## 0. Norma de lectura y actualización (obligatoria desde el 22/10/2026)
+
+Vale para **toda** sesión de Claude (Claude Code, escritorio o web) sobre cualquier app del ecosistema:
+
+1. **Primero este MD general.** Al abrir un chat o una sesión nueva se lee `ECOSISTEMA.md` completo antes de tocar nada.
+2. **Después el MD de la app tratada**, según la tabla "Documento de cada app" de §2.
+3. **Al cerrar un cambio se actualizan los dos:** el MD de la app (detalle, con fecha) y este general (fecha de la cabecera, la fila de la app en §2 y §10, los pendientes de §7 y, si el cambio cruza apps, las secciones 3 a 5).
+4. **Si no coinciden**, se verifica contra el código, la base de Supabase y Vercel, y se corrigen los dos. Ningún MD se da por actualizado sin mirarlo.
+
+Dónde está escrita la norma: en `C:\Desarrollo Integrar\CLAUDE.md` (Claude Code lo carga solo en cualquier subcarpeta), en el `CLAUDE.md` de cada repo y en la cabecera del MD principal de cada app.
 
 ---
 
@@ -36,6 +49,7 @@ flowchart TB
     BCRA["bcra-core 0.3.0"]
     VINC["integraar-vinculos 0.1.0<br/>(publicado, aún no adoptado)"]
     FORK["arca-facturacion / arca-common<br/>(fork propio del SDK)"]
+    NORM["normativa-core 0.4.0<br/>(normativa laboral)"]
   end
 
   subgraph EXT["Servicios externos"]
@@ -45,6 +59,11 @@ flowchart TB
     SB["Supabase ×6 proyectos"]
     VER["Vercel Hobby"]
     GH["GitHub (repos, Actions, Packages)"]
+  end
+
+  subgraph LOCALES["Apps locales (Windows, se instalan en la PC)"]
+    DL["Facturador Local<br/>comercios: Ticket X + Factura C"]
+    SUE["Sueldos y Jornales Local<br/>liquidación de sueldos en red LAN"]
   end
 
   SITIO["Integra-AR<br/>sitio institucional + documentación"]
@@ -62,6 +81,10 @@ flowchart TB
   PRO & FAC & AGE & FIN & LR --> SB
   PRO & FAC & AGE & FIN & LR & TIE & SITIO --> VER
   SITIO -. "documenta" .-> PRO
+  DL -. "tienda online (origen d)" .-> TIE
+  DL --> FORK
+  SUE --> NORM
+  SUE -. "futuro módulo SaaS" .-> PRO
 ```
 
 ---
@@ -71,17 +94,37 @@ flowchart TB
 | App | Repo (GitHub `tustylovt-ui/…`) | Carpeta local (`C:\Desarrollo Integrar\…`) | Rama | Stack | Vercel (proyecto · URL) | Supabase (project ref · cuenta) |
 |---|---|---|---|---|---|---|
 | **FacturAR Profesional** (contador) | `FacturAR-Profesional` | `FACTURAR\FacturAR-Profesional` | `main` | Vite 7 + React 18 | `facturar-profesional` · facturar-profesional.vercel.app | `pvukzwxwbzkmspdgjoqw` · "Mis redes" |
-| **FacturAR común** (núcleo) | `FacturAR` | `FACTURAR\FacturAR` | `main` | Vite 7 + React 18 | `factur-ar` · factur-ar.vercel.app | `tehgzhnpcicuucwdefjm` · IntegraAR |
-| **AgendAR** | `AgendAR` | `AGENDAR\AgendAR` | `main` | Next 16 + React 19 | `agend-ar` · agend-ar-pi.vercel.app | `fkbspjyoawjwuthfhgvs` · IntegraAR |
-| **FinanciAR** | `FinanciAR` | `FINANCIAR\FinanciAR` | `main` | Next 15 + React 19 | `financi-ar` · financi-ar.vercel.app | `izprfefxvwsjtnmpempi` · IntegraAR |
+| **FacturAR común** (núcleo) | `FacturAR` | `FACTURAR\FacturAR` | `main` | Vite 7 + React 18 | `factur-ar` · factur-ar.vercel.app | `tehgzhnpcicuucwdefjm` · cuenta tustylovt |
+| **AgendAR** | `AgendAR` | `AGENDAR\AgendAR` | `main` | Next 16 + React 19 | `agend-ar` · agend-ar-pi.vercel.app | `fkbspjyoawjwuthfhgvs` · cuenta tustylovt |
+| **FinanciAR** | `FinanciAR` | `FINANCIAR\FinanciAR` | `main` | Next 15 + React 19 | `financi-ar` · financi-ar.vercel.app | `izprfefxvwsjtnmpempi` · cuenta integraar.soluciones |
 | **Logística y Reparto** (LR) | `Logistica-y-Reparto` | `LOGISTICAYREPARTO\Logistica-y-Reparto` (`dashboard-web/` + `app-repartidor/`) | **`master`** | Next 16 + React 19; app del chofer en Expo 57 | `logistica-reparto` · dashboard-web-five-rho.vercel.app | `mnuilbwxanbhnlrblitu` · "Inversiones" |
 | **Tienda-AR** | `Tienda-AR` | `TIENDAAR\Tienda-AR` | `main` | Next 15 | `tienda-ar` | `afbuaxrccittcfhbcwoi` · misma cuenta que FinanciAR. **Base puente propia solo para Facturador Local** (origen `d`: `tienda_config`, `tienda_productos`, `tienda_pedidos`, `v_tienda_publica`). Para FacturAR (`f`) y FinanciAR (`c`) lee y escribe directo en las bases de esas apps. |
 | **Integra-AR** (sitio + docs) | `Integra-AR` | `INTEGRAAR\Integra-AR` | `main` | HTML estático | `integra-ar` | — |
+| **Facturador Local** (comercio, escritorio) | sin remoto (git local) | `Facturador Local` (variante más simple, sin SQLite/IA/tienda: `Facturador Rapido`) | `master` | Node 24 + Express + SQLite (`better-sqlite3`), sin framework; instalador `.exe` | — | sin base propia; su tienda online usa la base puente de Tienda-AR (origen `d`) |
+| **Sueldos y Jornales Local** | sin remoto (git local) | `Sueldos y Jornales Local` | `main` | Node + TypeScript (`sueldos-core`), servidor en LAN con HTTPS, base local cifrada | — | — (más adelante pasa a módulo SaaS de Profesional) |
+
+**TiendaAR es un módulo, no una app aparte para el usuario:** se activa desde FacturAR común (origen `f`), FinanciAR (origen `c`) y Facturador Local (origen `d`); el repo `Tienda-AR` es la vidriera pública y el checkout que comparten.
+
+### Documento de cada app (el MD que se lee después de este)
+
+| App | MD principal | Complementarios |
+|---|---|---|
+| FacturAR común | `FACTURAR\FacturAR\ESTADO_FACTURAR.md` | `PENDIENTES.md`, `ESTADO_FACTURAR_DB.md`, `BACKUPS.md`, `ARCA_SCRAPING.md` |
+| FacturAR Profesional | `FACTURAR\FacturAR-Profesional\PENDIENTES.md` | `VARIANTE_PROFESIONAL.md`, `LEEME_VARIANTE.md`, `BACKUPS.md`, `MAPA_DEPENDENCIAS_MODULOS.md` |
+| AgendAR | `AGENDAR\AgendAR\ESTADO AGENDAR.md` | `PENDIENTES.md`, `DESARROLLO.md`, `BACKUPS.md` |
+| FinanciAR | `FINANCIAR\FinanciAR\ESTADO_FINANCIAR.md` | `PENDIENTES.md`, `HISTORIAL_FINANCIAR.md`, `BACKUPS.md` |
+| Logística y Reparto | `LOGISTICAYREPARTO\Logistica-y-Reparto\README.md` | `dashboard-web\README.md` |
+| TiendaAR (módulo) | `TIENDAAR\Tienda-AR\ESTADO_TIENDAAR.md` | `README.md` |
+| Integra-AR (sitio) | `INTEGRAAR\Integra-AR\ESTADO.md` | `PROTOCOLO_VINCULO_CONTADOR.md`, `SEGURIDAD_TOKENS.md` |
+| Facturador Local | `Facturador Local\DESARROLLO_TECNICO.md` | `README.md`, `COBROS_MERCADOPAGO.md` |
+| Sueldos y Jornales Local | `Sueldos y Jornales Local\DESARROLLO.md` | `docs\*.md`, `packages\sueldos-core\README.md`; la planilla Excel aparte: `Liquidacion Sueldo\trabajo\DESARROLLO.md` |
+
+Fuera del ecosistema (misma carpeta, no se relevan acá): AgroDron Tech, App Chino Mandarin, Finanzas personales, Reparto-AR, UltimaMilla y GestionAR.
 
 Notas que cambian cómo se trabaja:
 - **LR tiene dos copias locales con roles distintos:** `…\LOGISTICAYREPARTO\Logistica-y-Reparto` es el trabajo diario (código, migraciones, backups); `C:\dev\lr` es **solo para compilar la app del chofer** (ruta corta por el límite de 260 caracteres de Windows; tiene `android/` y los `.env.local`). No editar código en las dos a la vez.
 - **FacturAR Profesional tiene dos remotos** (`origin` = Profesional, `upstream` = núcleo). `gh` quedó fijado a Profesional con `gh repo set-default`. En los demás repos pasar siempre `--repo` si hay dudas.
-- **Las cuentas de Supabase son tres** (IntegraAR, "Mis redes", "Inversiones"): para mirar una base hay que tener abierta la cuenta correcta en el navegador; el MCP de Supabase solo ve algunas. **Desde el 08/10/2026 hay 4 conectores MCP locales con token propio** (los tokens viven en la configuración de la app de escritorio, nunca en estos documentos): `supabase-agendar-facturar` (FacturAR común `tehgzhnpcicuucwdefjm` + AgendAR `fkbspjyoawjwuthfhgvs`), `supabase-misredes` (Profesional `pvukzwxwbzkmspdgjoqw`), `supabase-financiar-tienda` (FinanciAR `izprfefxvwsjtnmpempi` + base puente de Tienda-AR `afbuaxrccittcfhbcwoi`) y `supabase-lr-finanzas` (LR `mnuilbwxanbhnlrblitu` + "Finanzas Personales" `xgsdbkxerbttybyuclwp`, esta última pausada y ajena al ecosistema). Un conector de claude.ai ve también LR. Si un token vence o se revoca, el conector responde `Unauthorized`.
+- **Las cuentas (organizaciones) de Supabase son cuatro**, una por correo (verificado con los conectores el 22/10/2026): tustylovt (FacturAR común + AgendAR), ucachasrl / "Mis redes" (Profesional + AgroDron Tech, ajeno al ecosistema), integraar.soluciones (FinanciAR + base puente de Tienda-AR) y fagottijorger / "Inversiones" (LR + Finanzas Personales). Para mirar una base en el navegador hay que tener abierta la cuenta correcta. **Desde el 08/10/2026 hay 4 conectores MCP locales con token propio** (los tokens viven en la configuración de la app de escritorio, nunca en estos documentos): `supabase-agendar-facturar` (FacturAR común `tehgzhnpcicuucwdefjm` + AgendAR `fkbspjyoawjwuthfhgvs`), `supabase-misredes` (Profesional `pvukzwxwbzkmspdgjoqw`), `supabase-financiar-tienda` (FinanciAR `izprfefxvwsjtnmpempi` + base puente de Tienda-AR `afbuaxrccittcfhbcwoi`) y `supabase-lr-finanzas` (LR `mnuilbwxanbhnlrblitu` + "Finanzas Personales" `xgsdbkxerbttybyuclwp`, esta última pausada y ajena al ecosistema). Un conector de claude.ai ve también LR. Si un token vence o se revoca, el conector responde `Unauthorized`.
 - **Cuenta de prueba de FinanciAR = misma identidad fiscal que la del dueño en FacturAR común** (CUIT 20258523173, mismo certificado): cualquier emisión de prueba es real (CAE real) y comparte numeración. Pedir OK antes de emitir.
 
 ---
@@ -96,6 +139,8 @@ Se publican como paquetes **privados** en GitHub Packages (`@tustylovt-ui/…`).
 | `arca-facturacion` / `arca-common` | 0.1.0 | Fork propio del SDK de ARCA (la cuenta `ramiidv` **no** es propia) | vía `arca-core`; AgendAR y LR lo declaran directo |
 | `bcra-core` | 0.3.0 | Central de Deudores, CUIT y tabla de bancos (nombres completados con padrón A5 y API de cheques; `soloCheques`, `incompleto`) | Profesional 0.3.0 · FinanciAR 0.1.1 (solo usa deudores y CUIT) |
 | `integraar-vinculos` | 0.1.0 | Contrato del protocolo de vínculo v2, firma por par, registro de apps y capacidades | **Publicado pero ninguna app lo adoptó todavía** (etapa A1 del plan `PLAN_PAQUETES_VINCULOS_Y_SCRAPING.md`). Hoy el protocolo vive duplicado en el código de cada app. |
+| `normativa-core` | 0.4.0 | Normativa laboral versionada por vigencia (SMVM, topes SIPA, feriados por jurisdicción, datasets de convenios), manifiesto firmado Ed25519; vigilancia diaria del Boletín Oficial publicada en Vercel (`normativa-vigilancia`) | Sueldos y Jornales Local (carpeta `Logica Normativa\`) |
+| `sueldos-core` | 0.0.1 (local) | Núcleo de cálculo de sueldos: mensual, quincenal, semanal, jornal y hora, SAC, vacaciones, liquidación final, embargos, Ganancias | Sueldos y Jornales Local (`packages\sueldos-core`; todavía no se publica) |
 
 Cada paquete se publica por GitHub Actions al crear un tag `vX.Y.Z`. Planes y decisiones: `Logica Arca\PLAN_*.md`.
 
@@ -137,6 +182,8 @@ Documento técnico completo: [`PROTOCOLO_VINCULO_CONTADOR.md`](PROTOCOLO_VINCULO
 
 **Lint** — `0 errores` en los cinco; los avisos no bloquean. Quedan avisos como deuda: AgendAR 83 (33 `set-state-in-effect`, 45 `exhaustive-deps`), FinanciAR 239 (198 `no-explicit-any`), LR 21. FinanciAR **no tenía configuración de ESLint** hasta el 07/10 (el job "informativo" nunca analizaba nada).
 
+**Keep-alive de Supabase** — workflow `Integra-AR/.github/workflows/supabase-keepalive.yml` (lunes y jueves, 6 bases, solo lectura; ver §7 punto 0).
+
 **Backups** — cinco tareas de Windows semanales (se ejecutan al encender la PC si estaba apagada), JSON local con retención de 8, carpeta `backups/` ignorada por git:
 
 | App | Tarea | Hora (lunes) | Cobertura |
@@ -160,7 +207,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 ---
 
-## 6. Estado de salud por app (08/10/2026)
+## 6. Estado de salud por app (08/10/2026; relevamiento de fechas del 22/10/2026 en §10)
 
 | App | CI | Lint | Tests | Migraciones = base | Backup | Documentos |
 |---|---|---|---|---|---|---|
@@ -173,7 +220,11 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 ---
 
-## 7. Pendientes abiertos (consolidado, por prioridad)
+## 7. Pendientes abiertos (consolidado, por prioridad; revisado el 22/10/2026)
+
+**🚨 Nuevo (22/10/2026)**
+
+0. **Cuatro bases de Supabase están PAUSADAS** (estado `INACTIVE` en los conectores): FacturAR Profesional (`pvukzwxwbzkmspdgjoqw`), FinanciAR (`izprfefxvwsjtnmpempi`), la base puente de Tienda-AR (`afbuaxrccittcfhbcwoi`) y Logística y Reparto (`mnuilbwxanbhnlrblitu`). Con la base pausada esas apps no funcionan en producción (login, datos, vínculos con el contador). Se reactivan con "Restore project" en el panel de Supabase de cada cuenta o con el conector. En el plan gratuito vuelven a pausarse tras ~7 días sin actividad: **Reactivadas el 22/10/2026** (LR, FinanciAR, Tienda-AR y Profesional). **Prevención:** workflow `supabase-keepalive.yml` en este repo (PR #13, mergeado el 22/10/2026): lunes y jueves 08:23 consulta 1 fila de cada una de las 6 bases con la clave pública; falla y avisa por mail si alguna no responde. Secrets cargados: `SUPABASE_ANON_KEY_FACTURAR`, `_PROFESIONAL`, `_AGENDAR`, `_FINANCIAR`, `_LR` y `_TIENDA` (clave `anon`/`publishable`, nunca la `service_role`). **Primera corrida manual (22/10/2026): las 6 bases respondieron HTTP 200.** Riesgo: en un repo público GitHub desactiva los workflows programados tras 60 días sin actividad en el repo (la norma §0 hace que este repo se actualice seguido).
 
 **Seguridad y mantenimiento (tuyos / urgentes)**
 1. Rotar el token personal de GitHub (`ghp_…`) que se pegó una vez en un chat.
@@ -183,7 +234,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 3. ~~Baja iniciada por el cliente desde las apps hijas~~ ✅ probada en FinanciAR (08/10), AgendAR, LR y FacturAR común (09/10/2026; para esta última se usó la cuenta del dueño, que quedó desvinculada; usar una cuenta de prueba aparte, no la del dueño). **Cuidado con esta prueba:** en el núcleo (`api/_lib/ecosistemaReceptor.js`) aceptar una invitación nueva revoca de su lado **todos** los vínculos activos previos de esa cuenta sin avisar a Profesional (queda ACTIVO allá: inconsistencia entre bases), y `desvincularme` da de baja **todos** los vínculos activos de la cuenta y avisa uno por uno. Con la cuenta del dueño (`fagottijorger@gmail.com`, vínculo operativo `d7512b6a`, único de ese contribuyente) la baja cortaría ese vínculo y el rol pasaría a `INDEPENDIENTE`. Recomendado: una cuenta de FacturAR común de prueba nueva (el vínculo de MARCELA `6b7cf020` es de un cliente real: no tocar). Si se toca el núcleo, evaluar que `activar` avise a Profesional al revocar los vínculos previos.)
 4. Emisión real de NC y ND en Logística y Reparto y en AgendAR (Profesional/núcleo ya validado con monotributista y RI).
 5. Probar en pantalla el lápiz de edición del Libro IVA en el núcleo.
-6. ~~`restaurar-backup.mjs --ejecutar` sobre una base descartable (LR y FinanciAR)~~ ✅ 09/10/2026. Queda: borrar el proyecto descartable `restauracion-prueba-descartable` (`zqmxxfymgnxvrrvtvccm`, cuenta "Mis redes"), que tiene copias de datos reales de las cinco apps (incluidos certificados de `arca_config`); lo borra el dueño (Settings → General → Delete project) junto con los `restaurar-*-descartable.ps1` y `limpiar-buckets.mjs` de `C:\Users\Jorge`.
+6. ~~`restaurar-backup.mjs --ejecutar` sobre una base descartable (LR y FinanciAR)~~ ✅ 09/10/2026. Queda: borrar el proyecto descartable `restauracion-prueba-descartable` (`zqmxxfymgnxvrrvtvccm`, cuenta "Mis redes"), que tiene copias de datos reales de las cinco apps (incluidos certificados de `arca_config`); lo borra el dueño (Settings → General → Delete project) junto con los `restaurar-*-descartable.ps1` y `limpiar-buckets.mjs` de `C:\Users\Jorge`. **22/10/2026:** ese proyecto ya no aparece en la cuenta "Mis redes" (solo están Profesional y AgroDron Tech): confirmar que se borró y eliminar los scripts locales.
 
 **Producto / arquitectura**
 7. Adoptar `integraar-vinculos` en las apps (etapa A1: firma por par, registro de apps, receptor/emisor, conformidad) para dejar de duplicar el protocolo.
@@ -200,6 +251,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 ## 8. Acuerdos de trabajo (cómo se opera con Claude y entre apps)
 
+- **Primero este MD general y después el de la app; al cerrar un cambio se actualizan los dos** (norma §0, desde el 22/10/2026).
 - **Una app a la vez**, con rama + PR + CI en verde + OK explícito del dueño antes de mergear a la rama principal. Commits con `Co-Authored-By: Claude …`.
 - **Pedir OK explícito** antes de: emisiones fiscales reales (CAE), migraciones/UPDATE/DELETE en producción, publicar secretos.
 - **Los secretos los carga el dueño** en GitHub/Vercel/Supabase; Claude prepara el formulario con el nombre y el valor vacío. No se pegan tokens en el chat.
@@ -222,3 +274,29 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | AgendAR / FinanciAR | `AgendAR\PENDIENTES.md` + `DESARROLLO.md`; `FinanciAR\PENDIENTES.md` (resumen verificado arriba) + `BACKUPS.md` + `migraciones\README.md` |
 | LR | `Logistica-y-Reparto\README.md` |
 | Paquetes y planes | `Logica Arca\PLAN_PAQUETE_ARCA_COMPARTIDO.md`, `PLAN_FORK_ARCA_SDK.md`, `PLAN_PAQUETES_VINCULOS_Y_SCRAPING.md` y el README/CHANGELOG de cada paquete |
+| Facturador Local | `Facturador Local\DESARROLLO_TECNICO.md`, `README.md`, `COBROS_MERCADOPAGO.md` |
+| Sueldos y Jornales Local, planilla Excel y normativa | `Sueldos y Jornales Local\DESARROLLO.md` + `docs\`; `Liquidacion Sueldo\trabajo\DESARROLLO.md`; `Logica Normativa\normativa-core\README.md` + `PENDIENTES.md` |
+| Control de actualización de los MD | §10 de este archivo |
+
+---
+
+## 10. Control de actualización de los documentos (relevado el 22/10/2026)
+
+**Cómo se relevó:** fecha de modificación de cada MD en disco, último commit local y de `origin`, último deploy de producción en Vercel, última migración registrada y estado del proyecto en Supabase (conectores locales). Al cerrar un cambio en una app, actualizar su fila.
+
+| App | MD de la app (modificado) | Último commit en la rama principal | Último deploy prod. Vercel | Última migración Supabase | Base | ¿MD al día? |
+|---|---|---|---|---|---|---|
+| FacturAR común | `ESTADO_FACTURAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 | 09/10 22:34 (PR #17) | 09/10 (PR #17) ✅ | 24/09 `seguridad_is_admin_suscripciones_uso` | ✅ activa | ✅ Sí. La restauración del 09/10 está en `BACKUPS.md`, no en `ESTADO_FACTURAR.md` (menor). |
+| FacturAR Profesional | `PENDIENTES.md` 09/10 · `README.md` 29/09 · `VARIANTE_PROFESIONAL.md` 26/09 | 09/10 22:34 (PR #32) | 09/10 (PR #32) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ `PENDIENTES.md` al día. ⚠️ `README.md` y `VARIANTE_PROFESIONAL.md` son de septiembre: revisar que reflejen el módulo contable. |
+| AgendAR | `ESTADO AGENDAR.md` 07/10 · `PENDIENTES.md` 09/10 · `BACKUPS.md` 09/10 | 09/10 12:38 (PR #25) | 09/10 (PR #25) ✅ | 02/09 `billing_comprobantes_emitido_por_externo` | ✅ activa | ✅ Casi. ⚠️ La cabecera de `ESTADO AGENDAR.md` todavía dice que el CI falla por falta de `GH_PACKAGES_TOKEN` (07/10), pero §6 lo da en verde desde el 08/10: corregir esa frase. |
+| FinanciAR | `ESTADO_FINANCIAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 | 09/10 22:42 (PR #27) | 09/10 (PR #27) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ⚠️ No: el PR #27 (09/10, datos fiscales al activar el vínculo) no figura en `ESTADO_FINANCIAR.md` ni en `PENDIENTES.md` (solo acá, §4). `README.md` es del 15/09. |
+| Logística y Reparto | `README.md` 09/10 | 09/10 11:06 (PR #13) | 09/10 (PR #13) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ Sí. |
+| TiendaAR (módulo) | `ESTADO_TIENDAAR.md` 09/10 · `README.md` 09/10 | 09/10 22:51 (PR #6) | 09/10 (PR #6) ✅ | n/d (SQL manual en `migraciones/`) | ⛔ base puente **pausada** (vacía) | ✅ Sí. |
+| Integra-AR (sitio + este MD) | `ECOSISTEMA.md` 22/10 · `ESTADO.md` 23/09 | `main` 22/10 (PR #12 protocolo y PR #13 keep-alive, mergeados) | 09/10 (PR #11) ✅ | — | — | ⚠️ `ESTADO.md` (23/09) no incluye FacturAR Profesional, Facturador Local ni Sueldos y Jornales en el sitio. Este MD y la norma §0 van en el PR `docs/norma-md-general`. |
+| Facturador Local | `DESARROLLO_TECNICO.md` 29/09 · `README.md` 01/08 | 29/09 17:54 (git local, sin remoto) | — (app local, instalador `.exe`) | — | — | ⚠️ El encabezado dice "Última actualización: 14/08/2026" y §2 todavía dice "persistencia en JSON" (el código ya usa SQLite). El README se titula "Facturador Rápido". |
+| Facturador Rápido (variante simple) | `DESARROLLO_TECNICO.md` 29/09 · `README.md` 14/08 | 29/09 17:54 (git local) | — | — | — | Definir si sigue viva o se archiva. |
+| Sueldos y Jornales Local | `DESARROLLO.md` 21/10 (§46–§47 **sin commitear**) | 15/10 13:13 (git local, sin remoto) | — (local) | — (base local cifrada) | — | ✅ Al día; falta commitear `DESARROLLO.md`. |
+| Planilla Excel de sueldos (`Liquidacion Sueldo`) | `trabajo\DESARROLLO.md` 21/10 | sin git | — | — | — | ✅ Al día (producto aparte; oráculo de pruebas de Sueldos). |
+| Paquetes | `arca-core` 04/10 · `bcra-core` 06/10 · `integraar-vinculos` 09/10 (rama `docs/contrato-alineado-produccion` sin mergear) · `normativa-core` 15/10 | — | `normativa-vigilancia` 13/10 ✅ | — | — | ✅ |
+
+**Conclusión del relevamiento:** desde el 09/10/2026 no hubo cambios de código, deploys ni migraciones en las apps web. El trabajo del 10 al 21/10 fue en Sueldos y Jornales Local, la planilla Excel de sueldos y `normativa-core`. Los MD de las apps web reflejan ese estado, salvo las excepciones marcadas con ⚠️. Las ramas locales de núcleo, Profesional, AgendAR, FinanciAR y Tienda-AR ya están mergeadas y quedaron 1 commit atrás de `main`: hacer `git switch main && git pull` antes de seguir.
