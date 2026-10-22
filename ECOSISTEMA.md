@@ -184,6 +184,16 @@ Documento técnico completo: [`PROTOCOLO_VINCULO_CONTADOR.md`](PROTOCOLO_VINCULO
 
 **Keep-alive de Supabase** — workflow `Integra-AR/.github/workflows/supabase-keepalive.yml` (lunes y jueves, 6 bases, solo lectura; ver §7 punto 0).
 
+**Backups — 22/10/2026:** la reinstalación de Windows del 18/10 borró las 5 tareas (no hubo copias entre el 07-12/10 y el 22/10). Se recrearon el 22/10 con el mismo horario (lunes; corren ocultas y al encender si la PC estaba apagada; log en `backups/ultima-corrida.log` de cada app) y se corrió una copia de cada app ese día: AgendAR 23 tablas + 6 archivos, LR 17 + 4, núcleo 45 + 16, Profesional 53 + 1, FinanciAR 30 + 6. Si se vuelve a reinstalar Windows, recrearlas así (una por app, cambiando nombre, carpeta y hora):
+
+```powershell
+$d = 'C:\Desarrollo Integrar\AGENDAR\AgendAR'   # carpeta con scripts\backup-supabase.mjs (LR: ...\dashboard-web)
+$cmd = "Set-Location -LiteralPath '$d'; New-Item -ItemType Directory -Force backups | Out-Null; & node scripts\backup-supabase.mjs *> backups\ultima-corrida.log; exit `$LASTEXITCODE"
+$accion = New-ScheduledTaskAction -Execute powershell.exe -Argument "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -Command `"$cmd`"" -WorkingDirectory $d
+$config = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1)
+Register-ScheduledTask -TaskName 'AgendAR Backup Supabase' -Action $accion -Trigger (New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 21:00) -Settings $config -Force
+```
+
 **Backups** — cinco tareas de Windows semanales (se ejecutan al encender la PC si estaba apagada), JSON local con retención de 8, carpeta `backups/` ignorada por git:
 
 | App | Tarea | Hora (lunes) | Cobertura |
@@ -226,6 +236,8 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 0. **Cuatro bases de Supabase están PAUSADAS** (estado `INACTIVE` en los conectores): FacturAR Profesional (`pvukzwxwbzkmspdgjoqw`), FinanciAR (`izprfefxvwsjtnmpempi`), la base puente de Tienda-AR (`afbuaxrccittcfhbcwoi`) y Logística y Reparto (`mnuilbwxanbhnlrblitu`). Con la base pausada esas apps no funcionan en producción (login, datos, vínculos con el contador). Se reactivan con "Restore project" en el panel de Supabase de cada cuenta o con el conector. En el plan gratuito vuelven a pausarse tras ~7 días sin actividad: **Reactivadas el 22/10/2026** (LR, FinanciAR, Tienda-AR y Profesional). **Prevención:** workflow `supabase-keepalive.yml` en este repo (PR #13, mergeado el 22/10/2026): lunes y jueves 08:23 consulta 1 fila de cada una de las 6 bases con la clave pública; falla y avisa por mail si alguna no responde. Secrets cargados: `SUPABASE_ANON_KEY_FACTURAR`, `_PROFESIONAL`, `_AGENDAR`, `_FINANCIAR`, `_LR` y `_TIENDA` (clave `anon`/`publishable`, nunca la `service_role`). **Primera corrida manual (22/10/2026): las 6 bases respondieron HTTP 200.** Riesgo: en un repo público GitHub desactiva los workflows programados tras 60 días sin actividad en el repo (la norma §0 hace que este repo se actualice seguido).
 
+0b. **Backups sin correr entre el 07-12/10 y el 22/10/2026** por la reinstalación de Windows del 18/10: tareas recreadas y copias corridas el 22/10 (§5).
+
 **Seguridad y mantenimiento (tuyos / urgentes)**
 1. Rotar el token personal de GitHub (`ghp_…`) que se pegó una vez en un chat.
 2. Renovar `PACKAGES_READ_TOKEN` / `GH_PACKAGES_TOKEN` **antes del 02/01/2027** (vencen) y recargarlos en los repos y en Vercel.
@@ -246,6 +258,8 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 13. Ruido de logs: aviso `DEP0169` (`url.parse()`) en las funciones de Profesional (viene de una dependencia; investigar de dónde).
 14. Tienda-AR (relevado el 08/10/2026, parcialmente resuelto el 09/10/2026): se agregó CI y `next` 15.5.27 con `npm audit fix` (vulnerabilidades de producción 7 → 4, sin críticas). Pendiente: `mercadopago` 3.x (cambio mayor, afecta el cobro) y Next 16 para lo que queda, tests del checkout y `zod` declarado sin uso. Detalle en `Tienda-AR\ESTADO_TIENDAAR.md`.
 15. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
+16. 🔒 **Núcleo (`tehgzhnpcicuucwdefjm`, verificado el 22/10/2026):** la política `Ver invitacion pendiente` de `vinculos_contador` deja a `anon` y `authenticated` leer todos los vínculos PENDIENTE, y `anon` puede ejecutar `calcular_facturacion_anual` y `puede_emitir_factura`.
+17. **Pendientes por app verificados el 22/10/2026:** cada MD principal tiene arriba un bloque "Pendientes reales al 22/10/2026" con lo que sigue abierto y lo que ya se resolvió.
 
 ---
 
