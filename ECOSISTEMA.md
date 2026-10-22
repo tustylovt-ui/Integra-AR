@@ -258,7 +258,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 13. Ruido de logs: aviso `DEP0169` (`url.parse()`) en las funciones de Profesional (viene de una dependencia; investigar de dónde).
 14. Tienda-AR (relevado el 08/10/2026, parcialmente resuelto el 09/10/2026): se agregó CI y `next` 15.5.27 con `npm audit fix` (vulnerabilidades de producción 7 → 4, sin críticas). Pendiente: `mercadopago` 3.x (cambio mayor, afecta el cobro) y Next 16 para lo que queda, tests del checkout y `zod` declarado sin uso. Detalle en `Tienda-AR\ESTADO_TIENDAAR.md`.
 15. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
-16. 🔒 **Núcleo (`tehgzhnpcicuucwdefjm`, verificado el 22/10/2026):** la política `Ver invitacion pendiente` de `vinculos_contador` deja a `anon` y `authenticated` leer todos los vínculos PENDIENTE, y `anon` puede ejecutar `calcular_facturacion_anual` y `puede_emitir_factura`.
+16. ~~🔒 Núcleo: política `Ver invitacion pendiente` abierta y `calcular_facturacion_anual`/`puede_emitir_factura` ejecutables por cualquiera~~ ✅ **Corregido el 22/10/2026** (FacturAR PR #22 + migración `20261022215003_seguridad_invitacion_y_funciones`, verificada con el rol `anon`).
 17. **Pendientes por app verificados el 22/10/2026:** cada MD principal tiene arriba un bloque "Pendientes reales al 22/10/2026" con lo que sigue abierto y lo que ya se resolvió.
 
 ---
