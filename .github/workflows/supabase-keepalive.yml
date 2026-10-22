@@ -1,0 +1,75 @@
+name: Supabase keep-alive
+
+# Hace una consulta de lectura liviana (1 fila, sin escribir nada) a cada base de
+# Supabase del ecosistema para que el plan gratuito no la pause por inactividad
+# (Supabase pausa tras ~7 días sin uso). Corre dos veces por semana para que nunca
+# pasen 7 días entre consultas aunque GitHub demore una corrida.
+# Se puede lanzar a mano: pestaña Actions -> "Supabase keep-alive" -> Run workflow.
+# Claves: secrets SUPABASE_ANON_KEY_<APP> (clave pública "anon"/"publishable" de cada base).
+
+on:
+  schedule:
+    - cron: '23 11 * * 1,4'   # lunes y jueves 08:23 hora de Argentina (11:23 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Consultar cada base
+        env:
+          KEY_FACTURAR: ${{ secrets.SUPABASE_ANON_KEY_FACTURAR }}
+          KEY_PROFESIONAL: ${{ secrets.SUPABASE_ANON_KEY_PROFESIONAL }}
+          KEY_AGENDAR: ${{ secrets.SUPABASE_ANON_KEY_AGENDAR }}
+          KEY_FINANCIAR: ${{ secrets.SUPABASE_ANON_KEY_FINANCIAR }}
+          KEY_LR: ${{ secrets.SUPABASE_ANON_KEY_LR }}
+          KEY_TIENDA: ${{ secrets.SUPABASE_ANON_KEY_TIENDA }}
+        run: |
+          set -u
+          # nombre|project ref|tabla que se consulta|variable con la clave
+          BASES='FacturAR común|tehgzhnpcicuucwdefjm|planes|KEY_FACTURAR
+          FacturAR Profesional|pvukzwxwbzkmspdgjoqw|planes|KEY_PROFESIONAL
+          AgendAR|fkbspjyoawjwuthfhgvs|plan_definitions|KEY_AGENDAR
+          FinanciAR|izprfefxvwsjtnmpempi|planes_config|KEY_FINANCIAR
+          Logística y Reparto|mnuilbwxanbhnlrblitu|empresas|KEY_LR
+          Tienda-AR (base puente)|afbuaxrccittcfhbcwoi|tienda_config|KEY_TIENDA'
+
+          fallas=0
+          while IFS='|' read -r nombre ref tabla var; do
+            nombre="$(echo "$nombre" | sed 's/^[[:space:]]*//')"
+            [ -z "$ref" ] && continue
+            clave="${!var:-}"
+            if [ -z "$clave" ]; then
+              echo "::error title=${nombre}::Falta el secret SUPABASE_ANON_KEY_${var#KEY_}"
+              fallas=$((fallas+1)); continue
+            fi
+            codigo=$(curl -sS -o respuesta.txt -w '%{http_code}' --max-time 60 \
+              --retry 2 --retry-delay 30 --retry-all-errors \
+              -H "apikey: ${clave}" \
+              "https://${ref}.supabase.co/rest/v1/${tabla}?select=*&limit=1" || true)
+            cuerpo="$(head -c 300 respuesta.txt 2>/dev/null || true)"
+            if [ "$codigo" = "200" ] || [ "$codigo" = "206" ]; then
+              echo "✅ ${nombre}: la base respondió (HTTP ${codigo})"
+            elif { [ "$codigo" = "401" ] || [ "$codigo" = "403" ]; } && echo "$cuerpo" | grep -q '42501'; then
+              # El permiso lo negó Postgres: la consulta llegó a la base, así que cuenta como actividad.
+              echo "✅ ${nombre}: la base respondió (permiso denegado por RLS, HTTP ${codigo})"
+            else
+              echo "::error title=${nombre}::La base no respondió bien (HTTP ${codigo:-sin respuesta}). Si está pausada, reactivarla con 'Restore project' en Supabase. Respuesta: ${cuerpo}"
+              fallas=$((fallas+1))
+            fi
+          done <<< "$BASES"
+          rm -f respuesta.txt
+
+          if [ "$fallas" -gt 0 ]; then
+            echo "::error::${fallas} base(s) con problemas"
+            exit 1
+          fi
+          echo "Las 6 bases respondieron."
