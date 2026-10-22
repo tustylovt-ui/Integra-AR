@@ -1,4 +1,7 @@
 # IntegraAR — Estado del Proyecto
+
+> 📌 **Norma del ecosistema:** antes de este archivo se lee el MD general `C:\Desarrollo Integrar\INTEGRAAR\Integra-AR\ECOSISTEMA.md`. Al cerrar un cambio se actualizan los dos: este archivo y el general (fecha de la cabecera, §2, §7 y §10). Lecciones operativas históricas: `GUIA_CLAUDE_ECOSISTEMA.md` (mismo repo).
+
 **Última actualización:** 23 Septiembre 2026 — agregada FinanciAR (ya estaba en index.html) y **Logística y Reparto** (nueva: `lr.html` + ruta `/lr` + card en index + footers cruzados de todas las páginas)
 **Tipo:** Sitio web institucional estático (HTML + CSS vanilla)
 **Propósito:** Presentación de la marca IntegraAR y sus aplicaciones
