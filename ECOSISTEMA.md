@@ -225,7 +225,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | FacturAR común | ✅ | 0 errores (no bloqueante en CI) | ✅ | n/d | ✅ 45 tablas | `PENDIENTES`, `README`, `BACKUPS`, `ARCA_SCRAPING`… al día |
 | AgendAR | ✅ | 0 errores / 83 avisos (bloqueante) | 87 | ✅ | ✅ | al día |
 | FinanciAR | ✅ | 0 errores / 239 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba |
-| LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 38 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
+| LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 39 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
 | Tienda-AR | ✅ (desde el 09/10/2026: tipos + lint + build) | 0 errores / 1 aviso | ❌ no tiene | n/d (SQL manual, `migraciones/`) | ❌ la base puente **no tiene backup** (vacía, verificado 09/10/2026) | `ESTADO_TIENDAAR.md` + `README.md` (base puente corregida el 08/10/2026) |
 
 ---
@@ -259,6 +259,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 14. Tienda-AR (relevado el 08/10/2026, parcialmente resuelto el 09/10/2026): se agregó CI y `next` 15.5.27 con `npm audit fix` (vulnerabilidades de producción 7 → 4, sin críticas). Pendiente: `mercadopago` 3.x (cambio mayor, afecta el cobro) y Next 16 para lo que queda, tests del checkout y `zod` declarado sin uso. Detalle en `Tienda-AR\ESTADO_TIENDAAR.md`.
 15. "Leaked password protection" de Supabase Auth requiere plan Pro (bloqueado por plan).
 16. ~~🔒 Núcleo: política `Ver invitacion pendiente` abierta y `calcular_facturacion_anual`/`puede_emitir_factura` ejecutables por cualquiera~~ ✅ **Corregido el 22/10/2026** (FacturAR PR #22 + migración `20261022215003_seguridad_invitacion_y_funciones`, verificada con el rol `anon`).
+16b. ~~🔒 LR: `spatial_ref_sys` (PostGIS) escribible por `anon`/`authenticated` (aviso crítico del asesor)~~ ✅ **Corregido el 22/10/2026**: la tabla es de `supabase_admin` y no admite RLS ni revocar permisos, así que se bloqueó con triggers que rechazan toda escritura salvo de los roles administradores (migración `20261022220000` = archivo `0026`, LR PR #16). Verificado con `anon`: escribir da `42501`, leer y `geography` siguen funcionando.
 17. **Pendientes por app verificados el 22/10/2026:** cada MD principal tiene arriba un bloque "Pendientes reales al 22/10/2026" con lo que sigue abierto y lo que ya se resolvió.
 
 ---
@@ -304,7 +305,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | FacturAR Profesional | `PENDIENTES.md` 09/10 · `README.md` 29/09 · `VARIANTE_PROFESIONAL.md` 26/09 | 09/10 22:34 (PR #32) | 09/10 (PR #32) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ `PENDIENTES.md` al día. ⚠️ `README.md` y `VARIANTE_PROFESIONAL.md` son de septiembre: revisar que reflejen el módulo contable. |
 | AgendAR | `ESTADO AGENDAR.md` 07/10 · `PENDIENTES.md` 09/10 · `BACKUPS.md` 09/10 | 09/10 12:38 (PR #25) | 09/10 (PR #25) ✅ | 02/09 `billing_comprobantes_emitido_por_externo` | ✅ activa | ✅ Casi. ⚠️ La cabecera de `ESTADO AGENDAR.md` todavía dice que el CI falla por falta de `GH_PACKAGES_TOKEN` (07/10), pero §6 lo da en verde desde el 08/10: corregir esa frase. |
 | FinanciAR | `ESTADO_FINANCIAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 | 09/10 22:42 (PR #27) | 09/10 (PR #27) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ⚠️ No: el PR #27 (09/10, datos fiscales al activar el vínculo) no figura en `ESTADO_FINANCIAR.md` ni en `PENDIENTES.md` (solo acá, §4). `README.md` es del 15/09. |
-| Logística y Reparto | `README.md` 09/10 | 09/10 11:06 (PR #13) | 09/10 (PR #13) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ Sí. |
+| Logística y Reparto | `README.md` 22/10 | 22/10 (PR #15 pendientes; PR #16 `spatial_ref_sys` abierto) | 09/10 (PR #13) ✅ | 22/10 `bloquear_escritura_spatial_ref_sys` | ✅ activa (reactivada el 22/10) | ✅ Sí. |
 | TiendaAR (módulo) | `ESTADO_TIENDAAR.md` 09/10 · `README.md` 09/10 | 09/10 22:51 (PR #6) | 09/10 (PR #6) ✅ | n/d (SQL manual en `migraciones/`) | ⛔ base puente **pausada** (vacía) | ✅ Sí. |
 | Integra-AR (sitio + este MD) | `ECOSISTEMA.md` 22/10 · `ESTADO.md` 23/09 | `main` 22/10 (PR #12 protocolo y PR #13 keep-alive, mergeados) | 09/10 (PR #11) ✅ | — | — | ⚠️ `ESTADO.md` (23/09) no incluye FacturAR Profesional, Facturador Local ni Sueldos y Jornales en el sitio. Este MD y la norma §0 van en el PR `docs/norma-md-general`. |
 | Facturador Local | `DESARROLLO_TECNICO.md` 29/09 · `README.md` 01/08 | 29/09 17:54 (git local, sin remoto) | — (app local, instalador `.exe`) | — | — | ⚠️ El encabezado dice "Última actualización: 14/08/2026" y §2 todavía dice "persistencia en JSON" (el código ya usa SQLite). El README se titula "Facturador Rápido". |
