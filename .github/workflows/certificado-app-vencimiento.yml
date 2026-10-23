@@ -1,0 +1,37 @@
+name: Vencimiento del certificado de la app (padrón ARCA)
+
+# Todos los días revisa cuándo vence el CERTIFICADO DE LA APLICACIÓN (el único con las relaciones de padrón, que usan todas las apps del
+# ecosistema; nunca el de cada cliente). Falla —y GitHub te manda el mail de "workflow fallido"— desde 15 días antes del vencimiento, así
+# hay tiempo de renovarlo en ARCA y reemplazarlo una sola vez en las variables compartidas de Vercel.
+#
+# Necesita el secreto ARCA_APP_CERT con el certificado PÚBLICO (.crt / PEM). No hace falta la clave privada: el vencimiento está en el
+# certificado público. Al renovar, actualizar este secreto junto con ARCA_CERT / ARCA_PRIVATE_KEY en Vercel.
+on:
+  schedule:
+    - cron: '17 12 * * *'   # todos los días 09:17 (Argentina)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revisar vencimiento (aviso 15 días antes)
+        env:
+          ARCA_APP_CERT: ${{ secrets.ARCA_APP_CERT }}
+        run: |
+          if [ -z "$ARCA_APP_CERT" ]; then
+            echo "::error::Falta el secreto ARCA_APP_CERT (certificado público de la app)."; exit 1
+          fi
+          printf '%b' "$ARCA_APP_CERT" | sed 's/\\n/\n/g' > cert.pem
+          VENCE=$(openssl x509 -in cert.pem -noout -enddate | cut -d= -f2)
+          DIAS=$(( ( $(date -d "$VENCE" +%s) - $(date +%s) ) / 86400 ))
+          echo "El certificado de la app vence el $VENCE (faltan $DIAS días)."
+          if [ "$DIAS" -lt 0 ]; then
+            echo "::error::El certificado de la app VENCIÓ el $VENCE: la consulta al padrón no funciona en ninguna app hasta reemplazarlo."; exit 1
+          fi
+          if [ "$DIAS" -le 15 ]; then
+            echo "::error::El certificado de la app vence en $DIAS días ($VENCE): renovarlo en ARCA y reemplazar ARCA_CERT / ARCA_PRIVATE_KEY (Vercel) y ARCA_APP_CERT (este repo)."; exit 1
+          fi
