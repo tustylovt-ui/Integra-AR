@@ -25,8 +25,13 @@ jobs:
           if [ -z "$ARCA_APP_CERT" ]; then
             echo "::error::Falta el secreto ARCA_APP_CERT (certificado público de la app)."; exit 1
           fi
-          printf '%b' "$ARCA_APP_CERT" | sed 's/\\n/\n/g' > cert.pem
-          VENCE=$(openssl x509 -in cert.pem -noout -enddate | cut -d= -f2)
+          # ARCA entrega el .crt con todo el base64 en UNA línea y el END pegado al final: openssl no lo lee así. Se rearma el PEM estándar
+          # (base64 sin espacios, en líneas de 64) sea cual sea el formato pegado: una línea, varias líneas o con "\n" literales.
+          B64=$(printf '%s' "$ARCA_APP_CERT" | sed 's/\\n/\n/g' | tr -d '\r' | sed -e 's/-----BEGIN CERTIFICATE-----//' -e 's/-----END CERTIFICATE-----//' | tr -d ' \n\t')
+          { echo '-----BEGIN CERTIFICATE-----'; printf '%s' "$B64" | fold -w 64; echo; echo '-----END CERTIFICATE-----'; } > cert.pem
+          if ! VENCE=$(openssl x509 -in cert.pem -noout -enddate 2>/dev/null | cut -d= -f2) || [ -z "$VENCE" ]; then
+            echo "::error::ARCA_APP_CERT no es un certificado legible: pegar el contenido completo del .crt público de la app."; exit 1
+          fi
           DIAS=$(( ( $(date -d "$VENCE" +%s) - $(date +%s) ) / 86400 ))
           echo "El certificado de la app vence el $VENCE (faltan $DIAS días)."
           if [ "$DIAS" -lt 0 ]; then
