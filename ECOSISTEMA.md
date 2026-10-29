@@ -1,4 +1,4 @@
-# Ecosistema IntegraAR — MD general del ecosistema (estado al 28/10/2026)
+# Ecosistema IntegraAR — MD general del ecosistema (estado al 29/10/2026)
 
 > **Este es el MD general del ecosistema (documento de entrada).** En **toda** sesión nueva —se trabaje sobre una app o sobre varias— se lee este archivo primero y después el MD de la app que se va a tratar (norma en §0).
 > Se mantiene en el repo `Integra-AR` (el sitio institucional) porque es el único que no pertenece a ninguna app. Cuando cambie algo que cruza apps (vínculos, paquetes, backups, CI, secretos), se actualiza **acá y en el repo afectado**.
@@ -109,11 +109,11 @@ flowchart TB
 
 | App | MD principal | Complementarios |
 |---|---|---|
-| FacturAR común | `FACTURAR\FacturAR\ESTADO_FACTURAR.md` | `PENDIENTES.md`, `ESTADO_FACTURAR_DB.md`, `BACKUPS.md`, `ARCA_SCRAPING.md` |
-| FacturAR Profesional | `FACTURAR\FacturAR-Profesional\PENDIENTES.md` | `VARIANTE_PROFESIONAL.md`, `LEEME_VARIANTE.md`, `BACKUPS.md`, `MAPA_DEPENDENCIAS_MODULOS.md` |
+| FacturAR común | `FACTURAR\FacturAR\ESTADO_FACTURAR.md` | `PENDIENTES.md`, `ESTADO_FACTURAR_DB.md`, `BACKUPS.md`, `ARCA_SCRAPING.md` · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #31) |
+| FacturAR Profesional | `FACTURAR\FacturAR-Profesional\PENDIENTES.md` | `VARIANTE_PROFESIONAL.md`, `LEEME_VARIANTE.md`, `BACKUPS.md`, `MAPA_DEPENDENCIAS_MODULOS.md` · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #37) |
 | AgendAR | `AGENDAR\AgendAR\ESTADO AGENDAR.md` | `PENDIENTES.md`, `DESARROLLO.md`, `BACKUPS.md` |
 | FinanciAR | `FINANCIAR\FinanciAR\ESTADO_FINANCIAR.md` | `PENDIENTES.md`, `HISTORIAL_FINANCIAR.md`, `BACKUPS.md` |
-| Logística y Reparto | `LOGISTICAYREPARTO\Logistica-y-Reparto\README.md` | `dashboard-web\README.md` |
+| Logística y Reparto | `LOGISTICAYREPARTO\Logistica-y-Reparto\README.md` | `dashboard-web\README.md` · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #33) |
 | TiendaAR (módulo) | `TIENDAAR\Tienda-AR\ESTADO_TIENDAAR.md` | `README.md` |
 | Integra-AR (sitio) | `INTEGRAAR\Integra-AR\ESTADO.md` | `PROTOCOLO_VINCULO_CONTADOR.md`, `SEGURIDAD_TOKENS.md` |
 | Facturador Local | `Facturador Local\DESARROLLO_TECNICO.md` | `README.md`, `COBROS_MERCADOPAGO.md` |
@@ -203,7 +203,7 @@ Register-ScheduledTask -TaskName 'AgendAR Backup Supabase' -Action $accion -Trig
 |---|---|---|---|
 | AgendAR | `AgendAR Backup Supabase` | 21:00 | tablas |
 | LR | `LR Backup Supabase` | 21:30 | 17 tablas + 4 buckets de Storage |
-| FacturAR común | `FacturAR Comun Backup Supabase` | 22:00 | 45 tablas |
+| FacturAR común | `FacturAR Comun Backup Supabase` | 22:00 | 45 tablas · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #31) |
 | Profesional | `FacturAR Profesional Backup Supabase` | 22:15 | 53 tablas (incluye todo el módulo contable) |
 | FinanciAR | `FinanciAR Backup Supabase` | 22:30 | 30 tablas + 4 buckets de Storage |
 
@@ -225,7 +225,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | App | CI | Lint | Tests | Migraciones = base | Backup | Documentos |
 |---|---|---|---|---|---|---|
 | Profesional | ✅ | 0 errores | 472 | n/d (se aplican por SQL; ver `migraciones/`) | ✅ 53 tablas | `PENDIENTES.md` al día |
-| FacturAR común | ✅ | 0 errores (no bloqueante en CI) | ✅ | n/d | ✅ 45 tablas | `PENDIENTES`, `README`, `BACKUPS`, `ARCA_SCRAPING`… al día |
+| FacturAR común | ✅ | 0 errores (no bloqueante en CI) | ✅ | n/d | ✅ 45 tablas | `PENDIENTES`, `README`, `BACKUPS`, `ARCA_SCRAPING`… al día · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #31) |
 | AgendAR | ✅ | 0 errores / 83 avisos (bloqueante) | 87 | ✅ | ✅ | al día |
 | FinanciAR | ✅ | 0 errores / 239 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba |
 | LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 75 | ✅ 39 archivos | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
@@ -285,7 +285,8 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
     - **Criterio del dueño (28/10):** la condición IVA y el inicio de actividades se dejan seteados **al cargar el certificado** (consulta al padrón con el certificado de la app) y se **revalidan en los meses de recategorización (enero y julio)**. Ingresos Brutos es siempre manual; vacío = no se imprime.
     - **Hecho 28/10:** `arca-core` **0.10.0** (`perfilEmisorDesdePadron`, `inicioActividadesDesdePadron`, `formatearInicioActividades`, `debeRevalidarPerfilEmisor`; PR #3). **AgendAR ✅** (PR #35 y #36): IIBB manual y oculto si está vacío, columnas `fecha_inicio_actividades` y `perfil_fiscal_consultado_at` (migración 20261028201332, aplicada), cron `0 12 2-8 1,7 *` → `/api/billing/revalidar-perfil-cron`. Probado con el certificado real: quedó MONOTRIBUTISTA e inicio `2026-02`.
     - **Hallazgo:** la consulta A13 del padrón **no devuelve impuestos**; sólo la constancia A5 (`consultarCuitDetalle`) los trae, con períodos AAAAMM (el padrón no da el día exacto). Por eso AgendAR consulta A5 primero y cae a A13. Las demás apps deben hacer lo mismo.
-    - **Pendiente:** el dueño debe confirmar el inicio real contra su constancia (`2026-02` puede ser el alta de monotributo, no el inicio de actividad; corregible a mano y nunca se pisa). Verificar el PDF regenerado de la NC 0007-00000004 (esperado: Responsable Monotributo, sin línea de IIBB, inicio 02/2026). **Faltan FacturAR, Profesional, LR y FinanciAR** (una app a la vez; revisar el PDF de FinanciAR).
+    - **Hecho 29/10:** el dueño confirmó que `2026-02` es el alta de su monotributo (correcto). Mismo arreglo (IIBB manual y oculto si está vacío; condición e inicio desde el padrón al guardar el certificado y cada 7 días, que cubre enero/julio; el inicio manual nunca se pisa) en **FacturAR común ✅** (PR #31), **FacturAR Profesional ✅** (PR #37) y **Logística y Reparto ✅** (PR #33; el inicio se guarda como día 01 y el PDF imprime MM/AAAA). Los tres usan `arca-core` 0.10.0.
+    - **Pendiente:** probar con el certificado real en FacturAR, Profesional y LR (guardar el certificado, revisar condición e inicio, generar un PDF); verificar el QR de ARCA en un PDF de NC regenerado (opcional; requiere OK por ser UPDATE en producción o emitir con CAE). **Falta sólo FinanciAR** (revisar si su PDF imprime el CUIT como IIBB).
 
 ---
 
@@ -326,11 +327,11 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 | App | MD de la app (modificado) | Último commit en la rama principal | Último deploy prod. Vercel | Última migración Supabase | Base | ¿MD al día? |
 |---|---|---|---|---|---|---|
-| FacturAR común | `ESTADO_FACTURAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 · 27/10: tipos de comprobante por condición del emisor con `arca-core` 0.9.0 (PR #29 y #30; `PENDIENTES.md` al día) | 09/10 22:34 (PR #17) | 09/10 (PR #17) ✅ | 24/09 `seguridad_is_admin_suscripciones_uso` | ✅ activa | ✅ Sí. La restauración del 09/10 está en `BACKUPS.md`, no en `ESTADO_FACTURAR.md` (menor). |
-| FacturAR Profesional | `PENDIENTES.md` 27/10 (padrón del receptor PR #28 y emisión del puente del contador PR #29, ambos con `facturador-core`; y PR #30: `arca-emitir` y emisión de clínica piden el CAE por `facturador-core` con resguardos de importes y fecha; el guardado sigue en las pantallas; CAE real probado el 27/10: FC 0007-00000039/40/41, NC C 0007-00000004 y ND C 0007-00000005, PV 7, producción; tipos por condición del emisor con `arca-core` 0.9.0 (PR #35 y #36); falta probar el puente del contador y la clínica; recibos de AgendAR son internos sin CAE) · `README.md` 29/09 · `VARIANTE_PROFESIONAL.md` 26/09 | 09/10 22:34 (PR #32) | 09/10 (PR #32) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ `PENDIENTES.md` al día. ⚠️ `README.md` y `VARIANTE_PROFESIONAL.md` son de septiembre: revisar que reflejen el módulo contable. |
+| FacturAR común | `ESTADO_FACTURAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 · 27/10: tipos de comprobante por condición del emisor con `arca-core` 0.9.0 (PR #29 y #30; `PENDIENTES.md` al día) | 09/10 22:34 (PR #17) | 09/10 (PR #17) ✅ | 24/09 `seguridad_is_admin_suscripciones_uso` | ✅ activa | ✅ Sí. La restauración del 09/10 está en `BACKUPS.md`, no en `ESTADO_FACTURAR.md` (menor). · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #31) |
+| FacturAR Profesional | `PENDIENTES.md` 27/10 (padrón del receptor PR #28 y emisión del puente del contador PR #29, ambos con `facturador-core`; y PR #30: `arca-emitir` y emisión de clínica piden el CAE por `facturador-core` con resguardos de importes y fecha; el guardado sigue en las pantallas; CAE real probado el 27/10: FC 0007-00000039/40/41, NC C 0007-00000004 y ND C 0007-00000005, PV 7, producción; tipos por condición del emisor con `arca-core` 0.9.0 (PR #35 y #36); falta probar el puente del contador y la clínica; recibos de AgendAR son internos sin CAE) · `README.md` 29/09 · `VARIANTE_PROFESIONAL.md` 26/09 | 09/10 22:34 (PR #32) | 09/10 (PR #32) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ✅ `PENDIENTES.md` al día. ⚠️ `README.md` y `VARIANTE_PROFESIONAL.md` son de septiembre: revisar que reflejen el módulo contable. · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #37) |
 | AgendAR | `ESTADO AGENDAR.md` 07/10 · `PENDIENTES.md` 09/10 · `BACKUPS.md` 09/10 · 27/10: tipos por condición del emisor con `arca-core` 0.9.0 (PR #32 y #33; `PENDIENTES.md` al día) · 28/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #35 y #36) | 09/10 12:38 (PR #25) | 09/10 (PR #25) ✅ | 02/09 `billing_comprobantes_emitido_por_externo` | ✅ activa | ✅ Casi. ⚠️ La cabecera de `ESTADO AGENDAR.md` todavía dice que el CI falla por falta de `GH_PACKAGES_TOKEN` (07/10), pero §6 lo da en verde desde el 08/10: corregir esa frase. |
 | FinanciAR | `ESTADO_FINANCIAR.md` 07/10 · `PENDIENTES.md` 08/10 · `BACKUPS.md` 09/10 · 27/10: conversión X→fiscal por `facturador-core` 0.6.0 y `arca-core` 0.9.0 (PR #41; `PENDIENTES.md` al día) | 09/10 22:42 (PR #27) | 09/10 (PR #27) ✅ | no se pudo leer (base pausada) | ⛔ **pausada** | ⚠️ No: el PR #27 (09/10, datos fiscales al activar el vínculo) no figura en `ESTADO_FINANCIAR.md` ni en `PENDIENTES.md` (solo acá, §4). `README.md` es del 15/09. |
-| Logística y Reparto | `README.md` 25/10 · 27/10: tipos por condición del emisor con `arca-core` 0.9.0 (PR #31 y #32) | 25/10 (PR #22 a #29: padrón rápido y condición de IVA con constancia de inscripción, fork 0.1.2, facturador-core 0.5.2; 27/10 observaciones y receptor del asociado) | 09/10 (PR #13) ✅ | 22/10 `bloquear_escritura_spatial_ref_sys` | ✅ activa (reactivada el 22/10) | ✅ Sí. |
+| Logística y Reparto | `README.md` 25/10 · 27/10: tipos por condición del emisor con `arca-core` 0.9.0 (PR #31 y #32) | 25/10 (PR #22 a #29: padrón rápido y condición de IVA con constancia de inscripción, fork 0.1.2, facturador-core 0.5.2; 27/10 observaciones y receptor del asociado) | 09/10 (PR #13) ✅ | 22/10 `bloquear_escritura_spatial_ref_sys` | ✅ activa (reactivada el 22/10) | ✅ Sí. · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #33) |
 | TiendaAR (módulo) | `ESTADO_TIENDAAR.md` 09/10 · `README.md` 09/10 | 09/10 22:51 (PR #6) | 09/10 (PR #6) ✅ | n/d (SQL manual en `migraciones/`) | ⛔ base puente **pausada** (vacía) | ✅ Sí. |
 | Integra-AR (sitio + este MD) | `ECOSISTEMA.md` 22/10 · `ESTADO.md` 23/09 | `main` 22/10 (PR #12 protocolo y PR #13 keep-alive, mergeados) | 09/10 (PR #11) ✅ | — | — | ⚠️ `ESTADO.md` (23/09) no incluye FacturAR Profesional, Facturador Local ni Sueldos y Jornales en el sitio. Este MD y la norma §0 van en el PR `docs/norma-md-general`. |
 | Facturador Local | `DESARROLLO_TECNICO.md` 29/09 · `README.md` 01/08 | 29/09 17:54 (git local, sin remoto) | — (app local, instalador `.exe`) | — | — | ⚠️ El encabezado dice "Última actualización: 14/08/2026" y §2 todavía dice "persistencia en JSON" (el código ya usa SQLite). El README se titula "Facturador Rápido". |
