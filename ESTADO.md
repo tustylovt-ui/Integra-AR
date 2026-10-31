@@ -2,7 +2,7 @@
 
 > 📌 **Norma del ecosistema:** antes de este archivo se lee el MD general `C:\Desarrollo Integrar\INTEGRAAR\Integra-AR\ECOSISTEMA.md`. Al cerrar un cambio se actualizan los dos: este archivo y el general (fecha de la cabecera, §2, §7 y §10). Lecciones operativas históricas: `GUIA_CLAUDE_ECOSISTEMA.md` (mismo repo).
 
-**Última actualización:** 23 Septiembre 2026 — agregada FinanciAR (ya estaba en index.html) y **Logística y Reparto** (nueva: `lr.html` + ruta `/lr` + card en index + footers cruzados de todas las páginas)
+**Última actualización:** 31 Octubre 2026 — páginas nuevas **FacturAR Profesional** (`/profesional`), **TiendaAR** (`/tienda`) y **Facturador Local** (`/facturador-local`) con cards en el index, nav y footers cruzados; corregido el link de FacturAR (`factur-ar.vercel.app`; el viejo `factu-ar.vercel.app` no carga, estaba en 8 lugares). Antes, 23 Septiembre 2026 — agregada FinanciAR (ya estaba en index.html) y **Logística y Reparto** (nueva: `lr.html` + ruta `/lr` + card en index + footers cruzados de todas las páginas)
 **Tipo:** Sitio web institucional estático (HTML + CSS vanilla)
 **Propósito:** Presentación de la marca IntegraAR y sus aplicaciones
 
@@ -35,6 +35,9 @@ Integra-AR/
 ├── facturar.html             → Página de detalle de FacturAR (features, planes, roles)
 ├── financiar.html            → Página de detalle de FinanciAR (roles, features, addons)
 ├── lr.html                   → Página de detalle de Logística y Reparto (roles, features)
+├── profesional.html          → FacturAR Profesional (panel del contador: libros, contabilidad, vínculos)
+├── tienda.html               → TiendaAR (módulo de tienda online; consultas por mail)
+├── facturador-local.html     → Facturador Local (programa de escritorio para comercios; consultas por mail)
 ├── instructivo-agendar.html  → Guía completa de uso de AgendAR
 ├── instructivo-facturar.html → Guía completa de uso de FacturAR
 ├── vercel.json               → Rutas y serving de archivos estáticos + PNG
@@ -54,6 +57,9 @@ Integra-AR/
 | `/facturar` | `facturar.html` | Detalle de FacturAR |
 | `/financiar` | `financiar.html` | Detalle de FinanciAR |
 | `/lr` | `lr.html` | Detalle de Logística y Reparto |
+| `/profesional` | `profesional.html` | Detalle de FacturAR Profesional |
+| `/tienda` | `tienda.html` | Detalle de TiendaAR |
+| `/facturador-local` | `facturador-local.html` | Detalle de Facturador Local |
 | `/instructivos/agendar` | `instructivo-agendar.html` | Instructivo AgendAR |
 | `/instructivos/facturar` | `instructivo-facturar.html` | Instructivo FacturAR |
 
@@ -75,6 +81,9 @@ Integra-AR/
 | **FacturAR** | `#059669` (esmeralda) | Hero, botones, cards |
 | **FinanciAR** | `#b45309` (ámbar) | Hero, botones, cards |
 | **Logística y Reparto** | `#0d9488` (teal) | Hero, botones, cards |
+| **FacturAR Profesional** | `#4338ca` (índigo) | Hero, botones, cards |
+| **TiendaAR** | `#be185d` (rosa) | Hero, botones, cards |
+| **Facturador Local** | `#c2410c` (naranja) | Hero, botones, cards |
 
 ### Componentes visuales comunes
 - Nav sticky con blur backdrop, logo + texto "IntegraAR" al lado
@@ -89,7 +98,7 @@ Integra-AR/
 ### `index.html` — Landing principal
 - **Eyebrow:** "🇦🇷 Software argentino para profesionales y pymes"
 - **Hero:** Título principal + subtítulo + 2 CTAs (Ver apps / Contacto)
-- **Sección Apps:** 4 cards — AgendAR, FacturAR, FinanciAR y Logística y Reparto, con features, URL y botones
+- **Sección Apps:** 7 cards — AgendAR, FacturAR, FinanciAR, Logística y Reparto, FacturAR Profesional, TiendaAR y Facturador Local, con features, URL y botones
 - **Sección Por qué IntegraAR:** 6 razones (ARCA, MP, PWA, seguridad, uptime, soporte local)
 - **Sección Contacto:** Card con email, ubicación y horario de soporte
 - **Footer:** Links a todas las páginas
@@ -120,6 +129,25 @@ Integra-AR/
 - **Features:** 8 cards — flota en vivo, navegación guiada, comprobante con foto/DNI, cobro contra entrega, tarifarios/etiquetas QR, seguimiento público, presupuestos/remitos, cierre de depósito
 - **Ecosistema:** 2 cards — Facturación con contador (vínculo con FacturAR), equipo y accesos
 - CTA final "Crear cuenta gratis" (sin instructivo propio todavía)
+
+### `profesional.html` — Detalle FacturAR Profesional
+- Hero "🧮 Para contadores", CTA a https://facturar-profesional.vercel.app
+- **Para quién:** contador y estudio, tu cliente, vínculo seguro
+- **Funciones (8):** Libro IVA Ventas desde ARCA, Libro IVA Compras, archivos del Libro IVA Digital (RG 4597) y Excel, contabilidad (plan de cuentas, diario, mayor, balance, asientos automáticos "a revisar"), bancos y cheques, cierre y ajuste por inflación, retenciones/percepciones/posición de IVA, tareas y alertas
+- **Ecosistema:** clientes de todas las apps vinculados; monotributistas y responsables inscriptos
+- Sin precios ni planes (no verificados)
+
+### `tienda.html` — Detalle TiendaAR
+- Hero "🛍️ Tienda online"; CTA por mail (no hay alta pública: se activa desde FacturAR, FinanciAR o Facturador Local)
+- **Cómo funciona:** tres puertas de entrada (FacturAR, FinanciAR como addon, Facturador Local)
+- **Funciones (6):** vidriera propia, cuatro plantillas (minimal, clásica, moderna, editorial), cobro con el Mercado Pago del comerciante, stock sincronizado, confirmación de pagos asíncronos, modo oscuro
+- Sin precios
+
+### `facturador-local.html` — Detalle Facturador Local
+- Hero "🖥️ Para el mostrador"; CTA por mail (sin deploy público; instalador `.exe`)
+- **Funciones (4):** Ticket X y Factura C con CAE, catálogo y ventas, cobros con Mercado Pago, instalador para Windows; tienda online opcional con TiendaAR
+- Texto conservador: el `README.md` y `COBROS_MERCADOPAGO.md` del programa viven en la computadora del dueño y no se pudieron leer desde esta sesión; **revisar el contenido contra ellos**
+- Sin precios
 
 ### `instructivo-agendar.html` — Guía completa AgendAR
 Sidebar fijo con índice + contenido con scroll activo. Secciones:
@@ -172,7 +200,7 @@ Sidebar fijo con índice + contenido con scroll activo. Secciones:
 - **Estado:** ✅ Producción
 
 ### FacturAR
-- **URL:** https://factu-ar.vercel.app
+- **URL:** https://factur-ar.vercel.app
 - **Repo:** privado
 - **Descripción:** Facturación electrónica con CAE oficial desde cualquier dispositivo
 - **Stack:** Vite + React + Supabase
@@ -258,3 +286,11 @@ git push
 - Los **logos** van en la raíz del repo (no en subcarpeta) porque Vercel los sirve desde `/logo-*.png`
 - El **nav** es el mismo en todas las páginas — logo + "IntegraAR" a la derecha + link volver (en páginas internas) + CTA verde/azul
 - Todo el CSS está **inline en cada HTML** — sin archivos externos, zero dependencias
+
+---
+
+## 🔜 Pendiente del sitio
+- Página de **Sueldos y Jornales** (producto local sin lanzar; el dueño decidió no sumarla todavía).
+- Instructivos de FinanciAR, Logística y Reparto y FacturAR Profesional.
+- Etiquetas OG para compartir, dominio propio.
+- Revisar `facturador-local.html` contra el `README.md` real del programa.
