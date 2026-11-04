@@ -211,6 +211,13 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 **Migraciones** — el repo debe coincidir con `supabase_migrations.schema_migrations` (nombre y versión). Verificado el 07/10: AgendAR, FinanciAR y LR coinciden; LR tiene `0025a_vinculos_contador_externo.sql` como *reconstrucción* verificada (la tabla existía sin migración registrada).
 
+**Correo saliente (SMTP) — sistema común para todas las apps (documentado el 03/11/2026 a pedido del dueño; verificado en `AgendAR/src/components/SMTPConfig.tsx`)**
+- Cada profesional/clínica envía desde **su propio correo**. El usuario carga su dirección y la app **detecta el proveedor por el dominio** y completa sola servidor, puerto y SSL (hoy: Gmail, Outlook/Hotmail/Live, Yahoo, Zoho, iCloud y algunos ISP argentinos como Fibertel y Arnet; 14 dominios en la tabla del componente). Muestra el aviso «<proveedor> detectado — datos cargados automáticamente» y la ayuda de cada uno.
+- **Lo único que completa el usuario es la contraseña de aplicación y el nombre del remitente.** Gmail e iCloud exigen una contraseña de aplicación (no la normal); el componente lo avisa con un enlace a cómo generarla. Si el dominio no se reconoce, queda la carga manual (host, puerto, SSL) y también se puede editar la configuración avanzada.
+- «Probar conexión» llama a `POST /api/email/test-smtp` (nodemailer 10): verifica la conexión y manda un mail de prueba **solo a la misma cuenta que se prueba** (no sirve de relay). Si anda, guarda la configuración y marca «Verificado». Probado en producción por el dueño el 03/11/2026 con nodemailer 10.
+- La contraseña se guarda **cifrada** (AES-256-GCM, formato `enc:v1:…`, secreto `SMTP_PASS_ENCRYPTION_KEY`) y nunca vuelve al navegador; para volver a probar hay que retipearla.
+- **Criterio del dueño: las apps futuras usan este mismo sistema** (mismo componente, misma tabla de proveedores, mismo cifrado), no uno propio. Hoy vive en AgendAR (profesional: `dashboard/settings`; clínica: `clinica/settings`); al sumarlo a otra app conviene pasarlo a un paquete compartido en vez de copiarlo, para que un proveedor nuevo se agregue en un solo lugar.
+
 **Límites que ya costaron caro**
 - Vercel Hobby: máximo **12 funciones serverless** por proyecto; si hay que sumar un endpoint se agrega un `servicio` a `arca-herramientas.js` (núcleo/Profesional) o un campo discriminador a una ruta existente.
 - Vercel Hobby retiene **1 hora** de logs de runtime: si hay que investigar algo, hacerlo enseguida.
