@@ -1,4 +1,4 @@
-# Ecosistema IntegraAR — MD general del ecosistema (estado al 04/11/2026)
+# Ecosistema IntegraAR — MD general del ecosistema (estado al 05/11/2026)
 
 > **Este es el MD general del ecosistema (documento de entrada).** En **toda** sesión nueva —se trabaje sobre una app o sobre varias— se lee este archivo primero y después el MD de la app que se va a tratar (norma en §0).
 > Se mantiene en el repo `Integra-AR` (el sitio institucional) porque es el único que no pertenece a ninguna app. Cuando cambie algo que cruza apps (vínculos, paquetes, backups, CI, secretos), se actualiza **acá y en el repo afectado**.
