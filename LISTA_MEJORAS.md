@@ -23,6 +23,15 @@ Salieron de dos consultas externas (ChatGPT y Gemini) hechas con el organigrama 
 | A8 | Cerrar los pendientes ya documentados | ⬜ | Anotados en `ECOSISTEMA.md` §7 | Facturador Local vinculado al panel del estudio; descontar stock al facturar un pedido de la tienda; Sueldos y Jornales como módulo del panel |
 | A9 | AgendAR: lista de espera, seña y confirmación del turno | 🟡 | Estados del turno (pendiente, confirmado, atendido, cancelado, ausente), recordatorios automáticos por correo y botones de WhatsApp | Lista de espera y seña o anticipo (no están). ❓ Verificar si el paciente puede confirmar por link |
 | A10 | Métricas de ahorro que el estudio pueda mostrar | ⬜ | — | Horas ahorradas, comprobantes sin reclamar, turnos cobrados, entregas efectivas y diferencias de caja detectadas |
+| A11 | Ventana de WhatsApp Web dentro de cada app (pedido del dueño, 07/11/2026) | ⬜ | Los botones de WhatsApp de AgendAR, FinanciAR y LR abren la app o la web con el mensaje armado (`wa.me`) | Ver detalle abajo |
+
+**A11 — detalle.** Sin costo, sin API de WhatsApp. Se aplica a **todas las apps**, no solo a una:
+- **Apps web en la PC** (FacturAR, Profesional, AgendAR, FinanciAR, panel de LR): botón «WhatsApp» que abre `web.whatsapp.com` en una ventana aparte de tamaño fijo con `window.open` y un nombre fijo, para que un segundo clic reutilice la misma ventana. **Siempre con un clic del usuario**: abrirla sola al cargar la app la bloquea el navegador. Si no se puede abrir sola, mostrar el botón apenas se entra.
+- **Sesión:** WhatsApp Web la guarda en el perfil del navegador, así que el QR se escanea una vez por PC. Hay que abrir siempre la misma dirección y no usar navegación privada. Vuelve a pedir el QR si el usuario desvincula el dispositivo, borra los datos del navegador, pasan unos 14 días sin abrir WhatsApp en el celular o WhatsApp cierra la sesión.
+- **Facturador Local y Sueldos y Jornales Local (escritorio):** ventana propia de la app con perfil guardado en una carpeta de la app (partición persistente), puede abrirse sola al iniciar.
+- **Celulares** (cobradores de FinanciAR, chofer de LR, PWA): no aplica una ventana de WhatsApp Web; siguen con los botones que abren la app de WhatsApp con el mensaje armado.
+- **Límites:** la app no lee chats ni manda mensajes sola, y **no guarda ni copia la sesión en ninguna base o nube** (equivale a la llave de la cuenta y va contra los términos de WhatsApp). No reemplaza al bot de la sección C: solo evita salir de la app.
+- Estas condiciones de sesión se conocen por cómo funciona WhatsApp Web; no se probaron. Probar en una app antes de replicar.
 
 ## B. Verificaciones pendientes
 
