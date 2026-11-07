@@ -23,7 +23,6 @@ Salieron de dos consultas externas (ChatGPT y Gemini) hechas con el organigrama 
 | A8 | Cerrar los pendientes ya documentados | ⬜ | Anotados en `ECOSISTEMA.md` §7 | Facturador Local vinculado al panel del estudio; descontar stock al facturar un pedido de la tienda; Sueldos y Jornales como módulo del panel |
 | A9 | AgendAR: lista de espera, seña y confirmación del turno | 🟡 | Estados del turno (pendiente, confirmado, atendido, cancelado, ausente), recordatorios automáticos por correo y botones de WhatsApp | Lista de espera y seña o anticipo (no están). ❓ Verificar si el paciente puede confirmar por link |
 | A10 | Métricas de ahorro que el estudio pueda mostrar | ⬜ | — | Horas ahorradas, comprobantes sin reclamar, turnos cobrados, entregas efectivas y diferencias de caja detectadas |
-
 | A11 | Ventana de WhatsApp Web dentro de cada app (pedido del dueño, 07/11/2026) | ⬜ | Los botones de WhatsApp de AgendAR, FinanciAR y LR abren la app o la web con el mensaje armado (`wa.me`) | Ver detalle abajo |
 
 **A11 — detalle.** Sin costo, sin API de WhatsApp. Se aplica a **todas las apps**, no solo a una:
