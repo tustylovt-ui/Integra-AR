@@ -244,6 +244,20 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 ## 7. Pendientes abiertos (consolidado, por prioridad; revisado el 22/10/2026)
 
+**📌 Resumen por app, por prioridad (09/11/2026; sale de la lista de abajo y del trabajo de tienda-core)**
+
+1. **Tuyos / urgentes:** rotar el token personal de GitHub (1); renovar `PACKAGES_READ_TOKEN` y `GH_PACKAGES_TOKEN` antes del 02/01/2027 (2); confirmar que se borró `restauracion-prueba-descartable` (6).
+2. **FacturAR común y Profesional:** relockear `tienda-core` 0.1.1 → 0.1.2 (`npm install` con token + subir el lock); probar el importador de productos (imágenes, exports reales de Tiendanube/Shopify/Woo, "Cancelar importación"); Profesional además con el primer usuario Independiente/Contribuyente (la cuenta Contador no ve el catálogo); Libro IVA (5).
+3. **Límite de clientes del plan gratis** (FacturAR 5, FinanciAR 20): decisión del dueño pendiente.
+4. **FinanciAR:** `resolverReceptor` con Monotributista con CUIT y 198 `any` (9); Dependabot mayores (27); posibles importadores de cartera y productos.
+5. **AgendAR:** 33 `set-state-in-effect` y 45 `exhaustive-deps` (10); Dependabot mayores (27); importar pacientes del panel de clínica.
+6. **LR:** sin pendientes propios en esta lista.
+7. **Tienda-AR:** `mercadopago` 3.x y Next 16, tests del checkout, `zod` sin uso (14); backup de la base puente cuando Facturador Local la use (12).
+8. **Facturador Local y Sueldos:** módulos faltantes (20); página, OG y dominio de Sueldos (19).
+9. **Paquetes:** `facturador-core` (padrón por DNI real, WSFEX, migrar FacturAR común/AgendAR/Profesional, 18); `bcra-core` (11); `tienda-core` (imágenes y exports reales).
+10. **Con CAE real (para lo último, con OK):** NC/ND en AgendAR, Factura A/B de FinanciAR, puente del contador, emisión de clínica (4, 19).
+11. `LISTA_MEJORAS.md`: ítems A4 en adelante (28).
+
 **🚨 Nuevo (22/10/2026)**
 
 0. **Cuatro bases de Supabase están PAUSADAS** (estado `INACTIVE` en los conectores): FacturAR Profesional (`pvukzwxwbzkmspdgjoqw`), FinanciAR (`izprfefxvwsjtnmpempi`), la base puente de Tienda-AR (`afbuaxrccittcfhbcwoi`) y Logística y Reparto (`mnuilbwxanbhnlrblitu`). Con la base pausada esas apps no funcionan en producción (login, datos, vínculos con el contador). Se reactivan con "Restore project" en el panel de Supabase de cada cuenta o con el conector. En el plan gratuito vuelven a pausarse tras ~7 días sin actividad: **Reactivadas el 22/10/2026** (LR, FinanciAR, Tienda-AR y Profesional). **Prevención:** workflow `supabase-keepalive.yml` en este repo (PR #13, mergeado el 22/10/2026): lunes y jueves 08:23 consulta 1 fila de cada una de las 6 bases con la clave pública; falla y avisa por mail si alguna no responde. Secrets cargados: `SUPABASE_ANON_KEY_FACTURAR`, `_PROFESIONAL`, `_AGENDAR`, `_FINANCIAR`, `_LR` y `_TIENDA` (clave `anon`/`publishable`, nunca la `service_role`). **Primera corrida manual (22/10/2026): las 6 bases respondieron HTTP 200.** Riesgo: en un repo público GitHub desactiva los workflows programados tras 60 días sin actividad en el repo (la norma §0 hace que este repo se actualice seguido).
