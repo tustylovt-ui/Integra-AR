@@ -246,7 +246,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 **📌 Resumen por app, por prioridad (09/11/2026; sale de la lista de abajo y del trabajo de tienda-core)**
 
-1. **Tuyos / urgentes:** rotar el token personal de GitHub (1); renovar `PACKAGES_READ_TOKEN` y `GH_PACKAGES_TOKEN` antes del 02/01/2027 (2); confirmar que se borró `restauracion-prueba-descartable` (6).
+1. **Tuyos / urgentes:** rotar el token personal de GitHub (1); crear `PACKAGES_READ_TOKEN` y `GH_PACKAGES_TOKEN` nuevos **sin vencimiento** (decisión del dueño, 09/11/2026) y recargarlos en los repos y en Vercel antes del 02/01/2027, cuando vencen los actuales (2); confirmar que se borró `restauracion-prueba-descartable` (6).
 2. **FacturAR común y Profesional:** relockear `tienda-core` 0.1.1 → 0.1.2 (`npm install` con token + subir el lock); probar el importador de productos (imágenes, exports reales de Tiendanube/Shopify/Woo, "Cancelar importación"); Profesional además con el primer usuario Independiente/Contribuyente (la cuenta Contador no ve el catálogo); Libro IVA (5).
 3. **Límite de clientes del plan gratis** (FacturAR 5, FinanciAR 20): decisión del dueño pendiente.
 4. **FinanciAR:** `resolverReceptor` con Monotributista con CUIT y 198 `any` (9); Dependabot mayores (27); posibles importadores de cartera y productos.
@@ -266,7 +266,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 **Seguridad y mantenimiento (tuyos / urgentes)**
 1. Rotar el token personal de GitHub (`ghp_…`) que se pegó una vez en un chat.
-2. Renovar `PACKAGES_READ_TOKEN` / `GH_PACKAGES_TOKEN` **antes del 02/01/2027** (vencen) y recargarlos en los repos y en Vercel.
+2. Reemplazar `PACKAGES_READ_TOKEN` / `GH_PACKAGES_TOKEN` **antes del 02/01/2027** (los actuales vencen) por tokens nuevos **sin vencimiento** (decisión del dueño, 09/11/2026) y recargarlos en los repos y en Vercel. Los crea y carga el dueño; nunca se pegan en el chat.
 
 **Pruebas que faltan (necesitan OK explícito cuando son emisiones reales)**
 
