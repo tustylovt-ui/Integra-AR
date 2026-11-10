@@ -253,7 +253,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 5. **AgendAR:** 35 `set-state-in-effect` (avisos documentados; `exhaustive-deps` ✅ resuelto el 10/11/2026, PR #60) (10); Dependabot mayores (27); ✅ importar pacientes del panel de clínica decidido el 10/11/2026 (PR #61): cada profesional importa los suyos, el dueño solo los lee (importar por un profesional pediría migración con permisos de escritura y OK para producción).
 6. **LR:** sin pendientes propios en esta lista.
 7. **Tienda-AR:** `mercadopago` 3.x y Next 16, `zod` sin uso, tests del webhook (14); revisar si la preferencia de MP debe incluir el costo de envío; backup de la base puente cuando Facturador Local la use (12).
-8. **Facturador Local y Sueldos:** módulos faltantes (20; Libro IVA hecho el 10/11, quedan 4 a 7); página, OG y dominio de Sueldos (19).
+8. **Facturador Local y Sueldos:** módulos faltantes (20; Libro IVA y búsqueda de cliente por DNI/CUIT hechos el 10/11, quedan 4 a 7; pendiente probar Ventas con A/B reales y que el contador revise el TXT; **instalador `.exe` rearmado el 10/11/2026** con todo esto, sin probar su instalación en otra PC; `armar_instalador.ps1` necesita WinRAR en `C:\Program Files\WinRAR` (la versión de prueba alcanza) y desde esa fecha no empaqueta `SECRETOS_*.md`, `.claude` ni `.git`); página, OG y dominio de Sueldos (19).
 9. **Paquetes:** `facturador-core` (padrón por DNI real, WSFEX, migrar FacturAR común/AgendAR/Profesional, 18); `bcra-core` (11); `tienda-core` (imágenes y exports reales).
 10. **Con CAE real (para lo último, con OK):** NC/ND en AgendAR, Factura A/B de FinanciAR, puente del contador, emisión de clínica (4, 19).
 11. `LISTA_MEJORAS.md`: ítems A4 en adelante (28).
