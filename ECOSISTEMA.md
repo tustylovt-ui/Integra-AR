@@ -246,7 +246,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 **📌 Resumen por app, por prioridad (09/11/2026; sale de la lista de abajo y del trabajo de tienda-core)**
 
-1. **Tuyos / urgentes:** rotar el token personal de GitHub (1); `GH_PACKAGES_TOKEN` ✅ **renovado sin vencimiento el 09/11/2026** (token `npm-read-packages-integraar`: secret en FacturAR, Profesional, AgendAR, FinanciAR y LR; variable en los 5 proyectos de Vercel con redeploy; variable de usuario en la PC; probado con el CI de FacturAR #61 y Profesional #66); **falta `PACKAGES_READ_TOKEN`** (token `arca-core-ci-lectura`, ya regenerado sin vencimiento): cargarlo como secret en `arca-core`, `facturador-core` y `tienda-ar`, y en Vercel de Tienda-AR si lo usa (2); confirmar que se borró `restauracion-prueba-descartable` (6).
+1. **Tuyos / urgentes:** rotar el token personal de GitHub (1); `GH_PACKAGES_TOKEN` ✅ **renovado sin vencimiento el 09/11/2026** (token `npm-read-packages-integraar`: secret en FacturAR, Profesional, AgendAR, FinanciAR y LR; variable en los 5 proyectos de Vercel con redeploy; variable de usuario en la PC; probado con el CI de FacturAR #61 y Profesional #66); `PACKAGES_READ_TOKEN` ✅ **renovado sin vencimiento y cargado el 09/11/2026** (token `arca-core-ci-lectura`; secret en `arca-core`, `facturador-core` y `tienda-ar`; probado con el CI de arca-core #4, facturador-core #10 y Tienda-AR #10); confirmar que se borró `restauracion-prueba-descartable` (6).
 2. **FacturAR común y Profesional:** ~~relockear `tienda-core` a 0.1.2~~ ✅ hecho 09/11/2026 (FacturAR #61 y Profesional #66, lock sin `sharp`); probar el importador de productos (imágenes, exports reales de Tiendanube/Shopify/Woo, "Cancelar importación"); Profesional además con el primer usuario Independiente/Contribuyente (la cuenta Contador no ve el catálogo); Libro IVA (5).
 3. **Límite de clientes del plan gratis** (FacturAR 5, FinanciAR 20): decisión del dueño pendiente.
 4. **FinanciAR:** `resolverReceptor` con Monotributista con CUIT y 198 `any` (9); Dependabot mayores (27); posibles importadores de cartera y productos.
@@ -266,7 +266,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 
 **Seguridad y mantenimiento (tuyos / urgentes)**
 1. Rotar el token personal de GitHub (`ghp_…`) que se pegó una vez en un chat.
-2. Tokens de lectura de paquetes: los nuevos son **sin vencimiento** (decisión del dueño, 09/11/2026). `GH_PACKAGES_TOKEN` ✅ cargado en los 5 repos, los 5 proyectos de Vercel y la PC; **pendiente `PACKAGES_READ_TOKEN`** (`arca-core`, `facturador-core`, `tienda-ar`; Vercel de Tienda-AR a verificar). Los crea y carga el dueño; nunca se pegan en el chat.
+2. Tokens de lectura de paquetes: los nuevos son **sin vencimiento** (decisión del dueño, 09/11/2026). `GH_PACKAGES_TOKEN` ✅ cargado en los 5 repos, los 5 proyectos de Vercel y la PC; `PACKAGES_READ_TOKEN` ✅ cargado y probado en `arca-core`, `facturador-core` y `tienda-ar`. Los crea y carga el dueño; nunca se pegan en el chat.
 
 **Pruebas que faltan (necesitan OK explícito cuando son emisiones reales)**
 
