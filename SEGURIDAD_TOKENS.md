@@ -8,8 +8,8 @@ Cualquier token que haya pasado por un chat se considera comprometido.
 2. Si ese token era el que se usa como `GH_PACKAGES_TOKEN` o `PACKAGES_READ_TOKEN`, hacer el punto 2 completo con uno nuevo.
 3. Revisar en GitHub → Settings → Security log si hubo usos desconocidos.
 
-## 2. Renovar antes del 02/01/2027: lectura de paquetes privados (`@tustylovt-ui/*`)
-Un **PAT clásico con solo el permiso `read:packages`** (de la cuenta `tustylovt-ui`). Un mismo valor sirve para todo lo de abajo. Nombre sugerido: `ecosistema-read-packages-AAAAMM`.
+## 2. Lectura de paquetes privados (`@tustylovt-ui/*`): tokens sin vencimiento
+Desde el 09/11/2026 son **dos PAT clásicos con solo `read:packages`, sin vencimiento** (cuenta `tustylovt-ui`): `npm-read-packages-integraar` (se carga como `GH_PACKAGES_TOKEN`) y `arca-core-ci-lectura` (se carga como `PACKAGES_READ_TOKEN`). No hay fecha de renovación; solo se rotan si se filtran. Ambos cargados y probados con CI y builds de Vercel el 09/11/2026.
 
 ### Dónde se carga (GitHub → repo → Settings → Secrets and variables → Actions)
 | Repo | Nombre del secret |
@@ -19,18 +19,20 @@ Un **PAT clásico con solo el permiso `read:packages`** (de la cuenta `tustylovt
 | AgendAR | `GH_PACKAGES_TOKEN` |
 | FinanciAR | `GH_PACKAGES_TOKEN` |
 | Logistica-y-Reparto | `GH_PACKAGES_TOKEN` |
-| arca-core (workflow `publicar.yml`) | `PACKAGES_READ_TOKEN` |
+| arca-core (CI y `publicar.yml`) | `PACKAGES_READ_TOKEN` |
+| facturador-core | `PACKAGES_READ_TOKEN` |
+| Tienda-AR | `PACKAGES_READ_TOKEN` |
 
 `bcra-core` e `integraar-vinculos` publican con el `GITHUB_TOKEN` automático: no necesitan nada.
 
 ### Dónde se carga (Vercel → proyecto → Settings → Environment Variables, en Production, Preview y Development)
-Variable `GH_PACKAGES_TOKEN` en: `factur-ar`, `facturar-profesional`, AgendAR, FinanciAR y Logística y Reparto (el dashboard). Tienda-AR y Facturador Local: verificar si usan paquetes privados antes de cargar.
+Variable `GH_PACKAGES_TOKEN` en: `factur-ar`, `facturar-profesional`, AgendAR, FinanciAR y Logística y Reparto (el dashboard). Tienda-AR también (cargado y redeployado el 09/11/2026). Facturador Local: verificar si usa paquetes privados.
 
 ### En tu máquina
 Variable de entorno de usuario `GH_PACKAGES_TOKEN` (solo si instalás paquetes en local).
 
 ### Orden recomendado
-1. Crear el token nuevo. 2. Cargarlo en los 6 repos y los 5 proyectos de Vercel. 3. Relanzar el último workflow de cada repo y un deploy de cada proyecto para comprobar que no da `401`. 4. Recién ahí revocar el viejo.
+1. Crear el token nuevo. 2. Cargarlo en los repos y los 5 proyectos de Vercel. 3. Relanzar el último workflow de cada repo y un deploy de cada proyecto para comprobar que no da `401`. 4. Recién ahí revocar el viejo.
 
 ## 3. Tokens de las conexiones de Supabase del escritorio de Claude
 Son 4 PAT (uno por cuenta/organización de Supabase) guardados en la configuración local de la app de escritorio. Si alguno da `Unauthorized`, venció: generar uno nuevo en Supabase → Account → Access Tokens y reemplazarlo en la configuración. Revocar los viejos.
