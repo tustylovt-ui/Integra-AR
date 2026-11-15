@@ -102,6 +102,12 @@ AgendAR: NC/ND con CAE real, puente del contador y clínica están en A1.
 ### Tienda-AR
 No tiene pruebas pendientes anotadas en su propio MD; las que faltan (cobro con `mercadopago` 3.x, envío en la preferencia y preview de Next 16) están en B5.
 
+## G. Verificación pendiente de LR por el tope de despliegues de Vercel (16/11/2026)
+
+- [ ] **G1 · Relanzar el despliegue de producción de LR** (proyectos `logistica-reparto` y `lr-updates-integraar`, commit `ead4e6d` de `master`, que trae las fuentes Inter y JetBrains Mono propias; PR #63). El 15/11/2026 falló por «Deployment rate limited» (100 por día, ventana móvil de 24 h). Reintentar después de las 21:00 del 16/11; si sigue rechazando, esperar y repetir.
+- [ ] **G2 · Revisar los despliegues rechazados del 15/11** (LR #63 y la vista previa de Integra-AR #157): confirmar que el último de cada proyecto quedó en «Ready» y que producción sirve el CSS nuevo.
+- [ ] **G3 · Verificar LR en pantalla con la sesión del dueño** (Historial, Cierre, tablas): tipografía Inter, sin texto desbordado, sin pedidos a `fonts.googleapis.com`. La vista previa no sirve: falta `NEXT_PUBLIC_MAPBOX_TOKEN` en el entorno Preview (el dueño puede cargarlo en Vercel).
+
 ## F. Anotadas como pendientes en algún MD pero ya resueltas (no repetir)
 
 Para que nadie las vuelva a cargar como pendientes:
