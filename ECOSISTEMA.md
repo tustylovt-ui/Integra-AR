@@ -258,7 +258,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 9. **Paquetes:** `facturador-core` (padrón por DNI real, WSFEX, —LR, AgendAR, FinanciAR, FacturAR común, Profesional y Facturador Local (motor `nucleo`, 0.7.0 desde el 15/11) ya migrados—, y de FacturAR común el puente del contador, el padrón y los X, 18); `bcra-core` (11); `tienda-core` (imágenes y exports reales).
 10. **Con CAE real (para lo último, con OK):** NC/ND en AgendAR, Factura A/B de FinanciAR, emisión de clínica (4, 19); el puente del contador ya se probó con CAE real el 13/11/2026 (monotributo y RI; falta solo la Factura A).
 11. `LISTA_MEJORAS.md`: ítems A4 en adelante (28).
-12. `CAPACIDAD.md`: mejoras M1 a M8 de capacidad (29); M2 en curso (exportaciones de FinanciAR paginadas y mergeadas, PR #107); M1 hecho (30 días de GPS en LR, en producción).
+12. `CAPACIDAD.md`: mejoras M1 a M8 de capacidad (29); M2 en curso (FinanciAR hecho: exportaciones #107 y reportes #108; auditoría de AgendAR hecha, 3 pantallas candidatas; faltan FacturAR, Profesional y LR); M1 hecho (30 días de GPS en LR, en producción).
 
 **🚨 Nuevo (22/10/2026)**
 
