@@ -64,3 +64,6 @@ Unos 10 MB de cada base son el piso de Postgres vacío (en LR, 7 MB son de PostG
 ## 6. Lo que no se midió
 
 Uso real de Vercel (transferencia, invocaciones, CPU), salida de datos de Supabase, minutos de Actions facturados, almacenamiento de GitHub Packages, y el plan exacto del equipo de Vercel. Todo eso se ve en el panel de cada servicio.
+
+## 15/11/2026 — Nota: hora argentina
+- Auditoría de fechas en apps y bases cerrada (ver `ECOSISTEMA.md` §7 punto 30). No cambia la capacidad; el sondeo de MP de Profesional sigue sin las mejoras de M3 (FacturAR #77).
