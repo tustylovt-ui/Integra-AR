@@ -236,7 +236,7 @@ Quedan fuera a propósito: vistas `v_*` y cachés reconstruibles. **Scripts de r
 | Profesional | ✅ | 0 errores | 472 | n/d (se aplican por SQL; ver `migraciones/`) | ✅ 55 tablas | `PENDIENTES.md` al día |
 | FacturAR común | ✅ | 0 errores (no bloqueante en CI) | ✅ | n/d | ✅ 47 tablas | `PENDIENTES`, `README`, `BACKUPS`, `ARCA_SCRAPING`… al día · 29/10: datos del emisor en el PDF con `arca-core` 0.10.0 (PR #31) |
 | AgendAR | ✅ | 0 errores / 40 avisos (bloqueante) | 147 | ✅ | ✅ | al día |
-| FinanciAR | ✅ | 0 errores / 284 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba · 14/11: NC/ND/recibos (#96) mergeado y migrado; `restaurar-backup.mjs` con `comprobante_origen_id` en `FKS` y `DIFERIDAS` |
+| FinanciAR | ✅ | 0 errores / 272 avisos (bloqueante) | 173 | ✅ 31/31 | ✅ 30 + Storage | `PENDIENTES.md` con resumen verificado arriba · 14/11: `any` de `src/lib` tipados (#105, 284 → 272 avisos; quedan pantallas, rutas `api` y tests) · 14/11: NC/ND/recibos (#96) mergeado y migrado; `restaurar-backup.mjs` con `comprobante_origen_id` en `FKS` y `DIFERIDAS` |
 | LR | ✅ (+ job `rls`) | 0 errores / 21 avisos | 139 panel + 54 app | ✅ 40 archivos (39 registradas + `0025a`) | ✅ 17 + Storage | `README.md` es el estado (sección "Relevamiento del 07/10/2026") |
 | Tienda-AR | ✅ (desde el 09/10/2026: tipos + lint + build; desde el 10/11/2026 también tests) | 0 errores / 1 aviso | ✅ vitest, 29 pruebas (12/11/2026) | n/d (SQL manual, `migraciones/`) | ❌ la base puente **no tiene backup** (vacía, verificado 09/10/2026) | `ESTADO_TIENDAAR.md` + `README.md` (base puente corregida el 08/10/2026) |
 
