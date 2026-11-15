@@ -15,13 +15,13 @@
 
 | # | App | Qué falta probar | Notas |
 |---|---|---|---|
-| A1 | AgendAR | NC y ND reales; **puente del contador** y **emisión de clínica**; protección de NC (saldo) | Profesional/núcleo ya validado con monotributista y RI; LR ya hecho el 25/10 |
+| A1 | AgendAR | **Puente del contador** (`api/ecosistema/emitir-externo`, necesita el secreto entre apps) y **emisión de clínica** (`clinic/billing/emitir`) con CAE real; protección de NC (saldo y NC simultáneas) con CAE real | **NC C y ND C reales ya hechas el 27/10/2026** por el camino nativo (FC 0007-00000039/40/41, NC C 4, ND C 5). Falta lo de arriba y NC/ND A/B (necesitan emisor RI) |
 | A2 | FinanciAR | Conversión X → fiscal y notas: FC y **Factura A/B a un RI**; **NC real** de la reversa del cobro (probada en producción solo con rollback); receptor Monotributista con CUIT (`resolverReceptor`, PR #90); protección de NC | Necesita un emisor RI |
 | A3 | FacturAR Profesional | **Factura A** (la C y B ya probadas el 13/11); **emisor RI** desde Profesional (la cuenta de Marcela no tiene certificado en esa base); validaciones de CUIT con dígito incorrecto y ND sin comprobante asociado; protección de NC | La C, la B y las NC ya probadas el 13/11 |
 | A4 | FacturAR Profesional | **Carga real en ARCA** del TXT de Libro IVA Digital Ventas (DNI real, 99 sin identificar; PR #45) | Que el contador la presente o revise |
 | A5 | Facturador Local | **Factura A y B** con CAE real (necesita emisor RI); motor `nucleo` (A y B solo con ARCA simulado); **reposición con una NC real**; certificado propio de Marcela (PV 4, falta la clave que corresponda); cobro real; ARCA real en un cliente instalado | Con CAE real ya probadas: Facturas C, NC C y ND C |
 
-Con CAE real ya probados (no repetir): LR (25/10), AgendAR núcleo (27/10), FacturAR común (12/11 y protección de NC el 14/11), Profesional (12 y 13/11), puente del contador de común (13/11).
+Con CAE real ya probados (no repetir): LR (25/10), AgendAR camino nativo con FC, NC y ND (27/10), FacturAR común (12/11 y protección de NC el 14/11), Profesional (12 y 13/11), puente del contador de común (13/11).
 
 ## B. En pantalla o en producción, sin CAE
 
@@ -46,6 +46,73 @@ Con CAE real ya probados (no repetir): LR (25/10), AgendAR núcleo (27/10), Fact
 |---|---|---|---|
 | D1 | FacturAR común | **Pago de punta a punta del adicional Cobros Mercado Pago** (FacturAR #82): checkout en Perfil → webhook → fila en `addons_contratados` y en `pagos` → alerta de vencimiento a los 5 días. También el **circuito de pago de los planes**, que tampoco se probó nunca de punta a punta | La tabla `pagos` de producción está vacía. Mercado Pago no acepta pagar con la misma cuenta que cobra: hace falta **otra cuenta** o el sandbox de Mercado Pago. Revisar también `MP_WEBHOOK_SECRET` y la URL de notificaciones |
 | D2 | FinanciAR, LR y FacturAR Profesional | **Registro o recuperación de clave real** para confirmar que llegan los mails de Auth por el Gmail (SMTP propio cargado el 15/11/2026) | Una clave de aplicación mal copiada no se nota en la pantalla de Supabase |
+
+## E. Relevadas de los MD de cada app (15/11/2026)
+
+Salen de los `PENDIENTES.md`, `ESTADO_*.md` y `README.md` de cada repo, leídos el 15/11/2026. Cada fila dice **dónde estaba anotada** (para encontrar el detalle original) y su **vigencia**: ✅ vigente (confirmada con el resto de la documentación) o ❓ sin confirmar (la nota es vieja y no encontré en ningún MD que se haya hecho; se confirma al probar o se tacha).
+
+### FacturAR común
+| # | Qué falta probar | Dónde estaba | Vigencia |
+|---|---|---|---|
+| E1 | **Prueba de humo de Sentry:** forzar un error controlado en el frontend (`facturar-frontend`) y en el serverless (`facturar-serverless`) y ver que aparece en Sentry. La última medición (29/07) tenía 0 eventos en 14 días | `README.md` de FacturAR | ❓ |
+| E2 | **Escanear el QR de ARCA** de una factura real con CAE (comprobar que abre la verificación de ARCA con los datos correctos). Los tests de `urlQrArca` pasan en las cinco apps, pero nunca se escaneó uno real | `PENDIENTES.md` de FacturAR y Profesional (bitácora de septiembre) | ✅ (aplica a las cinco apps que emiten) |
+
+### FacturAR Profesional
+| # | Qué falta probar | Dónde estaba | Vigencia |
+|---|---|---|---|
+| E3 | **Aviso de diferencia de condición frente al IVA:** con un cliente cuya condición en ARCA y en su app difieran (hoy solo hay test unitario) | `PENDIENTES.md` (bitácora de septiembre) | ❓ |
+| E4 | **Botón «🏛 ARCA» de la tarjeta del cliente:** el clic en pantalla (confirmación, copia de CUIT y clave al portapapeles, apertura del portal de ARCA); solo se probó el servicio | `PENDIENTES.md` (bitácora de octubre) | ❓ |
+| E5 | **Sentry:** misma prueba de humo que E1 (proyectos `facturar-frontend` y `facturar-serverless` son los mismos de FacturAR común) | `README.md` | ❓ |
+
+### FinanciAR
+| # | Qué falta probar | Dónde estaba | Vigencia |
+|---|---|---|---|
+| E6 | **Cobros MP con una cuenta real:** conectar una cuenta de Mercado Pago y confirmar que el sondeo detecta un pago real y lo factura. Hoy 0 organizaciones lo usan, y el sondeo de FinanciAR no corre en ningún lado (ver `CAPACIDAD.md` M3) | `ESTADO_FINANCIAR.md` (lista de pendientes) | ✅ |
+| E7 | **Importar clientes reales:** importar 2 o 3 clientes ficticios desde Excel/CSV/vCard y deshacer la importación desde «Importaciones anteriores» (PR #88) | `PENDIENTES.md` | ✅ |
+| E8 | **Buscar cliente por DNI/CUIT en pantalla** (Factura X y modal de conversión a fiscal) con un DNI real; el modal de conversión sigue buscando solo por nombre. No se pudo correr el build local por los paquetes privados | `PENDIENTES.md` (31/10) y `ESTADO_FINANCIAR.md` | ✅ |
+| E9 | **Datos del emisor en el PDF con el certificado real:** abrir ARCA, revisar condición e inicio de actividades, generar un PDF fiscal (29/10) | `PENDIENTES.md` | ✅ |
+| E10 | **Datos fiscales en la activación del vínculo:** probar en producción con un cliente sin ficha previa que la tarjeta del contador no quede con CUIT `PENDIENTE` (PR #27) | `ESTADO_FINANCIAR.md` (09/10) | ❓ |
+| E11 | **Aviso real de vínculo** hacia FacturAR Profesional con `INTEGRAAR_EMISOR_URL` | `ESTADO_FINANCIAR.md` y `PENDIENTES.md` | ❓ (el 08/10 se probó alta y baja reales con FinanciAR, ver abajo) |
+| E12 | **Sentry:** prueba de humo (proyecto `financiar`) | `README.md` | ❓ |
+
+### AgendAR
+| # | Qué falta probar | Dónde estaba | Vigencia |
+|---|---|---|---|
+| E13 | **Revinculación con datos fiscales** (CUIT, razón social, condición) con AgendAR; con LR sí se probó | `PENDIENTES.md` («Pendientes reales al 22/10») | ❓ (el 09/10 hubo un alta nueva con AgendAR en el panel del contador) |
+| E14 | **Sentry:** prueba de humo (proyecto `agendar`) | `README.md` | ❓ |
+
+AgendAR: NC/ND con CAE real, puente del contador y clínica están en A1.
+
+### Logística y Reparto (LR)
+| # | Qué falta probar | Dónde estaba | Vigencia |
+|---|---|---|---|
+| E15 | **Etiquetas de 3 dígitos (100+ paradas) en el pin de la app** (el del panel web ya se confirmó con una ruta real de 110 paradas): puede hacer falta retocar `textOffset` con el «Calibrador de Pines» | `README.md` | ✅ |
+| E16 | **Etiquetar con la cámara:** medir la lectura con **fotos reales** de etiquetas (ya anda con etiquetas generadas) | `README.md` punto 20 (05/11) | ✅ (también C2) |
+| E17 | **Paradas numeradas por ruta** (PR #53): probar en el celular con **más de una ruta** el mismo día; un paquete agregado desde otra ruta debe aparecer sin número | `README.md` punto 21 (05/11) | ✅ |
+| E18 | **Compilaciones del 21/08, 23/08, 30/08 y 08/09 en el celular real:** seguimiento por WhatsApp con link, cobro contra entrega, modo sin conexión (confirmar o marcar fallida sin señal), nuevas pantallas del repartidor y los tres cambios del 08/09 | `README.md` | ❓ (se probó el mapa y el pin; el resto no figura como confirmado) |
+| E19 | **Datos del emisor en el PDF con el certificado real:** guardar el certificado, revisar condición e inicio, cargar Ingresos Brutos y generar un PDF | `README.md` (29/10) | ✅ |
+| E20 | **Prioridad alta del 21/08** (puntos 5 a 6 y siguientes) contra un caso real de punta a punta | `README.md` | ❓ |
+
+### Paquetes compartidos
+| # | Paquete | Qué falta probar | Vigencia |
+|---|---|---|---|
+| E21 | `tienda-core` | **Imágenes** (descarga y conversión) con una importación real, y **exportaciones reales** de Tiendanube, Shopify y WooCommerce; después ajustar `origenes.ts`. Falta también el importador en AgendAR y FinanciAR si venden productos | ✅ (misma prueba que B2) |
+| E22 | `facturador-core` | **Padrón por DNI contra ARCA real** (`cuitsPosiblesDesdeDni`, prefijos 20/27/23; el 24 queda sin cubrir) | ❓ (FacturAR #33 y Facturador Local lo probaron con un DNI real, ver `ECOSISTEMA.md`) |
+
+### Tienda-AR
+No tiene pruebas pendientes anotadas en su propio MD; las que faltan (cobro con `mercadopago` 3.x, envío en la preferencia y preview de Next 16) están en B5.
+
+## F. Anotadas como pendientes en algún MD pero ya resueltas (no repetir)
+
+Para que nadie las vuelva a cargar como pendientes:
+
+- **Emisión real de NC y ND en LR:** hecha el 25/10/2026 (README de LR, punto 10; el punto 398 viejo sigue diciendo «falta»).
+- **NC y ND con CAE real en AgendAR por el camino nativo:** hechas el 27/10/2026. La lista «Pendientes reales al 22/10» de AgendAR todavía dice que no.
+- **Emisión real desde «Atender» en una tarjeta de app compañera** (Profesional): hecha con el puente el 13/11/2026.
+- **Emisión real con un RI desde Profesional (Factura B, NC B, ND B):** hecha el 05/10/2026 con el certificado de Yungblut y el 13/11 con otro RI.
+- **Libro IVA Ventas por el puente y contabilización con un RI:** hechos y probados el 31/10/2026 con MARCELA.
+- **Baja y alta de vínculos** (cliente y panel) en FinanciAR, AgendAR, LR y FacturAR común: probadas el 08 y 09/10/2026.
+- **Restauración de backups en una base descartable:** hecha el 09/10/2026. El `RECUPERACION_DESASTRES.md` de cada app todavía dice que nunca se ensayó; está desactualizado.
 
 ## Ya probadas, con cuidados para repetirlas
 
