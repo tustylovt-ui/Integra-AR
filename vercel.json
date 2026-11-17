@@ -14,6 +14,9 @@
     { "src": "/profesional", "dest": "/profesional.html" },
     { "src": "/tienda", "dest": "/tienda.html" },
     { "src": "/facturador-local", "dest": "/facturador-local.html" },
+    { "src": "/terminos", "dest": "/terminos.html" },
+    { "src": "/privacidad", "dest": "/privacidad.html" },
+    { "src": "/arrepentimiento", "dest": "/arrepentimiento.html" },
     { "src": "/instructivos/agendar", "dest": "/instructivo-agendar.html" },
     { "src": "/instructivos/facturar", "dest": "/instructivo-facturar.html" }
   ]
