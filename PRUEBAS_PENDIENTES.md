@@ -119,6 +119,13 @@ No tiene pruebas pendientes anotadas en su propio MD; las que faltan (cobro con 
 - [ ] **H5 · Re-aceptación** de las cuentas registradas antes de la v2.0 (sin `terminos_version`).
 - [ ] **H6 · Probar el botón de arrepentimiento** (hoy abre el correo con el código de constancia; sin envío automático).
 
+## I. 🛰️ Aviso «ARCA no disponible» antes de emitir (en producción el 18/11/2026: FacturAR, Profesional y AgendAR)
+
+- [ ] **I1 · Emitir una factura real chica** en FacturAR común, en Profesional y en AgendAR con ARCA en línea: tiene que salir igual que siempre (CAE y número correlativo), sin demora notable. Emite un CAE real: solo con OK explícito del dueño.
+- [ ] **I2 · Simular una caída** (por ejemplo, en un entorno de prueba, cambiando la dirección de WSFEv1 por una que no responda): tiene que mostrarse el aviso y **no** consumirse ningún número. No se puede probar contra ARCA real.
+- [ ] **I3 · AgendAR:** revisar que las pantallas de facturación y de clínica muestren el texto del aviso (la ruta responde 503 con `arcaNoDisponible: true`, sin `resultado: 'R'`).
+- [ ] **I4 · LR, FinanciAR y Facturador Local:** pendientes de conectar (ver `RESILIENCIA_TERCEROS.md`, punto 1).
+
 ## F. Anotadas como pendientes en algún MD pero ya resueltas (no repetir)
 
 Para que nadie las vuelva a cargar como pendientes:
