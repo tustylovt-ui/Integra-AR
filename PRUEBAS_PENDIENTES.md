@@ -110,6 +110,15 @@ No tiene pruebas pendientes anotadas en su propio MD; las que faltan (cobro con 
 - [x] **G2 · Revisar los despliegues rechazados del 15/11** (LR #63 y la vista previa de Integra-AR #157): confirmar que el último de cada proyecto quedó en «Ready» y que producción sirve el CSS nuevo.
 - [x] **G3 · Verificar LR en pantalla con la sesión del dueño** (Historial, Cierre, tablas): tipografía Inter, sin texto desbordado, sin pedidos a `fonts.googleapis.com`. La vista previa no sirve: falta `NEXT_PUBLIC_MAPBOX_TOKEN` en el entorno Preview (el dueño puede cargarlo en Vercel).
 
+## H. ⚖️ Términos v2.0 (publicados el 16/11/2026; verificados en pantalla el 18/11)
+
+- [x] **H1 · Despliegues en producción** de Integra-AR, FacturAR, Profesional, AgendAR, FinanciAR y LR: los 6 en Ready.
+- [x] **H2 · Casilla y enlaces en pantalla** en las 5 apps y `/terminos` v2.0 en el sitio.
+- [ ] **H3 · Registro real de punta a punta** (crear una cuenta de prueba en cada app y ver `terminos_version` = '2.0' y `terminos_fecha` en la metadata del usuario). No se hizo para no crear cuentas de prueba.
+- [ ] **H4 · Revisión del abogado** de `terminos`, `privacidad` y `arrepentimiento` (TXT entregado el 16/11). Si cambia el texto: subir la versión en las 5 apps.
+- [ ] **H5 · Re-aceptación** de las cuentas registradas antes de la v2.0 (sin `terminos_version`).
+- [ ] **H6 · Probar el botón de arrepentimiento** (hoy abre el correo con el código de constancia; sin envío automático).
+
 ## F. Anotadas como pendientes en algún MD pero ya resueltas (no repetir)
 
 Para que nadie las vuelva a cargar como pendientes:
