@@ -3,9 +3,11 @@
   "builds": [
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "*.png",  "use": "@vercel/static" },
-    { "src": "*.jpg",  "use": "@vercel/static" }
+    { "src": "*.jpg",  "use": "@vercel/static" },
+    { "src": "fonts/*", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/fonts/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" }, "dest": "/fonts/$1" },
     { "src": "/", "dest": "/index.html" },
     { "src": "/agendar", "dest": "/agendar.html" },
     { "src": "/facturar", "dest": "/facturar.html" },
