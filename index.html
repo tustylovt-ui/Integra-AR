@@ -692,9 +692,17 @@
       .app-card-actions { flex-direction: column; }
       .btn-app.ghost { flex: 1; }
     }
+    /* Aviso de estado: se prende sacando el atributo hidden del div #aviso-estado (ver RESILIENCIA_TERCEROS.md, punto 4) */
+    #aviso-estado { background: #fffbeb; color: #78350f; border-bottom: 1px solid #fcd34d; padding: 10px 16px; text-align: center; font-size: 14px; line-height: 1.4; }
+    #aviso-estado[hidden] { display: none; }
+    @media (prefers-color-scheme: dark) { #aviso-estado { background: #3b2a06; color: #fde68a; border-bottom-color: #92400e; } }
   </style>
 </head>
 <body>
+
+  <!-- ── Aviso de estado (apagado). Para avisar una falla de un tercero (Supabase, Vercel, ARCA, Mercado Pago):
+       1) cambiá el texto de abajo, 2) borrá la palabra hidden, 3) push a main. Para apagarlo, volvé a poner hidden. ── -->
+  <div id="aviso-estado" role="status" hidden>Estamos con inconvenientes en un servicio externo. Estamos trabajando para resolverlo. Disculpá las molestias.</div>
 
   <!-- ── Nav ── -->
   <nav>
