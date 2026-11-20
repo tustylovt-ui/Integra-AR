@@ -125,6 +125,7 @@ No tiene pruebas pendientes anotadas en su propio MD; las que faltan (cobro con 
 - [ ] **I2 · Simular una caída** (por ejemplo, en un entorno de prueba, cambiando la dirección de WSFEv1 por una que no responda): tiene que mostrarse el aviso y **no** consumirse ningún número. No se puede probar contra ARCA real.
 - [ ] **I3 · AgendAR:** revisar que las pantallas de facturación y de clínica muestren el texto del aviso (la ruta responde 503 con `arcaNoDisponible: true`, sin `resultado: 'R'`).
 - [ ] **I4 · Facturador Local:** conectado (motor `nucleo`). Probar con ARCA caída simulada: venta rápida fiscal tiene que salir como Ticket X con el aviso «ARCA informa problemas…», y «Pasar a fiscal» tiene que mostrar el aviso sin emitir. Falta rearmar el instalador para que llegue a los comercios.
+- [ ] **I5 · CAE «perdido» (`facturador-core` 0.9.0, 19/11/2026):** no se puede simular contra ARCA real (está cubierto por 5 tests del núcleo). Lo que sí conviene: en cada app, una emisión real chica con ARCA en línea (se junta con I1) para confirmar que el camino normal no cambió. Si algún día un corte real deja un comprobante autorizado sin respuesta, tiene que guardarse solo y mostrar la advertencia «No lo emitas de nuevo». Facturador Local sigue en 0.8.0 hasta subirlo.
 
 ## F. Anotadas como pendientes en algún MD pero ya resueltas (no repetir)
 
