@@ -2,7 +2,7 @@
 
 > 📌 **Norma del ecosistema:** antes de este archivo se lee el MD general `C:\Desarrollo Integrar\INTEGRAAR\Integra-AR\ECOSISTEMA.md`. Al cerrar un cambio se actualizan los dos: este archivo y el general (fecha de la cabecera, §2, §7 y §10). Lecciones operativas históricas: `GUIA_CLAUDE_ECOSISTEMA.md` (mismo repo).
 
-**Última actualización:** 19 Noviembre 2026 — aviso de estado en el index (`#aviso-estado`, apagado con `hidden`; cómo prenderlo en `RESILIENCIA_TERCEROS.md`, punto 4). Antes: 31 Octubre 2026 — páginas nuevas **FacturAR Profesional** (`/profesional`), **TiendaAR** (`/tienda`) y **Facturador Local** (`/facturador-local`) con cards en el index, nav y footers cruzados; corregido el link de FacturAR (`factur-ar.vercel.app`; el viejo `factu-ar.vercel.app` no carga, estaba en 8 lugares). Antes, 23 Septiembre 2026 — agregada FinanciAR (ya estaba en index.html) y **Logística y Reparto** (nueva: `lr.html` + ruta `/lr` + card en index + footers cruzados de todas las páginas)
+**Última actualización:** 20 Noviembre 2026 — fuentes propias en las 10 páginas (sin Google Fonts; `fonts/` + `vercel.json`). Antes: 19 Noviembre 2026 — aviso de estado en el index (`#aviso-estado`, apagado con `hidden`; cómo prenderlo en `RESILIENCIA_TERCEROS.md`, punto 4). Antes: 31 Octubre 2026 — páginas nuevas **FacturAR Profesional** (`/profesional`), **TiendaAR** (`/tienda`) y **Facturador Local** (`/facturador-local`) con cards en el index, nav y footers cruzados; corregido el link de FacturAR (`factur-ar.vercel.app`; el viejo `factu-ar.vercel.app` no carga, estaba en 8 lugares). Antes, 23 Septiembre 2026 — agregada FinanciAR (ya estaba en index.html) y **Logística y Reparto** (nueva: `lr.html` + ruta `/lr` + card en index + footers cruzados de todas las páginas)
 **Tipo:** Sitio web institucional estático (HTML + CSS vanilla)
 **Propósito:** Presentación de la marca IntegraAR y sus aplicaciones
 
@@ -68,7 +68,7 @@ Integra-AR/
 ## 🎨 Diseño del sitio
 
 ### Estilo
-- **Tipografía:** DM Serif Display (títulos) + DM Sans (cuerpo) — Google Fonts
+- **Tipografía:** DM Serif Display (títulos) + DM Sans (cuerpo) — servidas desde el propio sitio (`fonts/`, `fonts/fuentes.css`; licencia SIL OFL en `fonts/LICENSE-*.txt`). Sin pedidos a Google desde el 20/11/2026.
 - **Paleta:** Blanco/minimalista/confiable — fondo blanco, acentos de color por app
 - **Tono:** Mixto — profesional pero amigable, dirigido al mercado argentino
 - **Logo:** `logo-completo-2.png` (sin fondo) en nav, hero y footer de todos los HTMLs
